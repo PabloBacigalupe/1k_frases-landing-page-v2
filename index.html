@@ -526,6 +526,224 @@ footer{
   font-size: 14px;
 }
 .nota-idioma b{ font-weight: 650; }
+
+/* ── Nota informativa ─────────────────────────── */
+.nota-info{
+  background: var(--accent-soft);
+  border: 1px solid #dcdcfb;
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  font-size: 14px;
+  color: var(--ink);
+}
+.nota-info b{ font-weight: 650; }
+
+/* ── Panel de letras ──────────────────────────── */
+.partes{ display: flex; flex-wrap: wrap; gap: 8px; }
+.partes button{
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.partes button[aria-pressed="true"]{
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.letras{
+  max-height: 22rem;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-soft);
+  padding: 8px;
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce){ .letras{ scroll-behavior: auto; } }
+
+.linea{
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  border-radius: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font: inherit;
+  transition: background-color .2s ease, opacity .2s ease;
+}
+.linea .apr{
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  opacity: .45;
+  transition: opacity .2s ease, color .2s ease;
+}
+.linea .trad{
+  display: block;
+  font-size: 14px;
+  color: var(--ink-soft);
+  opacity: .4;
+  margin-top: 2px;
+  transition: opacity .2s ease;
+}
+.linea:hover{ background: rgba(61,58,239,.05); }
+.linea.sonada .apr{ opacity: .75; }
+.linea.sonada .trad{ opacity: .6; }
+.linea.activa{ background: var(--bg); box-shadow: var(--sombra); }
+.linea.activa .apr{ opacity: 1; color: var(--accent); }
+.linea.activa .trad{ opacity: 1; }
+
+/* ── Tarjetas de nivel ────────────────────────── */
+.cabecera-lista{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.cabecera-lista .lista-nota{ flex: 1 1 20rem; }
+
+.niveles{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 12px;
+}
+.nivel{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  font: inherit;
+  padding: 16px 16px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+  cursor: pointer;
+  transition: border-color .15s ease, background-color .15s ease, box-shadow .15s ease;
+}
+.nivel:hover{ border-color: #c9c9d0; }
+.nivel[aria-checked="true"]{
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 3px rgba(61,58,239,.12);
+}
+.nivel-codigo{
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.nivel[aria-checked="true"] .nivel-codigo{ color: var(--accent); }
+.nivel-nombre{ font-size: 13px; font-weight: 650; color: var(--ink); }
+.nivel-resumen{ font-size: 12.5px; line-height: 1.4; color: var(--ink-soft); }
+.nivel-cuenta{
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Bloques de orden ─────────────────────────── */
+.bloques{ display: flex; flex-direction: column; gap: 8px; }
+.bloque{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+.bloque:hover{ border-color: #c9c9d0; }
+.bloque:focus-visible{ outline: 2px solid var(--accent); outline-offset: 2px; }
+.bloque.arrastrando{
+  cursor: grabbing;
+  border-color: var(--accent);
+  box-shadow: 0 12px 24px -12px rgba(20,22,26,.35);
+  position: relative;
+  z-index: 2;
+}
+.bloque-codigo{
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 999px;
+  padding: 4px 9px;
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+.bloque-texto{ font-size: 14px; font-weight: 600; flex: 1; }
+.bloque-agarre{ color: #c3c3cc; font-size: 13px; letter-spacing: -2px; flex: none; }
+
+/* ── Reproductor ──────────────────────────────── */
+.reproductor{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 20px 20px;
+}
+.linea-tiempo{ display: flex; flex-direction: column; gap: 4px; }
+#barraTiempo{ width: 100%; accent-color: var(--accent); cursor: pointer; }
+.tiempos{
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.mandos{ display: flex; align-items: center; justify-content: center; gap: 14px; }
+.mando{
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color .15s ease, background-color .15s ease, transform .05s ease;
+}
+.mando:hover{ border-color: #c9c9d0; }
+.mando:active{ transform: scale(.95); }
+.mando .salto{ font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.mando.principal{
+  width: 58px;
+  height: 58px;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+.mando.principal:hover{ background: #3532d6; border-color: #3532d6; }
+.mando.principal .icono{ font-size: 17px; line-height: 1; }
+
+.aviso-online{
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  text-align: center;
+}
 </style>
 </head>
 <body>
@@ -533,7 +751,7 @@ footer{
 <header class="nav">
   <div class="wrap nav-inner">
     <a class="marca" href="#inicio">
-      <span class="marca-icono">🎧</span> 1K frases v2
+      <span class="marca-icono">🎧</span> 1K frases
     </a>
     <nav class="nav-links">
       <a href="#herramienta">Generador</a>
@@ -628,13 +846,11 @@ footer{
             <span class="interruptor-texto">Repetir dos veces el idioma que aprendes</span>
           </label>
 
-          <label class="campo">
+          <div class="campo">
             <span>Orden</span>
-            <select id="orden">
-              <option value="apr">Primero el idioma que aprendo</option>
-              <option value="trad">Primero la traducción</option>
-            </select>
-          </label>
+            <div class="bloques" id="bloques"></div>
+            <small>Pincha y arrastra los bloques para configurar el orden.</small>
+          </div>
 
           <label class="campo">
             <span>Frases por archivo</span>
@@ -651,14 +867,13 @@ footer{
         <div class="card">
           <h2><span class="paso">4</span> Las frases</h2>
 
-          <div class="selector-lista">
-            <div class="selector-texto">
-              <p class="lista-titulo">Listado recomendado · <span id="totalLista">0</span> frases</p>
-              <p class="lista-nota" id="listaNota">Las mil frases más frecuentes del inglés, de lo
-                más básico a estructuras avanzadas. No tienes que escribir nada: pulsa Generar y listo.</p>
-            </div>
+          <div class="cabecera-lista">
+            <p class="lista-nota" id="listaNota">Elige tu nivel. Las frases van de lo más básico a
+              las estructuras más avanzadas, y cada nivel se apoya en el anterior.</p>
             <button id="alternarLista" class="btn btn-linea" type="button">Incluir mis propias frases</button>
           </div>
+
+          <div class="niveles" id="niveles" role="radiogroup" aria-label="Nivel"></div>
 
           <div class="vista-lista" id="vistaLista"><pre id="muestraLista"></pre></div>
 
@@ -670,7 +885,7 @@ footer{
             de arriba en vez de traducirla automáticamente.
           </p>
 
-          <p class="nota-idioma" id="notaIdioma" hidden></p>
+          <p class="nota-info" id="notaIdioma" hidden></p>
           <div class="fila-acciones">
             <span class="contador" id="contador">0 frases</span>
             <div class="acciones">
@@ -688,8 +903,33 @@ footer{
         <div class="card" id="resultado" hidden>
           <h2>Tu audio</h2>
           <p id="resumen" class="resumen"></p>
-          <audio id="reproductor" controls></audio>
-          <div id="descargas" class="descargas"></div>
+          <div class="partes" id="partes" hidden></div>
+
+          <div class="reproductor">
+            <audio id="reproductor" preload="metadata"></audio>
+            <div class="linea-tiempo">
+              <input type="range" id="barraTiempo" min="0" max="1000" value="0" step="1"
+                     aria-label="Posición del audio">
+              <div class="tiempos">
+                <span id="tiempoActual">0:00</span>
+                <span id="tiempoTotal">0:00</span>
+              </div>
+            </div>
+            <div class="mandos">
+              <button id="atras" class="mando" type="button" aria-label="Atrás 5 segundos">
+                <span class="salto">−5s</span>
+              </button>
+              <button id="reproducir" class="mando principal" type="button" aria-label="Reproducir">
+                <span class="icono" id="iconoPlay">▶</span>
+              </button>
+              <button id="adelante" class="mando" type="button" aria-label="Adelante 5 segundos">
+                <span class="salto">+5s</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="letras" id="letras" hidden></div>
+          <p class="aviso-online">Este audio se escucha aquí. No se descarga.</p>
         </div>
 
         <div id="aviso" class="aviso" hidden></div>
@@ -827,6 +1067,22 @@ const VOCES = {
 
 /* ─────────────── Locución de entrada y cierre ─────────────── */
 
+const NIVELES = [
+  { codigo: 'A1', nombre: 'Principiante',      desde: 0,   hasta: 200,
+    resumen: 'Saludos, presentarse, la casa, la rutina diaria y los gustos.' },
+  { codigo: 'A2', nombre: 'Elemental',         desde: 200, hasta: 400,
+    resumen: 'Restaurante, compras, direcciones, viajes y trabajo del día a día.' },
+  { codigo: 'B1', nombre: 'Intermedio',        desde: 400, hasta: 600,
+    resumen: 'Oficina, reuniones, reservas y frases más largas con matices.' },
+  { codigo: 'B2', nombre: 'Intermedio alto',   desde: 600, hasta: 800,
+    resumen: 'Opiniones, condicionales, aficiones y conversación seguida.' },
+  { codigo: 'C1', nombre: 'Avanzado',          desde: 800, hasta: 1000,
+    resumen: 'Inversiones, registro formal y estructuras de nivel nativo.' },
+];
+
+const IDIOMA_LISTADO = 'en';       // idioma de las frases del listado recomendado
+const IDIOMA_PARENTESIS = 'es';    // idioma de sus traducciones entre paréntesis
+
 const LOCUCION_INTRO = 'Creado por: Mil frases para aprender un idioma nuevo.';
 const LOCUCION_CIERRE = 'Gracias por confiar en: Mil frases para aprender un idioma nuevo. '
                       + 'Te esperamos pronto.';
@@ -838,1005 +1094,3004 @@ const PAUSA_LOCUCION = 800;
    Para cambiarlo basta con sustituir el contenido de estas comillas. */
 
 const FRASES_RECOMENDADAS = `Hello.
+(Hola.)
+
 Good morning.
+(Buenos días.)
+
 Good afternoon.
+(Buenas tardes.)
+
 Good evening.
+(Buenas noches — al llegar)
+
 Goodbye.
+(Adiós.)
+
 See you later.
+(Hasta luego.)
+
 How are you?
+(¿Cómo estás?)
+
 I am fine, thank you.
+(Estoy bien, gracias.)
+
 And you?
+(¿Y tú?)
+
 What is your name?
+(¿Cómo te llamas?)
+
 My name is…
+(Me llamo…)
+
 Nice to meet you.
+(Encantado de conocerte.)
+
 Where are you from?
+(¿De dónde eres?)
+
 I am from Spain.
+(Soy de España.)
+
 Where do you live?
+(¿Dónde vives?)
+
 I live in Madrid.
+(Vivo en Madrid.)
+
 How old are you?
+(¿Cuántos años tienes?)
+
 I am 30 years old.
+(Tengo 30 años.)
+
 What do you do?
+(¿A qué te dedicas?)
+
 I work in an office.
+(Trabajo en una oficina.)
+
 I am a student.
+(Soy estudiante.)
+
 Do you speak Spanish?
+(¿Hablas español?)
+
 I speak a little English.
+(Hablo un poco de inglés.)
+
 I don't understand.
+(No entiendo.)
+
 Can you repeat, please?
+(¿Puedes repetir, por favor?)
+
 How do you say… in English?
+(¿Cómo se dice… en inglés?)
+
 What does this mean?
+(¿Qué significa esto?)
+
 Please.
+(Por favor.)
+
 Thank you very much.
+(Muchas gracias.)
+
 You're welcome.
+(De nada.)
+
 Excuse me.
+(Perdone. / Disculpe.)
+
 I am sorry.
+(Lo siento.)
+
 Yes, please.
+(Sí, por favor.)
+
 No, thank you.
+(No, gracias.)
+
 Who is this?
+(¿Quién es este?)
+
 This is my friend.
+(Este es mi amigo.)
+
 This is my family.
+(Esta es mi familia.)
+
 I have a brother.
+(Tengo un hermano.)
+
 I have a sister.
+(Tengo una hermana.)
+
 I am married.
+(Estoy casado.)
+
 I am single.
+(Estoy soltero.)
+
 I have a dog.
+(Tengo un perro.)
+
 I have a cat.
+(Tengo un gato.)
+
 My house is big.
+(Mi casa es grande.)
+
 My room is small.
+(Mi habitación es pequeña.)
+
 The door is open.
+(La puerta está abierta.)
+
 The window is closed.
+(La ventana está cerrada.)
+
 Turn on the light.
+(Enciende la luz.)
+
 Turn off the light.
+(Apaga la luz.)
+
 Today is Monday.
+(Hoy es lunes.)
+
 I wake up early.
+(Me despierto temprano.)
+
 I get up at 7 o'clock.
+(Me levanto a las 7.)
+
 I take a shower.
+(Me ducho.)
+
 I brush my teeth.
+(Me lavo los dientes.)
+
 I eat breakfast.
+(Desayuno.)
+
 I drink coffee with milk.
+(Bebo café con leche.)
+
 I eat toast.
+(Como tostadas.)
+
 I go to work.
+(Voy al trabajo.)
+
 I drive my car.
+(Conduzco mi coche.)
+
 I take the metro.
+(Cojo el metro.)
+
 I start work at 8.
+(Empiezo a trabajar a las 8.)
+
 I check my emails.
+(Reviso mis correos electrónicos.)
+
 I have a meeting.
+(Tengo una reunión.)
+
 I eat lunch at 2.
+(Como a las 2.)
+
 I eat a sandwich.
+(Como un bocadillo.)
+
 I finish work at 5.
+(Termino de trabajar a las 5.)
+
 I go back home.
+(Vuelvo a casa.)
+
 I cook dinner.
+(Preparo la cena.)
+
 I watch television.
+(Veo la televisión.)
+
 I use my phone.
+(Uso mi móvil.)
+
 I read a book.
+(Leo un libro.)
+
 I listen to music.
+(Escucho música.)
+
 I go to sleep at 11.
+(Me voy a dormir a las 11.)
+
 I like sports.
+(Me gusta el deporte.)
+
 I play football.
+(Juego al fútbol.)
+
 I go to the gym.
+(Voy al gimnasio.)
+
 I like running.
+(Me gusta correr.)
+
 I like cooking.
+(Me gusta cocinar.)
+
 I like traveling.
+(Me gusta viajar.)
+
 I love movies.
+(Me encantan las películas.)
+
 What is your hobby?
+(¿Cuál es tu afición?)
+
 My hobby is photography.
+(Mi afición es la fotografía.)
+
 I don't like reading.
+(No me gusta leer.)
+
 I hate getting up early.
+(Odio levantarme temprano.)
+
 What time is it?
+(¿Qué hora es?)
+
 It is three o'clock.
+(Son las tres.)
+
 It is half past four.
+(Son las cuatro y media.)
+
 Today is sunny.
+(Hoy hace sol.)
+
 It is raining.
+(Está lloviendo.)
+
 It is cold today.
+(Hoy hace frío.)
+
 It is hot.
+(Hace calor.)
+
 I like the summer.
+(Me gusta el verano.)
+
 I prefer the winter.
+(Prefiero el invierno.)
+
 What day is today?
+(¿Qué día es hoy?)
+
 Tomorrow is Tuesday.
+(Mañana es martes.)
+
 Yesterday was Sunday.
+(Ayer fue domingo.)
+
 The weekend is near.
+(El fin de semana está cerca.)
+
 I rest on Saturday.
+(Descanso el sábado.)
+
 I go out with friends.
+(Salgo con amigos.)
+
 I am happy today.
+(Hoy estoy feliz.)
+
 I am hungry.
+(Tengo hambre.)
+
 I am thirsty.
+(Tengo sed.)
+
 I want water, please.
+(Quiero agua, por favor.)
+
 I want a beer.
+(Quiero una cerveza.)
+
 Let's go to a restaurant.
+(Vamos a un restaurante.)
+
 A table for two, please.
+(Una mesa para dos, por favor.)
+
 Can I see the menu?
+(¿Puedo ver la carta?)
+
 What do you recommend?
+(¿Qué me recomienda?)
+
 I want chicken and salad.
+(Quiero pollo y ensalada.)
+
 I don't eat meat.
+(No como carne.)
+
 I am vegetarian.
+(Soy vegetariano.)
+
 This food is delicious.
+(Esta comida está deliciosa.)
+
 The bill, please.
+(La cuenta, por favor.)
+
 Can I pay by card?
+(¿Puedo pagar con tarjeta?)
+
 Keep the change.
+(Quédese con el cambio.)
+
 I need to go shopping.
+(Necesito ir de compras.)
+
 I need new clothes.
+(Necesito ropa nueva.)
+
 Where is the supermarket?
+(¿Dónde está el supermercado?)
+
 I need milk, eggs, and bread.
+(Necesito leche, huevos y pan.)
+
 How much is this?
+(¿Cuánto cuesta esto?)
+
 This is too expensive.
+(Esto es demasiado caro.)
+
 Do you have a smaller size?
+(¿Tiene una talla más pequeña?)
+
 Can I try this on?
+(¿Puedo probarme esto?)
+
 Where are the fitting rooms?
+(¿Dónde están los probadores?)
+
 I will take this shirt.
+(Me llevo esta camisa.)
+
 Where can I pay?
+(¿Dónde puedo pagar?)
+
 I need a bag, please.
+(Necesito una bolsa, por favor.)
+
 Do you accept cash?
+(¿Aceptan efectivo?)
+
 Here is your receipt.
+(Aquí tiene su recibo.)
+
 I want to return this.
+(Quiero devolver esto.)
+
 I am looking for a pharmacy.
+(Estoy buscando una farmacia.)
+
 I need medicine for a headache.
+(Necesito un medicamento para el dolor de cabeza.)
+
 My stomach hurts.
+(Me duele el estómago.)
+
 Where is the bathroom?
+(¿Dónde está el baño?)
+
 It is on the left.
+(Está a la izquierda.)
+
 It is on the right.
+(Está a la derecha.)
+
 Go straight ahead.
+(Siga todo recto.)
+
 Stop here, please.
+(Pare aquí, por favor.)
+
 Turn left at the corner.
+(Gire a la izquierda en la esquina.)
+
 Turn right at the traffic lights.
+(Gire a la derecha en el semáforo.)
+
 Where is the train station?
+(¿Dónde está la estación de tren?)
+
 What time does the train leave?
+(¿A qué hora sale el tren?)
+
 I need a ticket to London.
+(Necesito un billete a Londres.)
+
 Is this seat taken?
+(¿Está ocupado este asiento?)
+
 My luggage is heavy.
+(Mi equipaje es pesado.)
+
 Where is my passport?
+(¿Dónde está mi pasaporte?)
+
 I am looking for my hotel.
+(Estoy buscando mi hotel.)
+
 I have a reservation.
+(Tengo una reserva.)
+
 What is the Wi-Fi password?
+(¿Cuál es la contraseña del wifi?)
+
 My room key, please.
+(La llave de mi habitación, por favor.)
+
 I like this place.
+(Me gusta este lugar.)
+
 It is very quiet.
+(Es muy tranquilo.)
+
 The city is big and noisy.
+(La ciudad es grande y ruidosa.)
+
 I prefer nature.
+(Prefiero la naturaleza.)
+
 The beach is beautiful.
+(La playa es preciosa.)
+
 The mountains are amazing.
+(Las montañas son increíbles.)
+
 Let's take a photo.
+(Vamos a hacernos una foto.)
+
 Look at that view!
+(¡Mira esas vistas!)
+
 It is a sunny day for a walk.
+(Es un día soleado para pasear.)
+
 Do you want to go for a coffee?
+(¿Quieres ir a tomar un café?)
+
 Yes, I would love to.
+(Sí, me encantaría.)
+
 When are you free?
+(¿Cuándo estás libre?)
+
 I am free on Friday afternoon.
+(Estoy libre el viernes por la tarde.)
+
 Let's meet at 5 PM.
+(Quedamos a las 5 de la tarde.)
+
 Where should we meet?
+(¿Dónde quedamos?)
+
 Let's meet at the central square.
+(Quedamos en la plaza central.)
+
 See you there.
+(Nos vemos allí.)
+
 I am sorry, I am late.
+(Lo siento, llego tarde.)
+
 No problem, don't worry.
+(No pasa nada, no te preocupes.)
+
 Traffic was bad.
+(Había mucho tráfico.)
+
 What do you think about this?
+(¿Qué piensas de esto?)
+
 I think it is a good idea.
+(Creo que es una buena idea.)
+
 I don't agree with you.
+(No estoy de acuerdo contigo.)
+
 You are right.
+(Tienes razón.)
+
 Maybe you are wrong.
+(Quizá estés equivocado.)
+
 Let me think about it.
+(Déjame pensarlo.)
+
 I need your help.
+(Necesito tu ayuda.)
+
 Can you help me with this?
+(¿Puedes ayudarme con esto?)
+
 Of course, I can help.
+(Claro, puedo ayudarte.)
+
 Thank you for your help.
+(Gracias por tu ayuda.)
+
 I am learning English.
+(Estoy aprendiendo inglés.)
+
 It is a bit difficult.
+(Es un poco difícil.)
+
 But it is fun.
+(Pero es divertido.)
+
 I practice every day.
+(Practico todos los días.)
+
 I watch videos in English.
+(Veo vídeos en inglés.)
+
 I write new words in a notebook.
+(Escribo palabras nuevas en un cuaderno.)
+
 My pronunciation is improving.
+(Mi pronunciación está mejorando.)
+
 I want to speak fluently.
+(Quiero hablar con fluidez.)
+
 One day I will travel to the USA.
+(Algún día viajaré a Estados Unidos.)
+
 Or to Australia.
+(O a Australia.)
+
 Do you have pets?
+(¿Tienes mascotas?)
+
 My dog is very friendly.
+(Mi perro es muy simpático.)
+
 My cat sleeps all day.
+(Mi gato duerme todo el día.)
+
 I feed them in the morning.
+(Les doy de comer por la mañana.)
+
 We go for a walk in the park.
+(Vamos a pasear por el parque.)
+
 The weather is nice today.
+(Hoy hace buen tiempo.)
+
 Let's sit on the grass.
+(Sentémonos en el césped.)
+
 Listen to the birds.
+(Escucha los pájaros.)
+
 I feel relaxed here.
+(Me siento relajado aquí.)
+
 It is time to go back home.
+(Es hora de volver a casa.)
+
 Tomorrow will be a busy day.
+(Mañana será un día ajetreado.)
+
 I have to wake up early again.
+(Tengo que levantarme temprano otra vez.)
+
 I need a good night's sleep.
+(Necesito dormir bien esta noche.)
+
 Good night, sleep well.
+(Buenas noches, que duermas bien.)
+
 Good morning, did you sleep well?
+(Buenos días, ¿has dormido bien?)
+
 Yes, I slept like a log.
+(Sí, he dormido como un tronco.)
+
 No, I am still tired.
+(No, todavía estoy cansado.)
+
 Let's drink a strong coffee.
+(Vamos a tomar un café bien cargado.)
+
 The sun is shining brightly.
+(El sol brilla con fuerza.)
+
 What are your plans for the weekend?
+(¿Qué planes tienes para el fin de semana?)
+
 I am going to visit my parents.
+(Voy a visitar a mis padres.)
+
 We will eat together on Sunday.
+(Comeremos juntos el domingo.)
+
 My mother cooks very well.
+(Mi madre cocina muy bien.)
+
 Her paella is famous in the family.
+(Su paella es famosa en la familia.)
+
 I will help her in the kitchen.
+(La ayudaré en la cocina.)
+
 In the afternoon, I will relax.
+(Por la tarde, me relajaré.)
+
 I will watch a football match on TV.
+(Veré un partido de fútbol en la tele.)
+
 Who is playing?
+(¿Quién juega?)
+
 Real Madrid is playing today.
+(Hoy juega el Real Madrid.)
+
 I hope they win.
+(Espero que ganen.)
+
 What about you? What will you do?
+(¿Y tú? ¿Qué harás?)
+
 I will stay at home and read.
+(Me quedaré en casa a leer.)
+
 I need some rest.
+(Necesito descansar un poco.)
+
 Sometimes doing nothing is the best plan.
+(A veces no hacer nada es el mejor plan.)
+
 I completely agree with you.
+(Estoy completamente de acuerdo contigo.)
+
 Life is too fast sometimes.
+(La vida va demasiado rápido a veces.)
+
 We need to slow down.
+(Necesitamos ir más despacio.)
+
 Let's plan a trip for next month.
+(Vamos a planear un viaje para el mes que viene.)
+
 Where would you like to go?
+(¿Adónde te gustaría ir?)
+
 I would like to visit Italy.
+(Me gustaría visitar Italia.)
+
 Rome is a wonderful city.
+(Roma es una ciudad maravillosa.)
+
 We can eat authentic pizza and pasta.
+(Podemos comer pizza y pasta auténticas.)
+
 And we can see historical monuments.
+(Y podemos ver monumentos históricos.)
+
 How many days will we stay?
+(¿Cuántos días nos quedaremos?)
+
 Four or five days is enough.
+(Cuatro o cinco días son suficientes.)
+
 Let's check flights online.
+(Vamos a mirar vuelos por internet.)
+
 Flights are cheaper in advance.
+(Los vuelos son más baratos con antelación.)
+
 I will book the hotel tonight.
+(Reservaré el hotel esta noche.)
+
 Perfect, everything is ready.
+(Perfecto, todo está listo.)
+
 I am so excited about this trip.
+(Estoy muy emocionado con este viaje.)
+
 Travel makes us happier.
+(Viajar nos hace más felices.)
+
 We create unforgettable memories.
+(Creamos recuerdos inolvidables.)
+
 I will take plenty of pictures.
+(Haré muchas fotos.)
+
 And I will practice my English there too.
+(Y allí también practicaré mi inglés.)
+
 People speak English all over the world.
+(La gente habla inglés en todo el mundo.)
+
 It is a very useful language.
+(Es un idioma muy útil.)
+
 I am glad I started learning it.
+(Me alegro de haber empezado a aprenderlo.)
+
 Step by step, I am improving.
+(Poco a poco, voy mejorando.)
+
 This is just the beginning.
+(Esto es solo el comienzo.)
+
 Let's keep going forward!
+(¡Sigamos adelante!)
+
 I usually start work at eight o'clock in the morning.
+(Normalmente empiezo a trabajar a las ocho de la mañana.)
+
 Can we reschedule this meeting for tomorrow afternoon?
+(¿Podemos cambiar esta reunión para mañana por la tarde?)
+
 I need to check my emails before I reply to the client.
+(Necesito revisar mis correos antes de responder al cliente.)
+
 Could you help me with this report, please?
+(¿Podrías ayudarme con este informe, por favor?)
+
 I work remotely on Mondays and Fridays.
+(Trabajo en remoto los lunes y los viernes.)
+
 Let's take a fifteen-minute coffee break.
+(Vamos a hacer una pausa de quince minutos para el café.)
+
 My office is located in the center of the city.
+(Mi oficina está en el centro de la ciudad.)
+
 What time does our morning briefing start?
+(¿A qué hora empieza nuestra reunión informativa de la mañana?)
+
 I have to finish this presentation before lunch.
+(Tengo que terminar esta presentación antes de comer.)
+
 Could you send me the document by email?
+(¿Podrías enviarme el documento por correo electrónico?)
+
 I am waiting for an important phone call.
+(Estoy esperando una llamada importante.)
+
 My computer is not working properly today.
+(Mi ordenador no funciona bien hoy.)
+
 Let's schedule a call for next Tuesday.
+(Vamos a programar una llamada para el martes que viene.)
+
 I usually have a quick sandwich at my desk.
+(Normalmente como un bocadillo rápido en mi escritorio.)
+
 Who is in charge of this new project?
+(¿Quién está a cargo de este nuevo proyecto?)
+
 I need to print these contracts for the meeting.
+(Necesito imprimir estos contratos para la reunión.)
+
 Could you transfer this call to marketing, please?
+(¿Podrías pasar esta llamada a marketing, por favor?)
+
 We achieved our sales goals this month.
+(Hemos alcanzado nuestros objetivos de ventas este mes.)
+
 I have a lot of paperwork to do today.
+(Tengo mucho papeleo que hacer hoy.)
+
 Let's review the figures before the presentation.
+(Repasemos las cifras antes de la presentación.)
+
 I need to take a day off next week.
+(Necesito cogerme un día libre la semana que viene.)
+
 Can you update the spreadsheet with these numbers?
+(¿Puedes actualizar la hoja de cálculo con estos números?)
+
 My boss is traveling for business this week.
+(Mi jefe está de viaje de negocios esta semana.)
+
 We use video conferencing for international meetings.
+(Usamos videoconferencia para las reuniones internacionales.)
+
 I am learning how to use new software at work.
+(Estoy aprendiendo a usar un software nuevo en el trabajo.)
+
 Please let me know when you are available.
+(Por favor, avísame cuando estés disponible.)
+
 I forgot my password to access the system.
+(He olvidado mi contraseña para acceder al sistema.)
+
 Our team works well together on big projects.
+(Nuestro equipo trabaja bien unido en los proyectos grandes.)
+
 I need to write a summary of this meeting.
+(Necesito escribir un resumen de esta reunión.)
+
 Can we postpone this task until tomorrow?
+(¿Podemos posponer esta tarea hasta mañana?)
+
 I have an interview with a new candidate.
+(Tengo una entrevista con un nuevo candidato.)
+
 We need to hire more people for this department.
+(Necesitamos contratar a más gente para este departamento.)
+
 My commute to work takes about forty minutes.
+(Mi trayecto al trabajo dura unos cuarenta minutos.)
+
 I prefer to use public transport to get to the office.
+(Prefiero usar el transporte público para ir a la oficina.)
+
 Can you cover for me while I go to lunch?
+(¿Puedes cubrirme mientras voy a comer?)
+
 I need to sign these papers before I leave.
+(Necesito firmar estos papeles antes de irme.)
+
 Our company is organizing a team-building event.
+(Nuestra empresa está organizando un evento de team building.)
+
 I received positive feedback from my manager.
+(He recibido comentarios positivos de mi responsable.)
+
 Let's discuss this matter in the afternoon.
+(Hablemos de este asunto por la tarde.)
+
 I am organizing my files for the audit.
+(Estoy organizando mis archivos para la auditoría.)
+
 We would like a table for four people, please.
+(Queremos una mesa para cuatro personas, por favor.)
+
 Could you bring me the bill, please?
+(¿Podría traerme la cuenta, por favor?)
+
 I am allergic to nuts, does this dish have any?
+(Soy alérgico a los frutos secos, ¿este plato lleva?)
+
 What do you recommend for today?
+(¿Qué recomienda para hoy?)
+
 I would like my meat well done, please.
+(Quiero la carne muy hecha, por favor.)
+
 Can I pay by card or do you only take cash?
+(¿Puedo pagar con tarjeta o solo aceptan efectivo?)
+
 Could we see the menu and the wine list, please?
+(¿Podríamos ver la carta y la carta de vinos, por favor?)
+
 I want to order a glass of white wine and sparkling water.
+(Quiero pedir una copa de vino blanco y agua con gas.)
+
 Is service included in the final price?
+(¿El servicio está incluido en el precio final?)
+
 Excuse me, we are ready to order now.
+(Disculpe, ya estamos listos para pedir.)
+
 Could we have some more bread, please?
+(¿Nos podría traer un poco más de pan, por favor?)
+
 This soup is too salty for my taste.
+(Esta sopa está demasiado salada para mi gusto.)
+
 I am a vegetarian, do you have plant-based options?
+(Soy vegetariano, ¿tienen opciones vegetales?)
+
 Can I get this dish without onions?
+(¿Me pueden poner este plato sin cebolla?)
+
 The food was delicious, compliments to the chef.
+(La comida estaba deliciosa, felicidades al chef.)
+
 Do you have a children's menu available?
+(¿Tienen menú infantil?)
+
 We would like to share a dessert.
+(Nos gustaría compartir un postre.)
+
 Could you pack the leftovers to take away?
+(¿Podría ponerme las sobras para llevar?)
+
 Is there a table available outside on the terrace?
+(¿Hay alguna mesa libre fuera, en la terraza?)
+
 I would like to book a table for Saturday night.
+(Me gustaría reservar una mesa para el sábado por la noche.)
+
 What are today's lunch specials?
+(¿Cuáles son las sugerencias del día para comer?)
+
 Can I have my coffee with oat milk, please?
+(¿Me pone el café con leche de avena, por favor?)
+
 This is not what I ordered, I asked for fish.
+(Esto no es lo que pedí, pedí pescado.)
+
 Could you change this plate, it is cold?
+(¿Podría cambiarme este plato? Está frío.)
+
 Let's split the bill evenly between all of us.
+(Dividamos la cuenta a partes iguales entre todos.)
+
 Do you serve breakfast all day long?
+(¿Sirven desayunos todo el día?)
+
 I prefer tap water instead of bottled water.
+(Prefiero agua del grifo en lugar de agua embotellada.)
+
 Could I get a small spoon for the dessert?
+(¿Me podría traer una cucharilla para el postre?)
+
 How long is the waiting time for a table?
+(¿Cuánto se tarda en conseguir mesa?)
+
 Can I order a takeaway pizza for pick up?
+(¿Puedo pedir una pizza para llevar y recogerla?)
+
 The service here is always very friendly and fast.
+(El servicio aquí siempre es muy amable y rápido.)
+
 Do you have any gluten-free pastries?
+(¿Tienen bollería sin gluten?)
+
 I would like to try the local specialty.
+(Me gustaría probar la especialidad local.)
+
 Can I have a napkin and a clean fork, please?
+(¿Me trae una servilleta y un tenedor limpio, por favor?)
+
 This restaurant was recommended by a friend.
+(Un amigo me recomendó este restaurante.)
+
 We are celebrating a birthday tonight.
+(Esta noche celebramos un cumpleaños.)
+
 Could you recommend a good local restaurant?
+(¿Podría recomendarme un buen restaurante de la zona?)
+
 I am trying to eat healthier this month.
+(Estoy intentando comer más sano este mes.)
+
 Let's grab a quick bite before the cinema.
+(Vamos a picar algo rápido antes del cine.)
+
 Do you accept reservations online?
+(¿Aceptan reservas por internet?)
+
 I always skip breakfast on busy days.
+(Siempre me salto el desayuno los días ajetreados.)
+
 My favorite cuisine is Italian food.
+(Mi cocina favorita es la italiana.)
+
 Can you heat this up a little bit more?
+(¿Puede calentarme esto un poco más?)
+
 We ordered a large pepperoni pizza to share.
+(Pedimos una pizza grande de pepperoni para compartir.)
+
 I prefer my tea with lemon and honey.
+(Prefiero el té con limón y miel.)
+
 Where can I find the fitting rooms to try this on?
+(¿Dónde están los probadores para probarme esto?)
+
 Do you have this shirt in a larger size?
+(¿Tienen esta camisa en una talla más grande?)
+
 How much does this cost? Is it on sale?
+(¿Cuánto cuesta esto? ¿Está rebajado?)
+
 I am just looking around, thank you.
+(Solo estoy mirando, gracias.)
+
 Can I get a refund if it doesn't fit me?
+(¿Me devuelven el dinero si no me queda bien?)
+
 Do you accept credit cards or contactless payments?
+(¿Aceptan tarjetas de crédito o pagos sin contacto?)
+
 Can I have a receipt for this purchase, please?
+(¿Me da el recibo de esta compra, por favor?)
+
 This jacket is available in black and navy blue.
+(Esta chaqueta está disponible en negro y azul marino.)
+
 Where is the shoe department located?
+(¿Dónde está la sección de zapatos?)
+
 Are these sunglasses on discount?
+(¿Estas gafas de sol están rebajadas?)
+
 I need a pair of comfortable walking shoes.
+(Necesito unos zapatos cómodos para caminar.)
+
 Can I exchange this sweater for a medium?
+(¿Puedo cambiar este jersey por una talla mediana?)
+
 Do you offer gift wrapping for items?
+(¿Ofrecen envoltorio de regalo para los artículos?)
+
 The line at the checkout is very long today.
+(La cola de la caja es muy larga hoy.)
+
 I am looking for a gift for my sister's birthday.
+(Estoy buscando un regalo para el cumpleaños de mi hermana.)
+
 Do you have this in stock or is it sold out?
+(¿Tienen esto en stock o está agotado?)
+
 Can you check if another store has my size?
+(¿Puede mirar si otra tienda tiene mi talla?)
+
 These trousers are a bit too tight on the waist.
+(Estos pantalones me aprietan un poco en la cintura.)
+
 I prefer shopping online to avoid the crowds.
+(Prefiero comprar por internet para evitar las aglomeraciones.)
+
 This store has great discounts this weekend.
+(Esta tienda tiene grandes descuentos este fin de semana.)
+
 I found a great bargain at the market today.
+(Hoy he encontrado una gran ganga en el mercado.)
+
 Can I use this discount coupon on sale items?
+(¿Puedo usar este cupón de descuento en artículos rebajados?)
+
 Where can I pay for these items?
+(¿Dónde puedo pagar estos artículos?)
+
 Do you sell batteries for this device?
+(¿Venden pilas para este aparato?)
+
 I need to buy some groceries for the week.
+(Necesito comprar comida para la semana.)
+
 Let's go to the shopping mall this afternoon.
+(Vamos al centro comercial esta tarde.)
+
 Is there an ATM near the store?
+(¿Hay un cajero automático cerca de la tienda?)
+
 I forgot my shopping list at home.
+(Me he dejado la lista de la compra en casa.)
+
 This fabric feels very soft and high quality.
+(Esta tela es muy suave y de gran calidad.)
+
 Can I open this box to check the product?
+(¿Puedo abrir esta caja para comprobar el producto?)
+
 Do you deliver heavy furniture to home?
+(¿Hacen entregas a domicilio de muebles pesados?)
+
 I am looking for a leather bag for work.
+(Estoy buscando un bolso de piel para el trabajo.)
+
 Can I try on these boots before buying them?
+(¿Puedo probarme estas botas antes de comprarlas?)
+
 The winter collection is already in the shop window.
+(La colección de invierno ya está en el escaparate.)
+
 I always compare prices before I buy electronics.
+(Siempre comparo precios antes de comprar aparatos electrónicos.)
+
 Do you have a loyalty card program?
+(¿Tienen un programa de tarjeta de fidelidad?)
+
 This coat is waterproof and very warm.
+(Este abrigo es impermeable y muy abrigado.)
+
 Can I return this item within thirty days?
+(¿Puedo devolver este artículo en un plazo de treinta días?)
+
 I need some new stationery for my office.
+(Necesito material de papelería nuevo para mi oficina.)
+
 Where can I find fresh fruit and vegetables?
+(¿Dónde puedo encontrar fruta y verdura fresca?)
+
 The supermarket closes at ten o'clock tonight.
+(El supermercado cierra a las diez esta noche.)
+
 I prefer buying organic vegetables when possible.
+(Prefiero comprar verduras ecológicas cuando es posible.)
+
 Can you put this in a plastic bag, please?
+(¿Puede ponerme esto en una bolsa de plástico, por favor?)
+
 I am saving money to buy a new laptop.
+(Estoy ahorrando para comprarme un portátil nuevo.)
+
 Shopping for clothes is relaxing for me.
+(Comprar ropa me resulta relajante.)
+
 Excuse me, how do I get to the nearest metro station?
+(Disculpe, ¿cómo llego a la estación de metro más cercana?)
+
 What time does the train to London depart?
+(¿A qué hora sale el tren a Londres?)
+
 I would like to book a single room for three nights.
+(Me gustaría reservar una habitación individual para tres noches.)
+
 Is breakfast included in the room price?
+(¿El desayuno está incluido en el precio de la habitación?)
+
 Where is the baggage claim area?
+(¿Dónde está la zona de recogida de equipajes?)
+
 Can you show me on this city map where we are?
+(¿Puede enseñarme en este plano de la ciudad dónde estamos?)
+
 I need to buy a return ticket to the airport.
+(Necesito comprar un billete de ida y vuelta al aeropuerto.)
+
 Is this seat taken or can I sit here?
+(¿Está ocupado este asiento o puedo sentarme aquí?)
+
 What gate does flight number BA245 board from?
+(¿De qué puerta embarca el vuelo BA245?)
+
 My passport expires in six months.
+(Mi pasaporte caduca dentro de seis meses.)
+
 Could you call a taxi for me, please?
+(¿Podría llamarme un taxi, por favor?)
+
 How much is the bus fare to the city center?
+(¿Cuánto cuesta el billete de autobús al centro de la ciudad?)
+
 I lost my suitcase at the airport.
+(He perdido mi maleta en el aeropuerto.)
+
 Do I need to validate my train ticket before boarding?
+(¿Tengo que validar mi billete de tren antes de subir?)
+
 Where can I exchange my money for local currency?
+(¿Dónde puedo cambiar mi dinero por moneda local?)
+
 Is there free Wi-Fi connection in the hotel?
+(¿Hay conexión wifi gratuita en el hotel?)
+
 Could you wake me up at seven tomorrow morning?
+(¿Podría despertarme mañana a las siete de la mañana?)
+
 I would like a room with a sea view if possible.
+(Me gustaría una habitación con vistas al mar, si es posible.)
+
 The flight was delayed for two hours.
+(El vuelo se retrasó dos horas.)
+
 We need to check out before twelve noon.
+(Tenemos que dejar la habitación antes de las doce del mediodía.)
+
 Can I store my luggage at the hotel reception?
+(¿Puedo dejar mi equipaje en la recepción del hotel?)
+
 Where is the nearest tourist information office?
+(¿Dónde está la oficina de turismo más cercana?)
+
 How long does the ferry ride take?
+(¿Cuánto dura el trayecto en ferry?)
+
 I get motion sickness when I travel by boat.
+(Me mareo cuando viajo en barco.)
+
 Do we need to rent a car for our trip?
+(¿Necesitamos alquilar un coche para nuestro viaje?)
+
 Let's book our tickets in advance to save money.
+(Reservemos los billetes con antelación para ahorrar dinero.)
+
 The hotel is within walking distance of the beach.
+(El hotel está a poca distancia a pie de la playa.)
+
 Can you recommend a nice place to visit nearby?
+(¿Puede recomendarme un sitio bonito para visitar cerca de aquí?)
+
 I always pack too many things in my suitcase.
+(Siempre meto demasiadas cosas en la maleta.)
+
 My flight connects in Frankfurt before arriving.
+(Mi vuelo hace escala en Fráncfort antes de llegar.)
+
 Do I need a visa to travel to this country?
+(¿Necesito visado para viajar a este país?)
+
 The customs officer checked my passport carefully.
+(El agente de aduanas revisó mi pasaporte con atención.)
+
 We missed our train because of heavy traffic.
+(Perdimos el tren por el tráfico denso.)
+
 Can you help me put my bag in the overhead bin?
+(¿Puede ayudarme a poner mi bolsa en el compartimento superior?)
+
 The air conditioning in the hotel room is broken.
+(El aire acondicionado de la habitación del hotel está estropeado.)
+
 I prefer an aisle seat on long-haul flights.
+(Prefiero un asiento de pasillo en los vuelos de larga distancia.)
+
 Can I have a blanket and a pillow, please?
+(¿Me puede dar una manta y una almohada, por favor?)
+
 Where do we catch the shuttle bus to the hotel?
+(¿Dónde cogemos el autobús lanzadera al hotel?)
+
 We explored the old town on foot yesterday.
+(Ayer exploramos el casco antiguo a pie.)
+
 Taking photographs inside the museum is prohibited.
+(Está prohibido hacer fotografías dentro del museo.)
+
 I bought some souvenirs for my friends back home.
+(Compré algunos recuerdos para mis amigos de casa.)
+
 The local market was full of colors and smells.
+(El mercado local estaba lleno de colores y olores.)
+
 We watched a stunning sunset over the ocean.
+(Contemplamos una puesta de sol impresionante sobre el océano.)
+
 Traveling opens your mind to different cultures.
+(Viajar te abre la mente a culturas diferentes.)
+
 I keep my travel documents in a secure pouch.
+(Guardo mis documentos de viaje en una riñonera segura.)
+
 Can you take a photo of us in front of the monument?
+(¿Puede hacernos una foto delante del monumento?)
+
 The tour guide explained the history of the castle.
+(El guía turístico explicó la historia del castillo.)
+
 We walked around the city for hours without a map.
+(Paseamos por la ciudad durante horas sin mapa.)
+
 I prefer traveling light with just a backpack.
+(Prefiero viajar ligero, solo con una mochila.)
+
 Our vacation in Italy was unforgettable.
+(Nuestras vacaciones en Italia fueron inolvidables.)
+
 I am planning a road trip along the coast.
+(Estoy planeando un viaje por carretera por la costa.)
+
 We stayed at a cozy bed and breakfast in the mountains.
+(Nos alojamos en un acogedor bed and breakfast en la montaña.)
+
 The street musicians were playing wonderful jazz music.
+(Los músicos callejeros tocaban una música de jazz maravillosa.)
+
 I forgot to bring my universal power adapter.
+(Se me olvidó traer mi adaptador de corriente universal.)
+
 Let's check the weather forecast before going out.
+(Miremos la previsión del tiempo antes de salir.)
+
 In my free time, I really enjoy reading historical novels.
+(En mi tiempo libre, disfruto mucho leyendo novelas históricas.)
+
 We are planning to go hiking in the mountains this weekend.
+(Estamos planeando ir de senderismo a la montaña este fin de semana.)
+
 I love listening to podcasts while I do housework.
+(Me encanta escuchar pódcast mientras hago las tareas de casa.)
+
 Photography has been my favorite hobby for years.
+(La fotografía ha sido mi afición favorita durante años.)
+
 Do you want to play a tennis match this Saturday?
+(¿Quieres jugar un partido de tenis este sábado?)
+
 I usually go swimming twice a week to stay fit.
+(Normalmente voy a nadar dos veces por semana para mantenerme en forma.)
+
 Cooking dinner for my friends is very relaxing for me.
+(Cocinar la cena para mis amigos me resulta muy relajante.)
+
 We went camping by the lake last summer.
+(El verano pasado fuimos de acampada junto al lago.)
+
 I am learning to play the acoustic guitar.
+(Estoy aprendiendo a tocar la guitarra acústica.)
+
 My brother spends all his free time playing video games.
+(Mi hermano pasa todo su tiempo libre jugando a videojuegos.)
+
 Let's go to the cinema to see the new action movie.
+(Vamos al cine a ver la nueva película de acción.)
+
 I prefer watching documentaries rather than soap operas.
+(Prefiero ver documentales antes que telenovelas.)
+
 Painting helps me disconnect from a stressful week.
+(Pintar me ayuda a desconectar de una semana estresante.)
+
 We love visiting art galleries on Sunday mornings.
+(Nos encanta visitar galerías de arte los domingos por la mañana.)
+
 I joined a local book club to meet new people.
+(Me apunté a un club de lectura local para conocer gente nueva.)
+
 Cycling is a great way to explore the countryside.
+(Ir en bicicleta es una forma estupenda de explorar el campo.)
+
 Do you practice any martial arts?
+(¿Practicas algún arte marcial?)
+
 I enjoy gardening and growing my own vegetables.
+(Disfruto de la jardinería y de cultivar mis propias verduras.)
+
 We spent the afternoon playing board games at home.
+(Pasamos la tarde jugando a juegos de mesa en casa.)
+
 I like to keep a daily journal before going to sleep.
+(Me gusta escribir un diario cada noche antes de dormir.)
+
 Yoga helps me improve my flexibility and posture.
+(El yoga me ayuda a mejorar la flexibilidad y la postura.)
+
 Collecting vintage stamps is an interesting hobby.
+(Coleccionar sellos antiguos es una afición interesante.)
+
 I usually spend my weekends visiting family.
+(Normalmente paso los fines de semana visitando a la familia.)
+
 We went bird watching in the natural park.
+(Fuimos a observar aves al parque natural.)
+
 Baking homemade bread is my secret talent.
+(Hacer pan casero es mi talento secreto.)
+
 I love going to live concerts and music festivals.
+(Me encanta ir a conciertos en directo y a festivales de música.)
+
 Running a marathon requires months of preparation.
+(Correr un maratón requiere meses de preparación.)
+
 We built a small wooden shelf for the living room.
+(Construimos una pequeña estantería de madera para el salón.)
+
 I enjoy knitting sweaters during winter evenings.
+(Disfruto tejiendo jerséis en las tardes de invierno.)
+
 Do you follow any sports teams closely?
+(¿Sigues de cerca a algún equipo deportivo?)
+
 I like solving crossword puzzles in the morning paper.
+(Me gusta resolver los crucigramas del periódico por la mañana.)
+
 We went scuba diving in crystal clear water.
+(Hicimos submarinismo en aguas cristalinas.)
+
 Fishing is a very peaceful and quiet activity.
+(La pesca es una actividad muy tranquila y silenciosa.)
+
 I am taking an online course in digital photography.
+(Estoy haciendo un curso online de fotografía digital.)
+
 We love having barbecues in the backyard with friends.
+(Nos encanta hacer barbacoas en el jardín con los amigos.)
+
 I prefer spending my holidays in quiet natural places.
+(Prefiero pasar las vacaciones en lugares naturales y tranquilos.)
+
 Sketching urban landscapes is a creative outlet for me.
+(Dibujar paisajes urbanos es una vía de escape creativa para mí.)
+
 We watched a thrilling football match on television.
+(Vimos un emocionante partido de fútbol por televisión.)
+
 I enjoy visiting botanical gardens on sunny days.
+(Disfruto visitando jardines botánicos los días soleados.)
+
 Doing puzzles is a nice way to spend a rainy afternoon.
+(Hacer puzles es una buena forma de pasar una tarde lluviosa.)
+
 I love baking chocolate chip cookies for my kids.
+(Me encanta hacer galletas con pepitas de chocolate para mis hijos.)
+
 We went horse riding through the forest trails.
+(Montamos a caballo por los senderos del bosque.)
+
 I am trying to learn pottery classes this season.
+(Estoy intentando aprender cerámica en clases esta temporada.)
+
 Watching the stars at night is fascinating.
+(Observar las estrellas por la noche es fascinante.)
+
 I always listen to upbeat music while running.
+(Siempre escucho música animada mientras corro.)
+
 We organize a board game night every Friday.
+(Organizamos una noche de juegos de mesa todos los viernes.)
+
 I like visiting antique shops on Saturday afternoons.
+(Me gusta visitar tiendas de antigüedades los sábados por la tarde.)
+
 Rollerblading along the river is a lot of fun.
+(Patinar en línea junto al río es muy divertido.)
+
 I practice meditation for ten minutes every day.
+(Practico meditación diez minutos todos los días.)
+
 We love trying new recipes from different countries.
+(Nos encanta probar recetas nuevas de distintos países.)
+
 I enjoy writing short stories in my spare time.
+(Disfruto escribiendo relatos cortos en mi tiempo libre.)
+
 Surfing big waves requires courage and balance.
+(Surfear olas grandes requiere valor y equilibrio.)
+
 We went ice skating during the winter holidays.
+(Fuimos a patinar sobre hielo durante las vacaciones de invierno.)
+
 I like repairing old electronic gadgets myself.
+(Me gusta reparar yo mismo aparatos electrónicos viejos.)
+
 Visiting historical castles is my favorite type of tourism.
+(Visitar castillos históricos es mi tipo de turismo favorito.)
+
 I enjoy taking long walks in the park at sunset.
+(Disfruto dando largos paseos por el parque al atardecer.)
+
 We watched a fascinating documentary about space.
+(Vimos un documental fascinante sobre el espacio.)
+
 I like doing DIY projects around the house.
+(Me gusta hacer proyectos de bricolaje por la casa.)
+
 Playing the piano helps me clear my mind.
+(Tocar el piano me ayuda a despejar la mente.)
+
 We went paddle boarding on a calm morning.
+(Fuimos a hacer paddle surf una mañana tranquila.)
+
 I love testing new coffee beans from around the world.
+(Me encanta probar granos de café nuevos de todo el mundo.)
+
 Origami is a relaxing Japanese paper art.
+(El origami es un relajante arte japonés del papel.)
+
 We joined a local running club to stay motivated.
+(Nos apuntamos a un club de running local para mantener la motivación.)
+
 I enjoy sewing my own clothes sometimes.
+(A veces disfruto cosiendo mi propia ropa.)
+
 Spending time with my pets brings me great joy.
+(Pasar tiempo con mis mascotas me da mucha alegría.)
+
 I have been working in this company for over three years.
+(Llevo trabajando en esta empresa más de tres años.)
+
 Could you tell me what the main responsibilities of this role are?
+(¿Podría decirme cuáles son las principales responsabilidades de este puesto?)
+
 I usually prefer to talk things over before making a final decision.
+(Normalmente prefiero hablar las cosas antes de tomar una decisión definitiva.)
+
 We need to find a solution to this problem as soon as possible.
+(Necesitamos encontrar una solución a este problema lo antes posible.)
+
 I would like to apply for the position advertised on your website.
+(Me gustaría presentarme al puesto anunciado en su página web.)
+
 My manager asked me to prepare a detailed report on our sales.
+(Mi responsable me pidió que preparara un informe detallado sobre nuestras ventas.)
+
 I think it would be a good idea to invest more time in marketing.
+(Creo que sería buena idea invertir más tiempo en marketing.)
+
 Although the project was challenging, we managed to finish it on time.
+(Aunque el proyecto fue exigente, conseguimos terminarlo a tiempo.)
+
 I am responsible for coordinating meetings with international clients.
+(Soy responsable de coordinar las reuniones con clientes internacionales.)
+
 If we don't improve our communication, we might lose important clients.
+(Si no mejoramos nuestra comunicación, podríamos perder clientes importantes.)
+
 I used to work in customer service, but now I work in sales.
+(Antes trabajaba en atención al cliente, pero ahora trabajo en ventas.)
+
 Could you clarify what you mean by that statement?
+(¿Podría aclarar a qué se refiere con esa afirmación?)
+
 I have successfully completed all the tasks assigned to me this week.
+(He completado con éxito todas las tareas que me asignaron esta semana.)
+
 We should consider hiring an external consultant for this issue.
+(Deberíamos plantearnos contratar a un consultor externo para este asunto.)
+
 I am looking forward to hearing from you soon.
+(Espero tener noticias suyas pronto.)
+
 It is important to keep calm when things don't go as planned.
+(Es importante mantener la calma cuando las cosas no salen según lo previsto.)
+
 I have always been interested in learning about new technologies.
+(Siempre me ha interesado aprender sobre nuevas tecnologías.)
+
 Could you send me the attachment as soon as you have a moment?
+(¿Podrías enviarme el archivo adjunto en cuanto tengas un momento?)
+
 We managed to negotiate a better price with the supplier.
+(Conseguimos negociar un precio mejor con el proveedor.)
+
 I tend to focus more on quality rather than speed.
+(Tiendo a centrarme más en la calidad que en la rapidez.)
+
 Unless we change our strategy, we won't reach our annual goals.
+(A menos que cambiemos nuestra estrategia, no alcanzaremos los objetivos anuales.)
+
 I would appreciate it if you could review this document.
+(Le agradecería que revisara este documento.)
+
 My colleague is on sick leave, so I am covering his tasks.
+(Mi compañero está de baja, así que estoy cubriendo sus tareas.)
+
 We need to set a realistic budget before starting the renovation.
+(Necesitamos fijar un presupuesto realista antes de empezar la reforma.)
+
 I am quite confident that we can close this deal by Friday.
+(Estoy bastante seguro de que podemos cerrar este acuerdo para el viernes.)
+
 What stood out the most during the presentation was the market analysis.
+(Lo que más destacó durante la presentación fue el análisis de mercado.)
+
 I have been thinking about changing my career path recently.
+(Últimamente he estado pensando en cambiar de trayectoria profesional.)
+
 Could you please forward this email to the rest of the team?
+(¿Podrías reenviar este correo al resto del equipo, por favor?)
+
 I prefer working in a collaborative environment rather than alone.
+(Prefiero trabajar en un entorno colaborativo en lugar de solo.)
+
 We successfully launched the new product line last month.
+(Lanzamos con éxito la nueva línea de productos el mes pasado.)
+
 I am planning to take a course to improve my negotiation skills.
+(Tengo pensado hacer un curso para mejorar mis dotes de negociación.)
+
 If I had more time, I would learn a third language.
+(Si tuviera más tiempo, aprendería un tercer idioma.)
+
 We must ensure that all security protocols are strictly followed.
+(Debemos asegurarnos de que se sigan estrictamente todos los protocolos de seguridad.)
+
 I usually rely on my intuition when dealing with difficult situations.
+(Normalmente me guío por mi intuición cuando afronto situaciones difíciles.)
+
 The company offers great opportunities for professional growth.
+(La empresa ofrece grandes oportunidades de crecimiento profesional.)
+
 I have mixed feelings about moving to a larger office.
+(Tengo sentimientos encontrados sobre mudarnos a una oficina más grande.)
+
 Could you give me a hand with lifting this heavy box?
+(¿Podrías echarme una mano para levantar esta caja tan pesada?)
+
 I'm afraid I completely disagree with your point of view.
+(Me temo que no estoy nada de acuerdo con tu punto de vista.)
+
 We need to take everyone's opinion into account before deciding.
+(Debemos tener en cuenta la opinión de todos antes de decidir.)
+
 I managed to resolve the complaint to the customer's satisfaction.
+(Conseguí resolver la reclamación a satisfacción del cliente.)
+
 What are the main benefits of joining this program?
+(¿Cuáles son las principales ventajas de unirse a este programa?)
+
 I am used to working under a lot of pressure.
+(Estoy acostumbrado a trabajar bajo mucha presión.)
+
 We should encourage employees to share their creative ideas.
+(Deberíamos animar a los empleados a compartir sus ideas creativas.)
+
 I have noticed a significant improvement in our website traffic.
+(He notado una mejora significativa en el tráfico de nuestra web.)
+
 Could you check if these figures match the previous report?
+(¿Podrías comprobar si estas cifras coinciden con el informe anterior?)
+
 I would rather work from home when the weather is bad.
+(Prefiero trabajar desde casa cuando hace mal tiempo.)
+
 We are currently evaluating different options for our software upgrade.
+(Actualmente estamos evaluando distintas opciones para actualizar nuestro software.)
+
 I have always found it easy to adapt to sudden changes.
+(Siempre me ha resultado fácil adaptarme a los cambios repentinos.)
+
 Let's keep in touch and discuss this further next week.
+(Sigamos en contacto y hablemos de esto con más detalle la semana que viene.)
+
 I am proud of what our team has achieved this year.
+(Estoy orgulloso de lo que ha conseguido nuestro equipo este año.)
+
 I would like to reserve a table for two by the window, please.
+(Me gustaría reservar una mesa para dos junto a la ventana, por favor.)
+
 Could you tell me if this dish contains any dairy products?
+(¿Podría decirme si este plato lleva algún producto lácteo?)
+
 I have been craving Italian food all day long.
+(Llevo todo el día con antojo de comida italiana.)
+
 We were pleasantly surprised by the quality of the food.
+(Nos sorprendió gratamente la calidad de la comida.)
+
 I usually avoid eating heavy meals late at night.
+(Normalmente evito las comidas pesadas a última hora de la noche.)
+
 Could we have the bill separately, please?
+(¿Nos podría traer la cuenta por separado, por favor?)
+
 This restaurant is famous for its homemade desserts.
+(Este restaurante es famoso por sus postres caseros.)
+
 I ordered the fish, but they brought me chicken instead.
+(Pedí el pescado, pero me trajeron pollo.)
+
 Are there any traditional dishes that you would recommend?
+(¿Hay algún plato tradicional que recomiende?)
+
 I am trying to cut down on sugar and processed foods.
+(Estoy intentando reducir el azúcar y los alimentos procesados.)
+
 Could you ask the chef if they can make this sauce dairy-free?
+(¿Podría preguntar al chef si puede hacer esta salsa sin lácteos?)
+
 We had to wait for almost forty minutes to get a table.
+(Tuvimos que esperar casi cuarenta minutos para conseguir mesa.)
+
 I am not a big fan of spicy food, to be honest.
+(La verdad es que no soy muy fan de la comida picante.)
+
 Let's try that new vegetarian bistro downtown.
+(Probemos ese nuevo bistró vegetariano del centro.)
+
 The waiter was polite enough to offer us a complimentary drink.
+(El camarero tuvo la amabilidad de invitarnos a una bebida.)
+
 I prefer restaurants that use locally sourced ingredients.
+(Prefiero los restaurantes que usan ingredientes de origen local.)
+
 We usually celebrate our anniversaries at a fancy restaurant.
+(Normalmente celebramos nuestros aniversarios en un restaurante elegante.)
+
 Could you pack the remaining food in a container?
+(¿Podría ponerme la comida que ha sobrado en un recipiente?)
+
 I have never tasted anything quite like this before.
+(Nunca había probado nada parecido a esto.)
+
 Do you happen to know if they serve breakfast until noon?
+(¿Sabe por casualidad si sirven desayunos hasta el mediodía?)
+
 The atmosphere in this café is very cozy and relaxing.
+(El ambiente de esta cafetería es muy acogedor y relajante.)
+
 I forgot to mention that I am allergic to shellfish.
+(Se me olvidó mencionar que soy alérgico al marisco.)
+
 We ended up ordering a variety of tapas to share.
+(Al final pedimos una variedad de tapas para compartir.)
+
 I wish the portions were a bit bigger for the price.
+(Ojalá las raciones fueran un poco más grandes para lo que cuestan.)
+
 Can you recommend a good place to grab a quick lunch?
+(¿Puedes recomendarme un buen sitio para comer algo rápido?)
+
 I have always wanted to learn how to make fresh pasta.
+(Siempre he querido aprender a hacer pasta fresca.)
+
 We usually order takeaway when we are too tired to cook.
+(Normalmente pedimos comida para llevar cuando estamos demasiado cansados para cocinar.)
+
 The wine pairing recommended by the waiter was excellent.
+(El maridaje de vinos que recomendó el camarero fue excelente.)
+
 I am trying out a new diet this month.
+(Este mes estoy probando una dieta nueva.)
+
 Could you pass the salt and pepper, please?
+(¿Me pasas la sal y la pimienta, por favor?)
+
 We were terribly disappointed with the slow service.
+(Nos decepcionó muchísimo la lentitud del servicio.)
+
 I prefer drinking herbal tea rather than coffee in the evening.
+(Prefiero tomar infusiones en lugar de café por la tarde.)
+
 Let's look at the dessert menu before we decide.
+(Miremos la carta de postres antes de decidir.)
+
 I have cut out sugary drinks completely from my diet.
+(He eliminado por completo las bebidas azucaradas de mi dieta.)
+
 The chef cooked the steak to perfection.
+(El chef cocinó el filete a la perfección.)
+
 We usually prefer sitting outside on warm summer evenings.
+(Normalmente preferimos sentarnos fuera en las cálidas tardes de verano.)
+
 Could you check if they have any tables available on the patio?
+(¿Podrías comprobar si tienen alguna mesa libre en el patio?)
+
 I found the main course a bit too greasy for my liking.
+(El plato principal me pareció un poco demasiado graso para mi gusto.)
+
 Let's make a reservation for Friday night in advance.
+(Hagamos una reserva con antelación para el viernes por la noche.)
+
 I have always enjoyed trying exotic food when traveling.
+(Siempre he disfrutado probando comida exótica cuando viajo.)
+
 I am looking for a gift that is both useful and original.
+(Busco un regalo que sea útil y original a la vez.)
+
 Could you tell me where the customer service desk is located?
+(¿Podría decirme dónde está el mostrador de atención al cliente?)
+
 I prefer to buy clothes made from sustainable materials.
+(Prefiero comprar ropa hecha con materiales sostenibles.)
+
 They are offering a 50% discount on selected winter items.
+(Están ofreciendo un 50 % de descuento en artículos de invierno seleccionados.)
+
 I usually check online reviews before purchasing expensive electronics.
+(Normalmente consulto las reseñas en internet antes de comprar aparatos electrónicos caros.)
+
 Can I get a refund if the product is defective?
+(¿Me devuelven el dinero si el producto está defectuoso?)
+
 I hate standing in long queues at the supermarket checkout.
+(Odio hacer largas colas en la caja del supermercado.)
+
 Do you happen to have this jacket in a smaller size?
+(¿Tendría por casualidad esta chaqueta en una talla más pequeña?)
+
 I prefer shopping in local independent stores rather than big chains.
+(Prefiero comprar en tiendas locales independientes antes que en grandes cadenas.)
+
 The shopping center was so crowded that we left early.
+(El centro comercial estaba tan lleno que nos fuimos pronto.)
+
 I need to return these shoes because they hurt my feet.
+(Tengo que devolver estos zapatos porque me hacen daño en los pies.)
+
 Could you wrap this item nicely? It's a birthday present.
+(¿Podría envolverme bien este artículo? Es un regalo de cumpleaños.)
+
 I managed to find a great bargain during the winter sales.
+(Conseguí encontrar una gran ganga durante las rebajas de invierno.)
+
 Is it possible to pay in installments for this television?
+(¿Es posible pagar esta televisión a plazos?)
+
 I always compare prices across different websites before buying.
+(Siempre comparo precios en distintas webs antes de comprar.)
+
 They ran out of stock of the model I wanted.
+(Se les agotó el modelo que yo quería.)
+
 I usually make a shopping list so I don't forget anything.
+(Normalmente hago una lista de la compra para no olvidarme de nada.)
+
 Can you check if this shirt is machine washable?
+(¿Puedes comprobar si esta camisa se puede lavar a máquina?)
+
 I am trying to spend less money on unnecessary things.
+(Estoy intentando gastar menos dinero en cosas innecesarias.)
+
 The store clerk was very helpful and showed me several options.
+(El dependiente fue muy amable y me enseñó varias opciones.)
+
 I prefer paying with my smartphone instead of using cash.
+(Prefiero pagar con el móvil en lugar de usar efectivo.)
+
 Could you give me a receipt in case I need to exchange it?
+(¿Podría darme el recibo por si necesito cambiarlo?)
+
 I bought this dress on impulse, and now I regret it.
+(Compré este vestido por impulso y ahora me arrepiento.)
+
 Are these organic apples more expensive than the regular ones?
+(¿Estas manzanas ecológicas son más caras que las normales?)
+
 I need to pick up a few things from the chemist on my way home.
+(Tengo que recoger un par de cosas en la farmacia de camino a casa.)
+
 The market was packed with people buying fresh flowers.
+(El mercado estaba abarrotado de gente comprando flores frescas.)
+
 I prefer buying fresh produce directly from local farmers.
+(Prefiero comprar productos frescos directamente a los agricultores locales.)
+
 Could you tell me where the frozen food aisle is?
+(¿Podría decirme dónde está el pasillo de los congelados?)
+
 I am looking for a sturdy backpack for my weekend getaways.
+(Busco una mochila resistente para mis escapadas de fin de semana.)
+
 They don't accept cash anymore; card payments only.
+(Ya no aceptan efectivo; solo pagos con tarjeta.)
+
 I bought these trousers on sale last week.
+(Compré estos pantalones de rebajas la semana pasada.)
+
 Can I get a tax refund on these purchases before leaving the country?
+(¿Puedo pedir la devolución del impuesto de estas compras antes de salir del país?)
+
 I usually avoid going to the shopping mall on Saturdays.
+(Normalmente evito ir al centro comercial los sábados.)
+
 The quality of this fabric is much better than the cheaper version.
+(La calidad de esta tela es mucho mejor que la de la versión más barata.)
+
 I need to exchange this gift because I already have one.
+(Necesito cambiar este regalo porque ya tengo uno.)
+
 If I hadn't seen the discount sign, I wouldn't have gone in.
+(Si no hubiera visto el cartel de descuento, no habría entrado.)
+
 I prefer buying second-hand books to save money and help nature.
+(Prefiero comprar libros de segunda mano para ahorrar dinero y ayudar a la naturaleza.)
+
 Could you check if they offer home delivery for furniture?
+(¿Podrías comprobar si ofrecen entrega a domicilio para los muebles?)
+
 I have been looking for this specific brand for months.
+(Llevo meses buscando esta marca en concreto.)
+
 Shopping online is convenient, but sometimes sizes are misleading.
+(Comprar por internet es cómodo, pero a veces las tallas engañan.)
+
 We had to rush to the airport because our taxi broke down.
+(Tuvimos que correr al aeropuerto porque se nos averió el taxi.)
+
 If we book our flights now, we can get a much better price.
+(Si reservamos los vuelos ahora, podemos conseguir un precio mucho mejor.)
+
 I have always wanted to visit Japan and experience its culture.
+(Siempre he querido visitar Japón y conocer su cultura.)
+
 Could you tell me how long it takes to walk to the museum?
+(¿Podría decirme cuánto se tarda en llegar andando al museo?)
+
 We got lost in the old town because we didn't have a map.
+(Nos perdimos en el casco antiguo porque no teníamos mapa.)
+
 I prefer traveling by train because you can enjoy the scenery.
+(Prefiero viajar en tren porque puedes disfrutar del paisaje.)
+
 My flight was cancelled due to bad weather conditions.
+(Cancelaron mi vuelo por las malas condiciones meteorológicas.)
+
 We stayed at a wonderful boutique hotel near the beach.
+(Nos alojamos en un hotel boutique maravilloso cerca de la playa.)
+
 Have you ever traveled abroad completely on your own?
+(¿Alguna vez has viajado al extranjero completamente solo?)
+
 I always make sure my passport is valid before planning a trip.
+(Siempre me aseguro de que mi pasaporte esté en vigor antes de planear un viaje.)
+
 We spent hours wandering around the historic streets of Rome.
+(Pasamos horas paseando por las calles históricas de Roma.)
+
 Could you recommend some hidden gems to visit in the city?
+(¿Podría recomendarme algunos rincones poco conocidos para visitar en la ciudad?)
+
 I forgot my charger in the hotel room when we checked out.
+(Me dejé el cargador en la habitación del hotel cuando hicimos el check-out.)
+
 We rented a car so we could explore the countryside freely.
+(Alquilamos un coche para poder explorar el campo con libertad.)
+
 The travel agency helped us organize our itinerary step by step.
+(La agencia de viajes nos ayudó a organizar el itinerario paso a paso.)
+
 I usually get jet lag when crossing multiple time zones.
+(Normalmente sufro jet lag cuando cruzo varios husos horarios.)
+
 We had to wait two hours at customs because of long queues.
+(Tuvimos que esperar dos horas en la aduana por las largas colas.)
+
 I prefer an aisle seat so I can stretch my legs on long flights.
+(Prefiero un asiento de pasillo para poder estirar las piernas en los vuelos largos.)
+
 We managed to catch the last bus back to the hotel.
+(Conseguimos coger el último autobús de vuelta al hotel.)
+
 Traveling teaches you how to be flexible and patient.
+(Viajar te enseña a ser flexible y paciente.)
+
 If I visit London again, I will definitely go to the British Museum.
+(Si vuelvo a visitar Londres, iré sin falta al Museo Británico.)
+
 We missed our connection because the first flight was late.
+(Perdimos la conexión porque el primer vuelo llegó tarde.)
+
 I always keep a digital copy of my travel insurance in my phone.
+(Siempre guardo una copia digital de mi seguro de viaje en el móvil.)
+
 The local guide showed us places that tourists usually don't see.
+(El guía local nos enseñó lugares que los turistas normalmente no ven.)
+
 We decided to go on a guided tour to learn more about the ruins.
+(Decidimos hacer una visita guiada para aprender más sobre las ruinas.)
+
 I prefer packing light to avoid paying extra baggage fees.
+(Prefiero llevar poco equipaje para no pagar suplementos.)
+
 Our luggage was delayed, so we had to buy some basic clothes.
+(Nuestro equipaje se retrasó, así que tuvimos que comprar algo de ropa básica.)
+
 Could you tell me where the nearest underground station is?
+(¿Podría decirme dónde está la estación de metro más cercana?)
+
 We spent the whole afternoon relaxing by the pool.
+(Pasamos toda la tarde relajándonos junto a la piscina.)
+
 I have wonderful memories of our road trip across California.
+(Tengo recuerdos maravillosos de nuestro viaje por carretera por California.)
+
 If you go to Paris, you shouldn't miss visiting Montmartre.
+(Si vas a París, no deberías perderte Montmartre.)
+
 We had a minor issue with our reservation, but the staff solved it.
+(Tuvimos un pequeño problema con la reserva, pero el personal lo solucionó.)
+
 I prefer to book accommodations with free cancellation options.
+(Prefiero reservar alojamientos con opción de cancelación gratuita.)
+
 The sunset over the mountains was breathtaking.
+(La puesta de sol sobre las montañas era impresionante.)
+
 We explored the city by bike, which was a fantastic experience.
+(Exploramos la ciudad en bicicleta, y fue una experiencia fantástica.)
+
 I always buy local postcards to send to my friends.
+(Siempre compro postales del lugar para enviárselas a mis amigos.)
+
 We encountered heavy traffic on our way to the airport.
+(Nos encontramos con mucho tráfico camino del aeropuerto.)
+
 I am planning to backpack across South America next year.
+(Tengo pensado recorrer Sudamérica con mochila el año que viene.)
+
 The hotel staff were extremely polite and helpful during our stay.
+(El personal del hotel fue extremadamente amable y servicial durante nuestra estancia.)
+
 We had to change our plans because of a sudden storm.
+(Tuvimos que cambiar nuestros planes por una tormenta repentina.)
+
 I prefer staying in a cozy guesthouse rather than a huge resort.
+(Prefiero alojarme en una casa de huéspedes acogedora antes que en un resort enorme.)
+
 Could you check if our return flight is on schedule?
+(¿Podrías comprobar si nuestro vuelo de vuelta va según lo previsto?)
+
 We enjoyed tasting street food at the night market.
+(Disfrutamos probando comida callejera en el mercado nocturno.)
+
 I always bring a phrasebook when traveling to a country with a different language.
+(Siempre llevo una guía de conversación cuando viajo a un país con otro idioma.)
+
 The museum exhibition about ancient Egypt was fascinating.
+(La exposición del museo sobre el antiguo Egipto era fascinante.)
+
 We decided to hire a car to explore the remote villages.
+(Decidimos alquilar un coche para explorar los pueblos más remotos.)
+
 I prefer traveling during the off-season to avoid crowds.
+(Prefiero viajar en temporada baja para evitar las aglomeraciones.)
+
 We had trouble finding the hotel because the address was incorrect.
+(Nos costó encontrar el hotel porque la dirección era incorrecta.)
+
 I always make copies of my important documents before traveling.
+(Siempre hago copias de mis documentos importantes antes de viajar.)
+
 Traveling alone gave me the chance to meet many interesting people.
+(Viajar solo me dio la oportunidad de conocer a mucha gente interesante.)
+
 I started taking photography classes to improve my landscape pictures.
+(Empecé a dar clases de fotografía para mejorar mis fotos de paisajes.)
+
 If I have free time this weekend, I will probably go hiking.
+(Si tengo tiempo libre este fin de semana, seguramente iré de senderismo.)
+
 I used to play football every weekend when I was younger.
+(Antes jugaba al fútbol todos los fines de semana, cuando era más joven.)
+
 We enjoy spending our holidays camping in the woods.
+(Nos gusta pasar las vacaciones acampando en el bosque.)
+
 I find painting very therapeutic after a long week of work.
+(Pintar me resulta muy terapéutico después de una larga semana de trabajo.)
+
 Have you ever tried scuba diving in crystal clear water?
+(¿Alguna vez has hecho submarinismo en aguas cristalinas?)
+
 I am trying to learn how to play the piano by myself.
+(Estoy intentando aprender a tocar el piano por mi cuenta.)
+
 We usually spend Saturday mornings cycling around the park.
+(Normalmente pasamos las mañanas de los sábados montando en bici por el parque.)
+
 I love reading science fiction novels in my spare time.
+(Me encanta leer novelas de ciencia ficción en mi tiempo libre.)
+
 My friends and I organize a board game night once a month.
+(Mis amigos y yo organizamos una noche de juegos de mesa una vez al mes.)
+
 I joined a running club to stay motivated and meet new people.
+(Me apunté a un club de running para mantener la motivación y conocer gente nueva.)
+
 Gardening helps me disconnect from everyday stress.
+(La jardinería me ayuda a desconectar del estrés diario.)
+
 We went bird watching in the natural reserve last Sunday.
+(El domingo pasado fuimos a observar aves a la reserva natural.)
+
 I prefer watching independent movies rather than Hollywood blockbusters.
+(Prefiero ver cine independiente antes que superproducciones de Hollywood.)
+
 Baking bread has become one of my favorite weekend activities.
+(Hacer pan se ha convertido en una de mis actividades favoritas del fin de semana.)
+
 If it rains tomorrow, we will probably visit an art gallery.
+(Si mañana llueve, seguramente visitaremos una galería de arte.)
+
 I have always been fascinated by astronomy and space exploration.
+(Siempre me han fascinado la astronomía y la exploración espacial.)
+
 We spent the whole afternoon playing tennis at the local club.
+(Pasamos toda la tarde jugando al tenis en el club del barrio.)
+
 I enjoy knitting warm scarves during the cold winter months.
+(Disfruto tejiendo bufandas calentitas durante los fríos meses de invierno.)
+
 My brother spends hours building scale models of vintage cars.
+(Mi hermano pasa horas montando maquetas de coches clásicos.)
+
 I started doing yoga to improve my back pain and flexibility.
+(Empecé a hacer yoga para mejorar mi dolor de espalda y la flexibilidad.)
+
 We love having barbecues in the backyard whenever the weather is nice.
+(Nos encanta hacer barbacoas en el jardín siempre que hace buen tiempo.)
+
 I prefer listening to audiobooks while doing housework.
+(Prefiero escuchar audiolibros mientras hago las tareas de casa.)
+
 Collecting old coins is a hobby I inherited from my grandfather.
+(Coleccionar monedas antiguas es una afición que heredé de mi abuelo.)
+
 We went kayaking on the lake during our summer holiday.
+(Fuimos a hacer kayak en el lago durante nuestras vacaciones de verano.)
+
 I have been practicing meditation for over a year now.
+(Llevo ya más de un año practicando meditación.)
+
 If I didn't have to work tomorrow, I would go to the concert.
+(Si mañana no tuviera que trabajar, iría al concierto.)
+
 I enjoy sketching urban scenes when I travel around the city.
+(Disfruto dibujando escenas urbanas cuando recorro la ciudad.)
+
 We joined a local theatre group to try something new and creative.
+(Nos apuntamos a un grupo de teatro local para probar algo nuevo y creativo.)
+
 I like solving complex puzzles to keep my mind active.
+(Me gusta resolver rompecabezas complejos para mantener la mente activa.)
+
 We went horse riding through the forest trails yesterday.
+(Ayer montamos a caballo por los senderos del bosque.)
+
 I prefer spending my weekends in peaceful natural surroundings.
+(Prefiero pasar los fines de semana en entornos naturales tranquilos.)
+
 My sister is very good at sewing her own fashion designs.
+(A mi hermana se le da muy bien coser sus propios diseños de moda.)
+
 We went ice skating with friends during the Christmas holidays.
+(Fuimos a patinar sobre hielo con amigos durante las vacaciones de Navidad.)
+
 I love trying out new coffee beans from different origins.
+(Me encanta probar granos de café nuevos de distintos orígenes.)
+
 Origami requires a lot of patience and precision.
+(El origami requiere mucha paciencia y precisión.)
+
 We organized a charity football match to help the local shelter.
+(Organizamos un partido de fútbol benéfico para ayudar al albergue local.)
+
 I enjoy writing short stories and sharing them with friends.
+(Disfruto escribiendo relatos cortos y compartiéndolos con los amigos.)
+
 Surfing requires both physical strength and great balance.
+(El surf requiere tanto fuerza física como un gran equilibrio.)
+
 We spent the weekend restoring an old wooden piece of furniture.
+(Pasamos el fin de semana restaurando un viejo mueble de madera.)
+
 I like visiting antique markets on Sunday mornings.
+(Me gusta visitar mercados de antigüedades los domingos por la mañana.)
+
 Rollerblading along the river is one of my favorite workouts.
+(Patinar en línea junto al río es uno de mis ejercicios favoritos.)
+
 We watched an inspiring documentary about ocean conservation.
+(Vimos un documental inspirador sobre la conservación de los océanos.)
+
 I prefer reading historical biographies rather than fiction.
+(Prefiero leer biografías históricas antes que ficción.)
+
 Playing the acoustic guitar helps me relax after a long day.
+(Tocar la guitarra acústica me ayuda a relajarme después de un día largo.)
+
 If the weather is good, we will go climbing this Saturday.
+(Si hace buen tiempo, iremos a escalar este sábado.)
+
 I have always wanted to learn pottery and make my own mugs.
+(Siempre he querido aprender cerámica y hacer mis propias tazas.)
+
 We went paddle boarding as the sun was rising over the bay.
+(Fuimos a hacer paddle surf mientras el sol salía sobre la bahía.)
+
 I enjoy walking my dog in the park every single evening.
+(Disfruto paseando a mi perro por el parque todas las tardes.)
+
 We spent the evening playing trivia games with our neighbors.
+(Pasamos la noche jugando a juegos de preguntas con nuestros vecinos.)
+
 I started learning a new musical instrument last month.
+(El mes pasado empecé a aprender un instrumento musical nuevo.)
+
 We prefer exploring remote nature trails instead of busy tourist routes.
+(Preferimos explorar senderos naturales remotos en lugar de rutas turísticas concurridas.)
+
 I love capturing candid moments with my camera.
+(Me encanta captar momentos espontáneos con mi cámara.)
+
 If I had more free time, I would take up painting classes.
+(Si tuviera más tiempo libre, me apuntaría a clases de pintura.)
+
 We went camping under the stars last August.
+(El agosto pasado fuimos de acampada bajo las estrellas.)
+
 I enjoy participating in local community gardening projects.
+(Disfruto participando en proyectos de huertos comunitarios del barrio.)
+
 We watched a thrilling basketball match at the local stadium.
+(Vimos un emocionante partido de baloncesto en el pabellón local.)
+
 I prefer listening to vinyl records for a better sound experience.
+(Prefiero escuchar discos de vinilo para tener una mejor experiencia sonora.)
+
 My friend invited me to join his weekly chess club.
+(Mi amigo me invitó a unirme a su club de ajedrez semanal.)
+
 We spent our afternoon visiting an interactive science museum.
+(Pasamos la tarde visitando un museo interactivo de ciencia.)
+
 I like experimenting with traditional recipes to create new flavors.
+(Me gusta experimentar con recetas tradicionales para crear sabores nuevos.)
+
 We went whale watching during our trip to Norway.
+(Fuimos a avistar ballenas durante nuestro viaje a Noruega.)
+
 I enjoy keeping a personal diary of my thoughts and travels.
+(Disfruto escribiendo un diario personal de mis pensamientos y viajes.)
+
 If we finish our tasks early, we can go to the cinema tonight.
+(Si terminamos pronto nuestras tareas, podemos ir al cine esta noche.)
+
 I prefer doing DIY repairs around the house instead of calling technicians.
+(Prefiero hacer yo mismo las reparaciones de casa en vez de llamar a técnicos.)
+
 We spent the weekend participating in an environmental cleanup event.
+(Pasamos el fin de semana participando en una jornada de limpieza medioambiental.)
+
 I love attending live jazz concerts in small bars.
+(Me encanta ir a conciertos de jazz en directo en bares pequeños.)
+
 My cousin taught me how to knit a warm woolen scarf.
+(Mi primo me enseñó a tejer una bufanda de lana calentita.)
+
 We went snorkeling in the warm waters of the Caribbean.
+(Hicimos snorkel en las cálidas aguas del Caribe.)
+
 I believe that having a creative hobby is essential for a balanced life.
+(Creo que tener una afición creativa es esencial para una vida equilibrada.)
+
 I wouldn't have accepted the job offer if the salary hadn't been competitive.
+(No habría aceptado la oferta de trabajo si el salario no hubiera sido competitivo.)
+
 It is high time we addressed the underlying issues of our marketing strategy.
+(Ya es hora de que abordemos los problemas de fondo de nuestra estrategia de marketing.)
+
 Supposing we fail to meet the deadline, what alternative measures can we take?
+(Suponiendo que no cumplamos el plazo, ¿qué medidas alternativas podemos tomar?)
+
 Little did she know that her colleagues had organized a surprise farewell party.
+(Poco imaginaba ella que sus compañeros habían organizado una fiesta de despedida sorpresa.)
+
 Not only did we finish the project on time, but we also came in under budget.
+(No solo terminamos el proyecto a tiempo, sino que además gastamos menos de lo presupuestado.)
+
 I would rather you hadn't mentioned that confidential topic during the meeting.
+(Preferiría que no hubieras mencionado ese tema confidencial durante la reunión.)
+
 Provided that all stakeholders agree, we will proceed with the merger next month.
+(Siempre que todas las partes interesadas estén de acuerdo, seguiremos adelante con la fusión el mes que viene.)
+
 Hard as he tried to remain impartial, his personal bias was quite evident.
+(Por mucho que intentó mantenerse imparcial, su sesgo personal era bastante evidente.)
+
 Should you require any further assistance, please do not hesitate to contact me.
+(Si necesitara cualquier otra ayuda, no dude en ponerse en contacto conmigo.)
+
 It never crossed my mind that the proposal would be rejected outright.
+(Nunca se me pasó por la cabeza que la propuesta fuera a ser rechazada de plano.)
+
 Had I been aware of the potential risks, I would have acted differently.
+(Si hubiera sido consciente de los riesgos potenciales, habría actuado de otra manera.)
+
 The board of directors is bound to implement sweeping changes by next quarter.
+(El consejo de administración implantará sin duda cambios radicales de aquí al próximo trimestre.)
+
 No sooner had we signed the contract than the market conditions shifted dramatically.
+(Nada más firmar el contrato, las condiciones del mercado cambiaron drásticamente.)
+
 It is essential that every employee adhere strictly to the corporate compliance code.
+(Es esencial que todo empleado se ciña estrictamente al código de cumplimiento corporativo.)
+
 Much to our surprise, the controversial campaign turned out to be a resounding success.
+(Para nuestra gran sorpresa, la polémica campaña resultó ser un éxito rotundo.)
+
 Only by fostering a collaborative culture can we truly drive long-term innovation.
+(Solo fomentando una cultura colaborativa podemos impulsar de verdad la innovación a largo plazo.)
+
 I find it hard to comprehend how they managed to overlook such a blatant error.
+(Me cuesta comprender cómo lograron pasar por alto un error tan flagrante.)
+
 Were we to relocate the headquarters, we might risk losing valuable local talent.
+(Si trasladáramos la sede, podríamos arriesgarnos a perder valioso talento local.)
+
 The sheer complexity of the software architecture demands rigorous testing procedures.
+(La enorme complejidad de la arquitectura del software exige procedimientos de prueba rigurosos.)
+
 Scarcely had I sat down at my desk when my phone started ringing incessantly.
+(Apenas me había sentado en mi escritorio cuando el teléfono empezó a sonar sin parar.)
+
 It is widely acknowledged that continuous professional development is vital.
+(Está ampliamente reconocido que la formación profesional continua es vital.)
+
 Unless we step up our game, our competitors will undoubtedly outpace us.
+(A menos que subamos el nivel, nuestros competidores nos adelantarán sin duda.)
+
 I take exception to the implication that my department is underperforming.
+(Me molesta la insinuación de que mi departamento está rindiendo por debajo de lo esperado.)
+
 The CEO stressed the importance of maintaining transparency across all departments.
+(El director general subrayó la importancia de mantener la transparencia en todos los departamentos.)
+
 Seldom have I witnessed such a remarkable display of strategic foresight.
+(Pocas veces he presenciado una muestra tan notable de visión estratégica.)
+
 We are currently grappling with a severe shortage of skilled labour.
+(Actualmente estamos lidiando con una grave escasez de mano de obra cualificada.)
+
 It goes without saying that punctuality is paramount in this line of work.
+(No hace falta decir que la puntualidad es fundamental en este tipo de trabajo.)
+
 I am inclined to believe that their counteroffer is entirely unfeasible.
+(Me inclino a pensar que su contraoferta es totalmente inviable.)
+
 The restructuring plan is expected to streamline operations significantly.
+(Se espera que el plan de reestructuración agilice las operaciones de forma significativa.)
+
 On no account should confidential data be transmitted via unsecured channels.
+(Bajo ningún concepto deben transmitirse datos confidenciales por canales no seguros.)
+
 I am thoroughly convinced that this setback is merely a temporary hurdle.
+(Estoy plenamente convencido de que este contratiempo es solo un obstáculo temporal.)
+
 The onus is on the management team to restore employee morale.
+(La responsabilidad recae en el equipo directivo para restablecer la moral de los empleados.)
+
 Had it not been for your invaluable guidance, we wouldn't have clinched the deal.
+(De no haber sido por tu inestimable orientación, no habríamos cerrado el acuerdo.)
+
 We must take into fluctuating exchange rates when drafting the budget.
+(Debemos tener en cuenta la fluctuación de los tipos de cambio al elaborar el presupuesto.)
+
 Under no circumstances are unauthorized personnel permitted in the server room.
+(Bajo ninguna circunstancia se permite la entrada de personal no autorizado en la sala de servidores.)
+
 The initiative was met with widespread skepticism from the trade unions.
+(La iniciativa fue recibida con un escepticismo generalizado por parte de los sindicatos.)
+
 It is high time we leveraged digital tools to optimize our workflow.
+(Ya es hora de que aprovechemos las herramientas digitales para optimizar nuestro flujo de trabajo.)
+
 I have every reason to believe that our quarterly targets will be met.
+(Tengo motivos de sobra para creer que se cumplirán nuestros objetivos trimestrales.)
+
 Not until the audit was completed did the extent of the discrepancies emerge.
+(Hasta que no se completó la auditoría no salió a la luz el alcance de las discrepancias.)
+
 We need to weigh the potential risks against the anticipated financial gains.
+(Necesitamos sopesar los riesgos potenciales frente a las ganancias financieras previstas.)
+
 It is imperative that we bridge the gap between theory and practical application.
+(Es imprescindible que salvemos la distancia entre la teoría y la aplicación práctica.)
+
 So profound was the impact of the keynote speech that it sparked a lively debate.
+(Tan profundo fue el impacto del discurso inaugural que desató un animado debate.)
+
 I am somewhat skeptical about the feasibility of such an ambitious timeline.
+(Soy algo escéptico respecto a la viabilidad de un calendario tan ambicioso.)
+
 They are committed to fostering an inclusive and diverse working environment.
+(Están comprometidos con fomentar un entorno de trabajo inclusivo y diverso.)
+
 Were it not for the generous sponsorship, the event wouldn't have taken place.
+(Si no fuera por el generoso patrocinio, el evento no se habría celebrado.)
+
 The firm's primary objective is to penetrate emerging international markets.
+(El objetivo principal de la empresa es penetrar en los mercados internacionales emergentes.)
+
 I take full accountability for the oversight in the final draft.
+(Asumo toda la responsabilidad por el descuido en el borrador final.)
+
 Such is the magnitude of the challenge that we require a multidisciplinary approach.
+(Tal es la magnitud del reto que necesitamos un enfoque multidisciplinar.)
+
 We must ensure that our operations comply with environmental regulations.
+(Debemos asegurarnos de que nuestras operaciones cumplan la normativa medioambiental.)
+
 I am quite partial to constructive criticism when striving for excellence.
+(Soy bastante partidario de la crítica constructiva cuando se aspira a la excelencia.)
+
 The culinary landscape of the city has evolved remarkably over the past decade.
+(El panorama gastronómico de la ciudad ha evolucionado notablemente durante la última década.)
+
 I have an abiding fondness for authentic regional street food.
+(Siento un cariño duradero por la auténtica comida callejera regional.)
+
 The establishment prides itself on sourcing organic, farm-to-table produce.
+(El establecimiento se enorgullece de abastecerse de productos ecológicos del campo a la mesa.)
+
 Dining out has become an increasingly sophisticated and immersive experience.
+(Salir a comer fuera se ha convertido en una experiencia cada vez más sofisticada e inmersiva.)
+
 I am rather averse to overly elaborate dishes that mask the natural flavours.
+(Soy bastante reacio a los platos excesivamente elaborados que enmascaran los sabores naturales.)
+
 The sommelier's profound expertise elevated our dining experience immensely.
+(El profundo conocimiento del sumiller elevó enormemente nuestra experiencia gastronómica.)
+
 We were thoroughly captivated by the chef's innovative tasting menu.
+(Nos cautivó por completo el innovador menú degustación del chef.)
+
 It is advisable to secure a reservation well in advance during peak season.
+(Es aconsejable asegurarse una reserva con mucha antelación en temporada alta.)
+
 I am trying to cultivate a more balanced and mindful approach to nutrition.
+(Estoy intentando cultivar un enfoque más equilibrado y consciente de la nutrición.)
+
 The bistro is renowned for its unpretentious yet exceptionally flavorful cuisine.
+(El bistró es conocido por su cocina sin pretensiones pero excepcionalmente sabrosa.)
+
 Little did we anticipate that the humble eatery would boast such a stellar reputation.
+(Poco imaginábamos que aquel humilde local presumiría de una reputación tan estelar.)
+
 I have grown weary of dining at generic chain restaurants with predictable menus.
+(Me he cansado de comer en restaurantes de cadena genéricos con menús predecibles.)
+
 The venue offers an exquisite fusion of traditional and contemporary gastronomy.
+(El local ofrece una exquisita fusión de gastronomía tradicional y contemporánea.)
+
 We opted for the chef's recommended pairing to complement our main course.
+(Optamos por el maridaje recomendado por el chef para acompañar nuestro plato principal.)
+
 Not only was the presentation breathtaking, but the flavors were also sublime.
+(No solo la presentación era impresionante, sino que además los sabores eran sublimes.)
+
 I invariably find myself gravitating towards Italian and Japanese cuisine.
+(Invariablemente me acabo decantando por la cocina italiana y la japonesa.)
+
 The restaurant caters meticulously to various dietary restrictions and preferences.
+(El restaurante atiende meticulosamente distintas restricciones y preferencias alimentarias.)
+
 Should you have any specific food allergies, please inform the waitstaff promptly.
+(Si tuviera alguna alergia alimentaria concreta, informe al personal de sala cuanto antes.)
+
 The ambience of the rooftop terrace provided a truly magical backdrop for dinner.
+(El ambiente de la azotea proporcionó un telón de fondo verdaderamente mágico para la cena.)
+
 I was rather unimpressed by the lackluster service despite the high prices.
+(El servicio mediocre no me impresionó demasiado, a pesar de los precios elevados.)
+
 They take immense pride in preserving culinary traditions passed down through generations.
+(Se enorgullecen enormemente de preservar tradiciones culinarias transmitidas de generación en generación.)
+
 I am partial to a robust red wine to accompany a well-matured steak.
+(Soy partidario de un vino tinto con cuerpo para acompañar un filete bien madurado.)
+
 The sheer variety of street delicacies available at the night market is staggering.
+(La enorme variedad de delicias callejeras disponibles en el mercado nocturno es asombrosa.)
+
 We found the portions somewhat meager relative to the exorbitant pricing.
+(Las raciones nos parecieron algo escasas en relación con los precios desorbitados.)
+
 It is fascinating how different cultures utilize fermentation to preserve food.
+(Es fascinante cómo distintas culturas utilizan la fermentación para conservar los alimentos.)
+
 I have developed a discerning palate for specialty coffees over the years.
+(Con los años he desarrollado un paladar exigente para los cafés de especialidad.)
+
 The banquet was a lavish affair featuring an array of exotic delicacies.
+(El banquete fue un evento fastuoso con todo un despliegue de manjares exóticos.)
+
 We relished every single bite of the decadent chocolate fondant dessert.
+(Saboreamos cada bocado del decadente postre de coulant de chocolate.)
+
 I tend to steer clear of highly processed additives in my daily diet.
+(Tiendo a evitar los aditivos muy procesados en mi dieta diaria.)
+
 The culinary workshop provided invaluable insights into pastry-making techniques.
+(El taller de cocina aportó nociones valiosísimas sobre técnicas de pastelería.)
+
 Consumer behavior has shifted dramatically toward ethical and sustainable fashion.
+(El comportamiento del consumidor se ha desplazado drásticamente hacia la moda ética y sostenible.)
+
 I am reluctant to splurge on luxury brands when quality is comparable elsewhere.
+(Soy reacio a derrochar en marcas de lujo cuando la calidad es comparable en otros sitios.)
+
 The shopping precinct was teeming with bargain hunters during the seasonal sales.
+(La zona comercial estaba repleta de cazadores de gangas durante las rebajas de temporada.)
+
 It is imperative to scrutinize the return policy prior to making a substantial purchase.
+(Es imprescindible examinar a fondo la política de devoluciones antes de hacer una compra importante.)
+
 Boutiques offering bespoke tailoring have seen a resurgence in popularity.
+(Las boutiques que ofrecen sastrería a medida han vuelto a ganar popularidad.)
+
 I invariably opt for minimalist aesthetics when investing in timeless wardrobe staples.
+(Invariablemente opto por una estética minimalista cuando invierto en prendas básicas atemporales.)
+
 The misleading advertising practices of certain retailers warrant strict regulation.
+(Las prácticas publicitarias engañosas de ciertos comercios merecen una regulación estricta.)
+
 I prefer patronizing local artisans rather than supporting mass-market conglomerates.
+(Prefiero dar mi apoyo a los artesanos locales antes que a los grandes conglomerados de consumo masivo.)
+
 The flagship store boasts an immersive shopping experience complete with digital mirrors.
+(La tienda insignia presume de una experiencia de compra inmersiva, con espejos digitales incluidos.)
+
 Had I known about the impending clearance sale, I would have deferred my purchase.
+(Si hubiera sabido de la inminente liquidación, habría aplazado mi compra.)
+
 E-commerce platforms leverage sophisticated algorithms to recommend personalized products.
+(Las plataformas de comercio electrónico aprovechan algoritmos sofisticados para recomendar productos personalizados.)
+
 I was appalled by the lack of transparency regarding supply chain ethics.
+(Me horrorizó la falta de transparencia en cuanto a la ética de la cadena de suministro.)
+
 We must weigh the durability of the item against its upfront cost.
+(Debemos sopesar la durabilidad del artículo frente a su coste inicial.)
+
 The high street is undergoing a profound transformation due to digital disruption.
+(El comercio de calle está atravesando una profunda transformación por la disrupción digital.)
+
 I am disinclined to purchase fast fashion items that deteriorate after a few washes.
+(No soy partidario de comprar prendas de moda rápida que se estropean tras unos pocos lavados.)
+
 Only by demanding higher standards can we compel brands to adopt eco-friendly practices.
+(Solo exigiendo estándares más altos podemos obligar a las marcas a adoptar prácticas ecológicas.)
+
 The sheer convenience of doorstep delivery has revolutionized modern consumer habits.
+(La enorme comodidad de la entrega a domicilio ha revolucionado los hábitos del consumidor moderno.)
+
 I make it a point to check customer reviews before investing in high-end gadgets.
+(Me esfuerzo siempre en consultar las reseñas de clientes antes de invertir en aparatos de gama alta.)
+
 The exorbitant price tag does not necessarily guarantee superior craftsmanship.
+(El precio desorbitado no garantiza necesariamente una artesanía superior.)
+
 We managed to unearth a vintage leather jacket in a quaint thrift store.
+(Conseguimos desenterrar una chaqueta de cuero vintage en una pintoresca tienda de segunda mano.)
+
 Seamless integration of physical and digital retail channels is now paramount.
+(La integración fluida de los canales de venta físicos y digitales es ahora fundamental.)
+
 I take issue with the excessive packaging used in online retail deliveries.
+(Discrepo del embalaje excesivo que se usa en las entregas de comercio electrónico.)
+
 The market is saturated with counterfeit goods masquerading as authentic luxury items.
+(El mercado está saturado de productos falsificados que se hacen pasar por auténticos artículos de lujo.)
+
 Were it not for the consumer protection laws, buyers would be extremely vulnerable.
+(Si no fuera por las leyes de protección al consumidor, los compradores serían extremadamente vulnerables.)
+
 I prefer acquiring durable goods designed to withstand the test of time.
+(Prefiero adquirir bienes duraderos diseñados para resistir el paso del tiempo.)
+
 The boutique specializes in ethically sourced gemstones and handcrafted jewelry.
+(La boutique se especializa en gemas de origen ético y joyería artesanal.)
+
 No sooner had the discount code expired than a new promotion was launched.
+(Nada más caducar el código de descuento, se lanzó una nueva promoción.)
+
 I find impulse buying to be a detrimental habit that strains personal finances.
+(Considero que las compras impulsivas son un hábito perjudicial que tensiona las finanzas personales.)
+
 The shopping mall implemented state-of-the-art security measures to protect patrons.
+(El centro comercial implantó medidas de seguridad de última generación para proteger a los clientes.)
+
 Consumers are increasingly gravitating toward brands that champion social causes.
+(Los consumidores se decantan cada vez más por marcas que defienden causas sociales.)
+
 Traveling off the beaten track affords a more authentic cultural immersion.
+(Viajar fuera de las rutas trilladas permite una inmersión cultural más auténtica.)
+
 I have always harbored a deep fascination for ancient architectural landmarks.
+(Siempre he albergado una profunda fascinación por los monumentos arquitectónicos antiguos.)
+
 The serendipitous discovery of a hidden cove entirely transformed our coastal itinerary.
+(El hallazgo fortuito de una cala escondida transformó por completo nuestro itinerario costero.)
+
 We encountered unprecedented logistical hurdles while navigating the remote mountain passes.
+(Nos encontramos con obstáculos logísticos sin precedentes al recorrer los remotos puertos de montaña.)
+
 It is advisable to familiarize oneself with local customs prior to embarking abroad.
+(Es aconsejable familiarizarse con las costumbres locales antes de partir al extranjero.)
+
 The picturesque village retained its rustic charm despite burgeoning tourist activity.
+(El pintoresco pueblo conservó su encanto rústico a pesar de la creciente actividad turística.)
+
 I am fundamentally opposed to mass tourism that degrades fragile ecosystems.
+(Me opongo radicalmente al turismo de masas que degrada ecosistemas frágiles.)
+
 Our journey was regrettably marred by persistent delays and canceled connections.
+(Lamentablemente, nuestro viaje se vio empañado por retrasos constantes y conexiones canceladas.)
+
 We sought refuge from the torrential downpour in a quaint historic chapel.
+(Nos refugiamos del aguacero torrencial en una pintoresca capilla histórica.)
+
 Navigating foreign public transport systems requires a certain degree of adaptability.
+(Manejarse por los sistemas de transporte público extranjeros requiere cierto grado de adaptabilidad.)
+
 The travel advisory warned against venturing into politically volatile regions.
+(El aviso a viajeros advertía de no adentrarse en regiones políticamente inestables.)
+
 I cherish the memories forged during our protracted road trip across Scandinavia.
+(Atesoro los recuerdos forjados durante nuestro largo viaje por carretera a través de Escandinavia.)
+
 We meticulously planned every leg of our transcontinental backpacking expedition.
+(Planificamos meticulosamente cada etapa de nuestra expedición mochilera transcontinental.)
+
 The airline's egregious mishandling of our luggage soured our initial impression.
+(La escandalosa gestión que hizo la aerolínea de nuestro equipaje estropeó nuestra primera impresión.)
+
 Seldom have I encountered such breathtaking vistas as those atop the peak.
+(Pocas veces me he topado con vistas tan impresionantes como las de la cima.)
+
 Eco-tourism initiatives play a pivotal role in preserving endangered habitats.
+(Las iniciativas de ecoturismo desempeñan un papel crucial en la conservación de hábitats amenazados.)
+
 We immersed ourselves completely in the vibrant cadence of local street life.
+(Nos sumergimos por completo en el vibrante ritmo de la vida callejera local.)
+
 Had our flight not been delayed, we would have caught the sunset tour.
+(Si nuestro vuelo no se hubiera retrasado, habríamos llegado a la excursión del atardecer.)
+
 The majestic ruins stand as a silent testament to a bygone civilization.
+(Las majestuosas ruinas se alzan como testimonio silencioso de una civilización desaparecida.)
+
 I prefer lodging in independent guesthouses that reflect the local heritage.
+(Prefiero alojarme en casas de huéspedes independientes que reflejen el patrimonio local.)
+
 Wandering through the labyrinthine alleys of the medina was an unforgettable experience.
+(Deambular por los laberínticos callejones de la medina fue una experiencia inolvidable.)
+
 We had to contend with sweltering temperatures throughout our desert excursion.
+(Tuvimos que lidiar con temperaturas sofocantes durante toda nuestra excursión por el desierto.)
+
 The travel documentary vividly portrayed the stark realities of nomadic existence.
+(El documental de viajes retrató de forma vívida la cruda realidad de la vida nómada.)
+
 Should you embark on a hiking trek, adequate hydration is non-negotiable.
+(Si emprende una ruta de senderismo, una hidratación adecuada es innegociable.)
+
 I find traveling solo to be an empowering journey of self-discovery.
+(Considero que viajar solo es un viaje de autodescubrimiento que te da fuerza.)
+
 The concierge orchestrated our itinerary with remarkable precision and flair.
+(El conserje orquestó nuestro itinerario con una precisión y un estilo notables.)
+
 We were spellbound by the ethereal beauty of the northern lights dancing overhead.
+(Nos quedamos hechizados por la belleza etérea de la aurora boreal danzando sobre nosotros.)
+
 Overtourism poses a formidable threat to the structural integrity of historical sites.
+(La masificación turística supone una amenaza formidable para la integridad estructural de los lugares históricos.)
+
 I always ensure my immunizations are up to date prior to international travel.
+(Siempre me aseguro de tener las vacunas al día antes de viajar al extranjero.)
+
 The rugged coastline offered countless secluded spots for quiet contemplation.
+(La escarpada costa ofrecía innumerables rincones apartados para la contemplación tranquila.)
+
 We negotiated a reasonable tariff with the local boatman for a river cruise.
+(Negociamos una tarifa razonable con el barquero local para un paseo por el río.)
+
 The burgeoning ecotourism sector promotes sustainable interaction with wildlife.
+(El floreciente sector del ecoturismo promueve una interacción sostenible con la fauna salvaje.)
+
 I am partial to destinations rich in both cultural heritage and natural splendor.
+(Soy partidario de destinos ricos tanto en patrimonio cultural como en esplendor natural.)
+
 The sudden inclement weather forced us to curtail our alpine expedition.
+(El repentino mal tiempo nos obligó a acortar nuestra expedición alpina.)
+
 We savored the tranquility of the secluded mountain retreat far from urban chaos.
+(Saboreamos la tranquilidad del apartado refugio de montaña, lejos del caos urbano.)
+
 Travel broadens one's horizons and cultivates profound empathy for diverse cultures.
+(Viajar amplía los horizontes y cultiva una profunda empatía hacia culturas diversas.)
+
 The dilapidated condition of the historic bridge warrants urgent restoration.
+(El estado ruinoso del puente histórico exige una restauración urgente.)
+
 We marveled at the architectural ingenuity of the medieval cathedral.
+(Nos maravilló el ingenio arquitectónico de la catedral medieval.)
+
 Not until we reached the summit did we truly appreciate the vast landscape.
+(Hasta que no llegamos a la cima no apreciamos de verdad la inmensidad del paisaje.)
+
 Every journey leaves an indelible mark on one's perspective of the world.
+(Todo viaje deja una huella imborrable en la forma de ver el mundo.)
+
 Engaging in creative pursuits is widely recognized as an effective stress reliever.
+(Está ampliamente reconocido que dedicarse a actividades creativas alivia el estrés de forma eficaz.)
+
 I have recently taken up pottery as a means to foster mindfulness and patience.
+(Hace poco me he aficionado a la cerámica como medio para fomentar la atención plena y la paciencia.)
+
 The meticulous nature of oil painting demands immense focus and dedication.
+(El carácter meticuloso de la pintura al óleo exige una concentración y una dedicación inmensas.)
+
 We organized a community gardening initiative to revitalize the neglected urban park.
+(Organizamos una iniciativa de huerto comunitario para revitalizar el descuidado parque urbano.)
+
 Had I possessed greater manual dexterity, I would have pursued woodworking.
+(Si hubiera tenido más destreza manual, me habría dedicado a la carpintería.)
+
 Extreme sports enthusiasts thrive on the adrenaline rush of defying gravity.
+(Los aficionados a los deportes extremos se crecen con el subidón de adrenalina de desafiar a la gravedad.)
+
 I find solace in the rhythmic cadence of long-distance endurance running.
+(Encuentro consuelo en la cadencia rítmica de las carreras de fondo de larga distancia.)
+
 The local amateur theatrical troupe is staging a contemporary adaptation of Shakespeare.
+(El grupo de teatro amateur local está representando una adaptación contemporánea de Shakespeare.)
+
 Bird watching requires immense patience and an acute sense of observation.
+(La observación de aves requiere una paciencia inmensa y un agudo sentido de la observación.)
+
 I am keen to master the intricate fingerpicking patterns of classical guitar.
+(Tengo muchas ganas de dominar los intrincados patrones de punteo de la guitarra clásica.)
+
 Calligraphy has evolved into a meditative art form that demands utmost precision.
+(La caligrafía ha evolucionado hasta convertirse en un arte meditativo que exige la máxima precisión.)
+
 We spend our weekends restoring vintage automobiles to their former glory.
+(Pasamos los fines de semana devolviendo a los coches clásicos su antiguo esplendor.)
+
 Scuba diving opens up an entirely surreal realm of marine biodiversity.
+(El submarinismo abre un reino completamente surrealista de biodiversidad marina.)
+
 I have dedicated countless hours to perfecting my culinary skills through baking.
+(He dedicado incontables horas a perfeccionar mis habilidades culinarias a través de la repostería.)
+
 Chess is an intellectual pursuit that sharpens strategic thinking and foresight.
+(El ajedrez es una actividad intelectual que agudiza el pensamiento estratégico y la previsión.)
+
 The local astronomy society organizes stargazing nights during meteor showers.
+(La sociedad astronómica local organiza noches de observación durante las lluvias de meteoros.)
+
 Engaging in volunteer work for animal rescue shelters is deeply rewarding.
+(Hacer voluntariado en refugios de rescate de animales resulta profundamente gratificante.)
+
 I prefer endurance cycling over high-impact team sports for physical fitness.
+(Prefiero el ciclismo de resistencia a los deportes de equipo de alto impacto para mantenerme en forma.)
+
 The intricate art of origami fosters concentration and fine motor skills.
+(El intrincado arte del origami fomenta la concentración y la motricidad fina.)
+
 We frequently host board game evenings to stimulate intellectual engagement with peers.
+(Organizamos con frecuencia veladas de juegos de mesa para estimular el intercambio intelectual con los amigos.)
+
 Landscape photography allows me to capture fleeting moments of natural beauty.
+(La fotografía de paisaje me permite captar momentos fugaces de belleza natural.)
+
 Learning a musical instrument in adulthood presents unique cognitive challenges.
+(Aprender un instrumento musical en la edad adulta presenta retos cognitivos únicos.)
+
 Trail running through rugged terrain tests both physical stamina and mental grit.
+(Correr por senderos de terreno escarpado pone a prueba tanto la resistencia física como la fortaleza mental.)
+
 I have always been intrigued by genealogy and tracing my ancestral lineage.
+(Siempre me han intrigado la genealogía y el rastreo de mi linaje familiar.)
+
 The community choir provides an inclusive space for vocal expression and camaraderie.
+(El coro comunitario ofrece un espacio inclusivo para la expresión vocal y el compañerismo.)
+
 Mixology has emerged as a sophisticated hobby blending chemistry and culinary art.
+(La coctelería ha surgido como una afición sofisticada que combina química y arte culinario.)
+
 Urban sketching has transformed how I perceive the architectural details around me.
+(El dibujo urbano ha transformado la forma en que percibo los detalles arquitectónicos que me rodean.)
+
 Rock climbing demands absolute trust in one's equipment and climbing partner.
+(La escalada exige una confianza absoluta en el equipo y en el compañero de cordada.)
+
 I derive immense satisfaction from cultivating rare botanical specimens at home.
+(Obtengo una satisfacción inmensa cultivando especímenes botánicos raros en casa.)
+
 Book clubs offer a stimulating forum for critical analysis and literary debate.
+(Los clubes de lectura ofrecen un foro estimulante para el análisis crítico y el debate literario.)
+
 Kayaking down turbulent white-water rapids requires split-second decision-making.
+(Descender en kayak por rápidos turbulentos exige tomar decisiones en fracciones de segundo.)
+
 Upcycling old furniture into modern decor has become my signature weekend project.
+(Transformar muebles viejos en decoración moderna se ha convertido en mi proyecto estrella de fin de semana.)
+
 I find martial arts to be an exceptional discipline for physical and mental equilibrium.
+(Considero que las artes marciales son una disciplina excepcional para el equilibrio físico y mental.)
+
 The intricate stitching of embroidery offers a quiet escape from digital overload.
+(El intrincado punto del bordado ofrece una escapada silenciosa de la sobrecarga digital.)
+
 Beekeeping has gained popularity as an ecological hobby supporting pollinator populations.
+(La apicultura ha ganado popularidad como afición ecológica que apoya a las poblaciones de polinizadores.)
+
 Windsurfing combines aerodynamic physics with supreme core strength and balance.
+(El windsurf combina la física aerodinámica con una fuerza abdominal y un equilibrio supremos.)
+
 I enjoy composing short narrative fiction based on historical anomalies.
+(Disfruto componiendo relatos breves de ficción basados en anomalías históricas.)
+
 Geocaching turns outdoor exploration into an interactive modern-day treasure hunt.
+(El geocaching convierte la exploración al aire libre en una búsqueda del tesoro interactiva y moderna.)
+
 The patience required for fly-fishing mirrors the tranquility of the surrounding landscape.
+(La paciencia que exige la pesca con mosca refleja la tranquilidad del paisaje circundante.)
+
 Pottery throwing requires mastering the centrifugal force of the spinning wheel.
+(El torneado de cerámica requiere dominar la fuerza centrífuga del torno giratorio.)
+
 I have immersed myself in studying meteorology to better forecast local weather patterns.
+(Me he sumergido en el estudio de la meteorología para predecir mejor los patrones climáticos locales.)
+
 Roller derby is an exhilarating, high-contact sport that fosters fierce team loyalty.
+(El roller derby es un deporte apasionante y de mucho contacto que fomenta una lealtad feroz al equipo.)
+
 The meticulous hobby of model building sharpens spatial awareness and patience.
+(La meticulosa afición del modelismo agudiza la percepción espacial y la paciencia.)
+
 I appreciate the contemplative nature of visiting historical art galleries solo.
+(Aprecio el carácter contemplativo de visitar en solitario galerías de arte históricas.)
+
 Permaculture gardening mimics natural ecosystems to yield sustainable organic harvests.
+(La permacultura imita los ecosistemas naturales para obtener cosechas ecológicas sostenibles.)
+
 Competitive debating hones rhetorical skills and critical counter-argumentation.
+(El debate competitivo afina las habilidades retóricas y la contraargumentación crítica.)
+
 I take pride in mastering complex foreign baking techniques from scratch.
+(Me enorgullece dominar desde cero complejas técnicas de repostería extranjera.)
+
 Snowboarding down pristine backcountry slopes provides an unmatched adrenaline rush.
+(Bajar en snowboard por laderas vírgenes fuera de pista proporciona un subidón de adrenalina inigualable.)
+
 The study of philosophy offers profound frameworks for navigating ethical dilemmas.
+(El estudio de la filosofía ofrece marcos profundos para afrontar dilemas éticos.)
+
 Pursuing diverse creative hobbies ensures a well-rounded and intellectually stimulated life.
+(Cultivar aficiones creativas diversas garantiza una vida completa e intelectualmente estimulada.)
+
 Had the marketing campaign been executed differently, market penetration would have surged.
+(Si la campaña de marketing se hubiera ejecutado de otra manera, la penetración en el mercado se habría disparado.)
+
 It is crucial that management foster an environment of psychological safety.
+(Es crucial que la dirección fomente un entorno de seguridad psicológica.)
+
 Scarcely had we resolved one logistical crisis when another surfaced unexpectedly.
+(Apenas habíamos resuelto una crisis logística cuando surgió otra de forma inesperada.)
+
 We are bound to encounter resistance when implementing radical structural reforms.
+(Es seguro que encontraremos resistencia al aplicar reformas estructurales radicales.)
+
 Only by critically evaluating our metrics can we optimize future productivity.
+(Solo evaluando críticamente nuestras métricas podemos optimizar la productividad futura.)
+
 I take strong exception to the insinuation that my team lacks commitment.
+(Me opongo rotundamente a la insinuación de que a mi equipo le falta compromiso.)
+
 Were the board to approve the budget, operations would commence immediately.
+(Si el consejo aprobara el presupuesto, las operaciones comenzarían de inmediato.)
+
 The sheer volume of data necessitates advanced analytics tools for interpretation.
+(El enorme volumen de datos exige herramientas analíticas avanzadas para su interpretación.)
+
 It has long been acknowledged that proactive leadership prevents organizational stagnation.
+(Hace tiempo que se reconoce que un liderazgo proactivo evita el estancamiento organizativo.)
+
 No account should be given to unsubstantiated rumors circulating in the office.
+(No debe darse ningún crédito a los rumores sin fundamento que circulan por la oficina.)
+
 Had I anticipated the economic downturn, I would have diversified our portfolio.
+(Si hubiera previsto la recesión económica, habría diversificado nuestra cartera.)
+
 The onus rests upon department heads to enforce rigorous compliance protocols.
+(La responsabilidad recae sobre los jefes de departamento de hacer cumplir rigurosos protocolos de cumplimiento.)
+
 Little did we know that our proposal would be adopted as the industry standard.
+(Poco imaginábamos que nuestra propuesta sería adoptada como estándar del sector.)
+
 It is high time we prioritized employee well-being over short-term financial gains.
+(Ya es hora de que prioricemos el bienestar de los empleados sobre las ganancias financieras a corto plazo.)
+
 Supposing the negotiations collapse, we must have a contingency plan in place.
+(Suponiendo que las negociaciones se rompan, debemos tener preparado un plan de contingencia.)
+
 I am inclined to think that their strategic vision is fundamentally flawed.
+(Me inclino a pensar que su visión estratégica es esencialmente errónea.)
+
 Not until the comprehensive audit concluded did the financial discrepancies vanish.
+(Hasta que no concluyó la auditoría exhaustiva no desaparecieron las discrepancias financieras.)
+
 We must factor in potential supply chain disruptions when projecting revenue.
+(Debemos tener en cuenta posibles interrupciones de la cadena de suministro al proyectar los ingresos.)
+
 Provided that we maintain our current momentum, targets will easily be surpassed.
+(Siempre que mantengamos el impulso actual, los objetivos se superarán con facilidad.)
+
 The company's commitment to sustainability has significantly boosted its brand equity.
+(El compromiso de la empresa con la sostenibilidad ha impulsado notablemente el valor de su marca.)
+
 I am thoroughly convinced that this hurdle will ultimately strengthen our resolve.
+(Estoy plenamente convencido de que este obstáculo acabará fortaleciendo nuestra determinación.)
+
 Seldom do we witness such exemplary collaboration across disparate departments.
+(Pocas veces presenciamos una colaboración tan ejemplar entre departamentos tan dispares.)
+
 Under no circumstances should proprietary information leave the secure server.
+(Bajo ninguna circunstancia debe salir información privada del servidor seguro.)
+
 We are currently navigating a highly competitive landscape marked by rapid disruption.
+(Actualmente nos movemos en un panorama muy competitivo marcado por una disrupción acelerada.)
+
 It goes without saying that effective delegation is a hallmark of strong management.
+(No hace falta decir que delegar con eficacia es un sello distintivo de una buena dirección.)
+
 Had it not been for the strategic partnership, expansion would have been impossible.
+(De no haber sido por la alianza estratégica, la expansión habría sido imposible.)
+
 The restructuring initiative aims to eliminate redundancies and optimize efficiency.
+(La iniciativa de reestructuración pretende eliminar duplicidades y optimizar la eficiencia.)
+
 I take full responsibility for the miscommunication during the client briefing.
+(Asumo toda la responsabilidad por el malentendido durante la reunión informativa con el cliente.)
+
 Such is the complexity of global markets that agility is an absolute prerequisite.
+(Tal es la complejidad de los mercados globales que la agilidad es un requisito absoluto.)
+
 We must ensure absolute alignment between corporate goals and operational output.
+(Debemos garantizar una alineación absoluta entre los objetivos corporativos y los resultados operativos.)
+
 It is imperative that we bridge the gap between creative design and technical feasibility.
+(Es imprescindible que salvemos la distancia entre el diseño creativo y la viabilidad técnica.)
+
 No sooner had we addressed one crisis than an unforeseen regulatory hurdle appeared.
+(Nada más resolver una crisis, apareció un obstáculo regulatorio imprevisto.)
+
 I find it difficult to fathom how such an elementary mistake slipped past quality control.
+(Me cuesta entender cómo un error tan elemental se coló por el control de calidad.)
+
 Were we to compromise on quality, we would forfeit our hard-earned market share.
+(Si transigiéramos en la calidad, perderíamos la cuota de mercado que tanto nos ha costado ganar.)
+
 The keynote speaker underscored the critical importance of digital transformation.
+(El ponente principal subrayó la importancia crítica de la transformación digital.)
+
 I am somewhat skeptical regarding the projected return on investment timelines.
+(Soy algo escéptico respecto a los plazos previstos de retorno de la inversión.)
+
 Only through rigorous iterative testing can we guarantee software reliability.
+(Solo mediante pruebas iterativas rigurosas podemos garantizar la fiabilidad del software.)
+
 The firm's primary directive is to expand its footprint in developing markets.
+(La directriz principal de la empresa es ampliar su presencia en los mercados en desarrollo.)
+
 Hard as the transition was, the long-term benefits outweighed the friction.
+(Por dura que fue la transición, los beneficios a largo plazo compensaron las fricciones.)
+
 We are tasked with synthesizing vast amounts of qualitative consumer feedback.
+(Se nos ha encomendado sintetizar enormes cantidades de opiniones cualitativas de los consumidores.)
+
 It is widely recognized that corporate culture dictates long-term organizational success.
+(Está ampliamente reconocido que la cultura corporativa determina el éxito organizativo a largo plazo.)
+
 Should any unforeseen discrepancies arise, report them to compliance immediately.
+(Si surgiera alguna discrepancia imprevista, comuníquela de inmediato al departamento de cumplimiento.)
+
 I am partial to strategies that prioritize organic growth over aggressive acquisitions.
+(Soy partidario de las estrategias que priorizan el crecimiento orgánico frente a las adquisiciones agresivas.)
+
 The sudden shift in consumer habits necessitated an immediate strategic pivot.
+(El cambio repentino en los hábitos de consumo obligó a un giro estratégico inmediato.)
+
 We spent hours dissecting the financial reports to unearth hidden cost anomalies.
+(Pasamos horas diseccionando los informes financieros para sacar a la luz anomalías de costes ocultas.)
+
 Excellence is not merely an aspiration, but a continuous operational commitment.
+(La excelencia no es solo una aspiración, sino un compromiso operativo continuo.)
+
 The collaboration proved mutually beneficial, fostering shared technological advancement.
+(La colaboración resultó mutuamente beneficiosa y fomentó un avance tecnológico compartido.)
+
 Had our risk assessment been more comprehensive, we could have avoided the shortfall.
+(Si nuestra evaluación de riesgos hubiera sido más exhaustiva, podríamos haber evitado el déficit.)
+
 We must continually adapt our framework to thrive in an unpredictable economy.
-Mastery of these advanced structures marks a significant milestone in language fluency.`;
+(Debemos adaptar continuamente nuestro marco de trabajo para prosperar en una economía impredecible.)
+
+Mastery of these advanced structures marks a significant milestone in language fluency.
+(Dominar estas estructuras avanzadas supone un hito importante en la fluidez del idioma.)`;
 
 /* ─────────────── Silencio en MP3 ───────────────
    Una trama MPEG-2 Layer III de 24 kHz, 48 kbps, mono: 144 bytes, 24 ms.
@@ -1946,6 +4201,62 @@ async function sintetizarLote(trabajos, alAvanzar, cancelado) {
   );
   return { audios, fallos };
 }
+
+/* ─────────────── Detección de idioma ───────────────
+   Con solo cinco idiomas basta con contar palabras funcionales y letras
+   características. Es instantáneo, no gasta ninguna petición y no depende
+   de que el traductor esté disponible. */
+
+const PISTAS = {
+  en: {
+    palabras: ['the', 'of', 'and', 'to', 'is', 'in', 'you', 'are', 'do', 'it', 'my', 'we',
+               'have', 'for', 'this', 'that', 'with', 'what', 'was', 'would', 'can', 'they'],
+    letras: /[^]/,
+  },
+  es: {
+    palabras: ['el', 'la', 'los', 'las', 'de', 'que', 'en', 'un', 'una', 'por', 'con', 'para',
+               'es', 'está', 'muy', 'no', 'me', 'se', 'mi', 'del', 'pero', 'como', 'más'],
+    letras: /[ñ¿¡]/,
+  },
+  fr: {
+    palabras: ['le', 'la', 'les', 'des', 'du', 'et', 'est', 'une', 'dans', 'pour', 'avec', 'je',
+               'vous', 'ne', 'pas', 'qui', 'ce', 'nous', 'sur', 'plus', 'au', 'aux'],
+    letras: /[œùêîôàè]/,
+  },
+  it: {
+    palabras: ['il', 'lo', 'gli', 'di', 'che', 'un', 'una', 'per', 'con', 'non', 'sono', 'mi',
+               'ci', 'è', 'ho', 'ma', 'più', 'anche', 'della', 'del', 'nel', 'sono'],
+    letras: /[àìòù]/,
+  },
+  pt: {
+    palabras: ['os', 'as', 'que', 'um', 'uma', 'para', 'com', 'não', 'é', 'você', 'meu', 'muito',
+               'do', 'da', 'dos', 'das', 'no', 'na', 'mais', 'como', 'está', 'são'],
+    letras: /[ãõçê]/,
+  },
+};
+
+function detectarIdioma(textos) {
+  const muestra = textos.slice(0, 60).join(' ').toLowerCase();
+  if (!muestra.trim()) return null;
+  const palabras = muestra.split(/[^\p{L}'’]+/u).filter(Boolean);
+  if (!palabras.length) return null;
+
+  const puntos = {};
+  for (const [lang, pista] of Object.entries(PISTAS)) {
+    const juego = new Set(pista.palabras);
+    let n = 0;
+    for (const p of palabras) if (juego.has(p)) n += 1;
+    let puntuacion = n / palabras.length;
+    const letras = (muestra.match(new RegExp(pista.letras, 'gu')) || []).length;
+    if (lang !== 'en') puntuacion += Math.min(letras / palabras.length, 0.25);
+    puntos[lang] = puntuacion;
+  }
+  const orden = Object.entries(puntos).sort((a, b) => b[1] - a[1]);
+  return orden[0][1] > 0 ? orden[0][0] : null;
+}
+
+const NOMBRE_IDIOMA = Object.fromEntries(
+  Object.entries(IDIOMAS).map(([nombre, cod]) => [cod, nombre]));
 
 /* ─────────────── Traducción ─────────────── */
 
@@ -2098,7 +4409,17 @@ function leerFrases(texto) {
 const $ = (id) => document.getElementById(id);
 
 let usandoPropias = false;
-const textoActivo = () => (usandoPropias ? el.frases.value : FRASES_RECOMENDADAS);
+let nivelActivo = 0;
+
+// El listado se analiza una sola vez al arrancar; cada nivel es un tramo de él.
+let TODAS = [];
+
+function paresActivos() {
+  const base = usandoPropias
+    ? leerFrases(el.frases.value)
+    : TODAS.slice(NIVELES[nivelActivo].desde, NIVELES[nivelActivo].hasta);
+  return base.map((p) => ({ texto: p.texto, traduccion: p.traduccion }));
+}
 
 const el = {
   idiomaApr: $('idiomaApr'), vozApr: $('vozApr'),
@@ -2107,15 +4428,18 @@ const el = {
   velocidad: $('velocidad'), velocidadVal: $('velocidadVal'),
   pausaIdiomas: $('pausaIdiomas'), pausaIdiomasVal: $('pausaIdiomasVal'),
   pausaFrases: $('pausaFrases'), pausaFrasesVal: $('pausaFrasesVal'),
-  repetir: $('repetir'), orden: $('orden'), porArchivo: $('porArchivo'),
-  estadoTrad: $('estadoTrad'),
+  repetir: $('repetir'), porArchivo: $('porArchivo'),
+  estadoTrad: $('estadoTrad'), partes: $('partes'), letras: $('letras'),
+  niveles: $('niveles'), bloques: $('bloques'),
+  barraTiempo: $('barraTiempo'), tiempoActual: $('tiempoActual'), tiempoTotal: $('tiempoTotal'),
+  reproducir: $('reproducir'), iconoPlay: $('iconoPlay'), atras: $('atras'), adelante: $('adelante'),
   alternarLista: $('alternarLista'), vistaLista: $('vistaLista'), muestraLista: $('muestraLista'),
-  totalLista: $('totalLista'), ayudaFrases: $('ayudaFrases'), notaIdioma: $('notaIdioma'),
+  listaNota: $('listaNota'), ayudaFrases: $('ayudaFrases'), notaIdioma: $('notaIdioma'),
   frases: $('frases'), contador: $('contador'),
   generar: $('generar'), cancelar: $('cancelar'),
   progreso: $('progreso'), barra: $('barraRelleno'), estado: $('estado'),
   resultado: $('resultado'), resumen: $('resumen'),
-  reproductor: $('reproductor'), descargas: $('descargas'),
+  reproductor: $('reproductor'),
   aviso: $('aviso'),
 };
 
@@ -2153,27 +4477,164 @@ function actualizarEtiquetas() {
 }
 
 function actualizarContador() {
-  const n = leerFrases(textoActivo()).length;
+  const n = paresActivos().length;
   el.contador.textContent = n === 1 ? '1 frase' : `${n} frases`;
 }
 
 function actualizarNotaIdioma() {
-  const desajuste = !usandoPropias && el.idiomaApr.value !== 'Inglés';
-  el.notaIdioma.hidden = !desajuste;
-  if (desajuste) {
-    el.notaIdioma.innerHTML = `El listado recomendado está en <b>inglés</b>, y has elegido aprender
-      <b>${el.idiomaApr.value}</b>. Cambia el idioma a Inglés, o pulsa
-      <b>Incluir mis propias frases</b> y pega las tuyas.`;
+  if (usandoPropias) {
+    el.notaIdioma.hidden = true;
+    return;
   }
+  const nombreListado = NOMBRE_IDIOMA[IDIOMA_LISTADO];
+  if (el.idiomaApr.value === nombreListado) {
+    el.notaIdioma.hidden = true;
+    return;
+  }
+  el.notaIdioma.hidden = false;
+  el.notaIdioma.innerHTML = `El listado está en <b>${nombreListado}</b> y quieres aprender `
+    + `<b>${el.idiomaApr.value}</b>: las mil frases se traducirán automáticamente antes de `
+    + 'generar el audio, así que la primera vez tardará algo más.';
+}
+
+/* ─────────────── Orden de los bloques ───────────────
+   B1 es la frase en el idioma que se aprende, B2 su repetición y B3 la
+   traducción. El usuario los coloca en el orden que quiera arrastrándolos. */
+
+const CODIGO = { B1: 'B1', B2: 'B2', B3: 'B3 (t)' };
+let ORDEN = ['B1', 'B2', 'B3'];
+
+const bloqueVisible = (id) => {
+  if (id === 'B2') return el.repetir.checked;
+  if (id === 'B3') return el.incluirTrad.checked;
+  return true;
+};
+
+const ordenEfectivo = () => ORDEN.filter(bloqueVisible);
+
+function textoBloque(id) {
+  if (id === 'B3') return `Traducción · ${el.idiomaTrad.value}`;
+  if (id === 'B2') return `${el.idiomaApr.value} ×2`;
+  return el.idiomaApr.value;
+}
+
+function pintarBloques() {
+  el.bloques.innerHTML = '';
+  ordenEfectivo().forEach((id) => {
+    const b = document.createElement('div');
+    b.className = 'bloque';
+    b.dataset.id = id;
+    b.tabIndex = 0;
+    b.setAttribute('role', 'listitem');
+    b.innerHTML = `<span class="bloque-codigo">${CODIGO[id]}</span>`
+      + `<span class="bloque-texto">${textoBloque(id)}</span>`
+      + '<span class="bloque-agarre" aria-hidden="true">⣿</span>';
+    b.addEventListener('pointerdown', arrastrar);
+    b.addEventListener('keydown', (ev) => {
+      const paso = ev.key === 'ArrowUp' ? -1 : ev.key === 'ArrowDown' ? 1 : 0;
+      if (!paso) return;
+      ev.preventDefault();
+      const visibles = ordenEfectivo();
+      const i = visibles.indexOf(id);
+      const j = i + paso;
+      if (j < 0 || j >= visibles.length) return;
+      [visibles[i], visibles[j]] = [visibles[j], visibles[i]];
+      fijarOrden(visibles);
+      pintarBloques();
+      el.bloques.children[j].focus();
+    });
+    el.bloques.appendChild(b);
+  });
+}
+
+/** Guarda el orden visible respetando la posición de los bloques ocultos. */
+function fijarOrden(visibles) {
+  const ocultos = ORDEN.filter((id) => !bloqueVisible(id));
+  ORDEN = [...visibles, ...ocultos];
+}
+
+function arrastrar(ev) {
+  if (ev.button !== undefined && ev.button !== 0) return;
+  const nodo = ev.currentTarget;
+  nodo.setPointerCapture(ev.pointerId);
+  nodo.classList.add('arrastrando');
+  let inicio = ev.clientY;
+
+  const mover = (e) => {
+    nodo.style.transform = `translateY(${e.clientY - inicio}px)`;
+    for (const h of [...el.bloques.children]) {
+      if (h === nodo) continue;
+      const r = h.getBoundingClientRect();
+      const medio = r.top + r.height / 2;
+      const nodoVaAntes = !!(nodo.compareDocumentPosition(h) & Node.DOCUMENT_POSITION_FOLLOWING);
+      let ref = null;
+      if (e.clientY > medio && nodoVaAntes) ref = h.nextSibling;
+      else if (e.clientY < medio && !nodoVaAntes) ref = h;
+      if (!ref || ref === nodo) continue;
+
+      const antes = nodo.getBoundingClientRect().top;
+      el.bloques.insertBefore(nodo, ref);
+      inicio += nodo.getBoundingClientRect().top - antes;
+      nodo.style.transform = `translateY(${e.clientY - inicio}px)`;
+      break;
+    }
+  };
+
+  const soltar = () => {
+    nodo.removeEventListener('pointermove', mover);
+    nodo.removeEventListener('pointerup', soltar);
+    nodo.removeEventListener('pointercancel', soltar);
+    nodo.classList.remove('arrastrando');
+    nodo.style.transform = '';
+    fijarOrden([...el.bloques.children].map((n) => n.dataset.id));
+  };
+
+  nodo.addEventListener('pointermove', mover);
+  nodo.addEventListener('pointerup', soltar);
+  nodo.addEventListener('pointercancel', soltar);
+}
+
+function pintarNiveles() {
+  el.niveles.innerHTML = '';
+  NIVELES.forEach((n, i) => {
+    const t = document.createElement('button');
+    t.type = 'button';
+    t.className = 'nivel';
+    t.setAttribute('role', 'radio');
+    t.setAttribute('aria-checked', String(i === nivelActivo));
+    t.innerHTML = `<span class="nivel-codigo">${n.codigo}</span>`
+      + `<span class="nivel-nombre">${n.nombre}</span>`
+      + `<span class="nivel-resumen">${n.resumen}</span>`
+      + `<span class="nivel-cuenta">${n.hasta - n.desde} frases</span>`;
+    t.addEventListener('click', () => {
+      nivelActivo = i;
+      if (usandoPropias) usandoPropias = false;
+      mostrarSelectorLista();
+    });
+    el.niveles.appendChild(t);
+  });
 }
 
 function mostrarSelectorLista() {
+  el.niveles.hidden = usandoPropias;
   el.vistaLista.hidden = usandoPropias;
   el.frases.hidden = !usandoPropias;
   el.ayudaFrases.hidden = !usandoPropias;
+  el.listaNota.textContent = usandoPropias
+    ? 'Escribe o pega tus frases. Se detecta solo en qué idioma están.'
+    : 'Elige tu nivel. Las frases van de lo más básico a las estructuras más avanzadas, '
+      + 'y cada nivel se apoya en el anterior.';
   el.alternarLista.textContent = usandoPropias
-    ? 'Usar el listado recomendado'
+    ? 'Usar el listado por niveles'
     : 'Incluir mis propias frases';
+
+  if (!usandoPropias) {
+    pintarNiveles();
+    const tramo = TODAS.slice(NIVELES[nivelActivo].desde, NIVELES[nivelActivo].hasta);
+    el.muestraLista.textContent = tramo.slice(0, 7)
+      .map((p) => (p.traduccion ? `${p.texto}\n(${p.traduccion})` : p.texto)).join('\n');
+  }
+
   actualizarContador();
   actualizarNotaIdioma();
 }
@@ -2187,19 +4648,125 @@ function mostrarAviso(html) {
 
 let cancelando = false;
 
-function marcaDeTiempo() {
-  const d = new Date();
-  const p = (n) => String(n).padStart(2, '0');
-  return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}`;
+
+/* ─────────────── Panel de letras ───────────────
+   Como sabemos el milisegundo exacto en que empieza cada frase, basta con
+   mirar el punto de reproducción para saber cuál suena. */
+
+const REPRODUCCION = { archivos: [], guiones: [], activo: 0, urls: [] };
+
+const tiempoTexto = (seg) => {
+  if (!isFinite(seg) || seg < 0) return '0:00';
+  const m = Math.floor(seg / 60);
+  return `${m}:${String(Math.floor(seg % 60)).padStart(2, '0')}`;
+};
+
+function refrescarMandos() {
+  const sonando = !el.reproductor.paused && !el.reproductor.ended;
+  el.iconoPlay.textContent = sonando ? '❚❚' : '▶';
+  el.reproducir.setAttribute('aria-label', sonando ? 'Pausar' : 'Reproducir');
 }
 
-function enlaceDescarga(nombre, blob, etiqueta) {
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = nombre;
-  a.textContent = etiqueta;
-  el.descargas.appendChild(a);
-  return a;
+function refrescarTiempo() {
+  const d = el.reproductor.duration;
+  const t = el.reproductor.currentTime;
+  el.tiempoActual.textContent = tiempoTexto(t);
+  el.tiempoTotal.textContent = tiempoTexto(d);
+  if (isFinite(d) && d > 0 && !el.barraTiempo.dataset.agarrada) {
+    el.barraTiempo.value = String(Math.round((t / d) * 1000));
+  }
+}
+
+function saltar(seg) {
+  const d = el.reproductor.duration;
+  const destino = el.reproductor.currentTime + seg;
+  el.reproductor.currentTime = Math.max(0, isFinite(d) ? Math.min(destino, d - 0.05) : destino);
+}
+
+function pintarLetras() {
+  const lineas = REPRODUCCION.guiones[REPRODUCCION.activo] || [];
+  el.letras.innerHTML = '';
+  lineas.forEach((linea) => {
+    const fila = document.createElement('button');
+    fila.type = 'button';
+    fila.className = 'linea';
+
+    const arriba = document.createElement('span');
+    arriba.className = 'apr';
+    arriba.textContent = linea.apr;
+    fila.appendChild(arriba);
+
+    if (linea.trad) {
+      const abajo = document.createElement('span');
+      abajo.className = 'trad';
+      abajo.textContent = linea.trad;
+      fila.appendChild(abajo);
+    }
+
+    fila.addEventListener('click', () => {
+      el.reproductor.currentTime = linea.inicio / 1000 + 0.02;
+      el.reproductor.play();
+    });
+
+    el.letras.appendChild(fila);
+  });
+  el.letras.hidden = lineas.length === 0;
+}
+
+function sincronizarLetras() {
+  const lineas = REPRODUCCION.guiones[REPRODUCCION.activo] || [];
+  if (!lineas.length) return;
+
+  const ms = el.reproductor.currentTime * 1000;
+  let activa = -1;
+  for (let i = 0; i < lineas.length; i++) {
+    if (ms >= lineas[i].inicio) activa = i;
+    else break;
+  }
+
+  const filas = el.letras.children;
+  for (let i = 0; i < filas.length; i++) {
+    filas[i].classList.toggle('activa', i === activa);
+    filas[i].classList.toggle('sonada', i < activa);
+  }
+
+  if (activa >= 0 && filas[activa] && filas[activa] !== el.letras.dataset.ultima) {
+    const fila = filas[activa];
+    const arriba = fila.offsetTop - el.letras.offsetTop;
+    const centro = arriba - el.letras.clientHeight / 2 + fila.offsetHeight / 2;
+    el.letras.scrollTop = Math.max(0, centro);
+    el.letras.dataset.ultima = activa;
+  }
+}
+
+function cargarParte(k) {
+  REPRODUCCION.activo = k;
+  el.reproductor.src = REPRODUCCION.urls[k];
+  el.letras.dataset.ultima = '';
+  pintarLetras();
+  [...el.partes.children].forEach((b, i) =>
+    b.setAttribute('aria-pressed', String(i === k)));
+}
+
+function prepararReproduccion(archivos, guiones) {
+  for (const u of REPRODUCCION.urls) URL.revokeObjectURL(u);
+  REPRODUCCION.archivos = archivos;
+  REPRODUCCION.guiones = guiones;
+  REPRODUCCION.urls = archivos.map((b) => URL.createObjectURL(b));
+
+  el.partes.innerHTML = '';
+  if (archivos.length > 1) {
+    archivos.forEach((_, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = `Parte ${i + 1}`;
+      b.addEventListener('click', () => cargarParte(i));
+      el.partes.appendChild(b);
+    });
+  }
+  el.partes.hidden = archivos.length <= 1;
+
+  cargarParte(0);
 }
 
 function progreso(fraccion, mensaje) {
@@ -2208,7 +4775,7 @@ function progreso(fraccion, mensaje) {
 }
 
 async function generar() {
-  const pares = leerFrases(textoActivo());
+  const pares = paresActivos();
   mostrarAviso('');
 
   if (!pares.length) {
@@ -2236,8 +4803,7 @@ async function generar() {
   const rate = `${velocidad >= 0 ? '+' : ''}${velocidad}%`;
   const msIdiomas = Math.round(Number(el.pausaIdiomas.value) * 1000);
   const msFrases = Math.round(Number(el.pausaFrases.value) * 1000);
-  const repetir = el.repetir.checked;
-  const tradPrimero = el.orden.value === 'trad';
+  const secuencia = ordenEfectivo();
   const porArchivo = Math.max(0, Number(el.porArchivo.value) || 0);
 
   cancelando = false;
@@ -2245,7 +4811,6 @@ async function generar() {
   el.cancelar.hidden = false;
   el.progreso.hidden = false;
   el.resultado.hidden = true;
-  el.descargas.innerHTML = '';
   progreso(0, 'Preparando…');
 
   const cancelado = () => cancelando;
@@ -2253,22 +4818,60 @@ async function generar() {
   let motorTraduccion = null;
 
   try {
-    /* 1 · Traducir lo que falte */
-    if (incluirTrad) {
-      const pendientes = pares
-        .map((p, indice) => ({ indice, texto: p.texto, traduccion: p.traduccion }))
-        .filter((p) => !p.traduccion);
+    /* 1 · Averiguar en qué idioma está el listado y conseguir los dos textos.
+       El idioma del listado es independiente del que se quiere aprender: si no
+       coinciden, se traduce. Y si las líneas entre paréntesis ya están en el
+       idioma que hace falta, se aprovechan tal cual. */
 
-      if (pendientes.length) {
-        progreso(0.02, `Traduciendo ${pendientes.length} frases…`);
-        const r = await traducir(pendientes, codApr, codTrad,
-          (n) => progreso(0.02 + 0.08 * (n / pendientes.length), `Traduciendo… ${n}/${pendientes.length}`));
-        motorTraduccion = r.motorUsado;
-        problemasTraduccion.push(...r.problemas);
-        for (const [indice, texto] of r.resultado) pares[indice].traduccion = texto;
-      }
-    }
+    const idiomaOrigen = usandoPropias
+      ? (detectarIdioma(pares.map((p) => p.texto)) || codApr)
+      : IDIOMA_LISTADO;
+
+    const conParentesis = pares.map((p) => p.traduccion).filter(Boolean);
+    const idiomaParentesis = conParentesis.length
+      ? (usandoPropias ? detectarIdioma(conParentesis) : IDIOMA_PARENTESIS)
+      : null;
+
+    /** Devuelve el texto de cada frase en `destino`, traduciendo solo lo justo. */
+    const textosEn = async (destino, etiqueta, base, ancho) => {
+      const salida = new Array(pares.length);
+      const pendientes = [];
+
+      pares.forEach((p, i) => {
+        if (idiomaOrigen === destino) salida[i] = p.texto;
+        else if (p.traduccion && idiomaParentesis === destino) salida[i] = p.traduccion;
+        else pendientes.push({ indice: i, texto: p.texto });
+      });
+
+      if (!pendientes.length) return salida;
+
+      progreso(base, `Traduciendo ${pendientes.length} frases a ${etiqueta}…`);
+      const r = await traducir(pendientes, idiomaOrigen, destino,
+        (n) => progreso(base + ancho * (n / pendientes.length),
+          `Traduciendo a ${etiqueta}… ${n}/${pendientes.length}`));
+      motorTraduccion = r.motorUsado || motorTraduccion;
+      for (const [indice, texto] of r.resultado) salida[indice] = texto;
+      for (const t of r.problemas) problemasTraduccion.push(t);
+      return salida;
+    };
+
+    const textosApr = await textosEn(codApr, el.idiomaApr.value, 0.02, 0.05);
     if (cancelado()) throw new Error('cancelado');
+    const textosTrad = incluirTrad
+      ? await textosEn(codTrad, el.idiomaTrad.value, 0.07, 0.03)
+      : new Array(pares.length).fill(null);
+    if (cancelado()) throw new Error('cancelado');
+
+    // las frases que ningún traductor pudo resolver se quedan fuera
+    pares.forEach((p, i) => {
+      p.aprendido = textosApr[i] || '';
+      p.traducido = incluirTrad ? (textosTrad[i] || '') : '';
+    });
+    const utiles = pares.filter((p) => p.aprendido);
+    if (!utiles.length) {
+      throw new Error('No se pudo obtener ninguna frase en '
+        + `${el.idiomaApr.value}. Revisa el idioma del listado o vuelve a intentarlo.`);
+    }
 
     /* 2 · Pedir las voces */
     // La locución va siempre en español: si la traducción también lo es,
@@ -2283,12 +4886,12 @@ async function generar() {
     const I_CIERRE = 1;
 
     const mapa = [];
-    pares.forEach((p) => {
+    utiles.forEach((p) => {
       const entrada = { apr: trabajos.length, trad: -1 };
-      trabajos.push({ texto: p.texto, voz: vozApr, rate });
-      if (incluirTrad && p.traduccion) {
+      trabajos.push({ texto: p.aprendido, voz: vozApr, rate });
+      if (incluirTrad && p.traducido) {
         entrada.trad = trabajos.length;
-        trabajos.push({ texto: p.traduccion, voz: vozTrad, rate: '+0%' });
+        trabajos.push({ texto: p.traducido, voz: vozTrad, rate: '+0%' });
       }
       mapa.push(entrada);
     });
@@ -2321,37 +4924,55 @@ async function generar() {
     const audioCierre = audios[I_CIERRE];
 
     const archivos = [];
+    const guiones = [];
     let piezas = [];
     let frasesEnArchivo = 0;
+    let msArchivo = 0;
+    let guionActual = [];
+
+    // Todas las piezas son tramas completas de 144 bytes, así que los tiempos
+    // salen del tamaño con precisión de milisegundo, sin descodificar nada.
+    const msDe = (trozos) => trozos.reduce((t, b) => t + b.length, 0) / TRAMA.length * MS_POR_TRAMA;
 
     // Cada MP3 se abre con la locución de entrada y se cierra con la de despedida.
     const abrirArchivo = () => {
       piezas = (audioIntro && audioIntro.length) ? [audioIntro, silLocucion] : [];
+      msArchivo = msDe(piezas);
+      guionActual = [];
       frasesEnArchivo = 0;
     };
     const cerrarArchivo = () => {
       if (!frasesEnArchivo) return;
       if (audioCierre && audioCierre.length) piezas.push(silLocucion, audioCierre);
       archivos.push(new Blob(piezas, { type: 'audio/mpeg' }));
+      guiones.push(guionActual);
       abrirArchivo();
     };
 
     abrirArchivo();
 
-    pares.forEach((p, i) => {
+    utiles.forEach((p, i) => {
       const audioApr = audios[mapa[i].apr];
       const audioTrad = mapa[i].trad >= 0 ? audios[mapa[i].trad] : null;
       if (!audioApr || !audioApr.length) return;
 
-      let bloque = [audioApr];
-      if (repetir) bloque = bloque.concat([silRepe, audioApr]);
-      if (audioTrad && audioTrad.length) {
-        bloque = tradPrimero
-          ? [audioTrad, silIdiomas].concat(bloque)
-          : bloque.concat([silIdiomas, audioTrad]);
+      const bloque = [];
+      let anteriorEraTrad = null;
+      for (const id of secuencia) {
+        const esTrad = id === 'B3';
+        const audio = esTrad ? audioTrad : audioApr;
+        if (!audio || !audio.length) continue;
+        // entre dos trozos del mismo idioma basta una pausa corta
+        if (bloque.length) bloque.push(anteriorEraTrad === esTrad ? silRepe : silIdiomas);
+        bloque.push(audio);
+        anteriorEraTrad = esTrad;
       }
+      if (!bloque.length) return;
       bloque.push(silFrases);
+      const inicio = msArchivo;
       piezas = piezas.concat(bloque);
+      msArchivo += msDe(bloque);
+      guionActual.push({ inicio, fin: msArchivo, apr: p.aprendido, trad: p.traducido });
       frasesEnArchivo += 1;
 
       if (porArchivo && (i + 1) % porArchivo === 0) cerrarArchivo();
@@ -2364,29 +4985,13 @@ async function generar() {
     // se deduce del tamaño sin tener que descodificar nada.
     const msTotales = archivos.reduce((t, b) => t + b.size, 0) / TRAMA.length * MS_POR_TRAMA;
 
-    /* 4 · Hoja de repaso */
-    const hoja = pares.map((p) => (incluirTrad && p.traduccion
-      ? `${p.texto}\n(${p.traduccion})\n`
-      : `${p.texto}\n`)).join('\n');
+    /* 4 · Entregar: se escucha aquí, no se descarga */
+    prepararReproduccion(archivos, guiones);
 
-    /* 5 · Entregar */
-    const sello = marcaDeTiempo();
-    const base = `frases_${codApr}${incluirTrad ? `-${codTrad}` : ''}_${sello}`;
-
-    archivos.forEach((blob, k) => {
-      const nombre = archivos.length > 1
-        ? `${base}_parte${String(k + 1).padStart(2, '0')}.mp3`
-        : `${base}.mp3`;
-      enlaceDescarga(nombre, blob, `⬇ ${nombre}`);
-    });
-    enlaceDescarga(`${base}.txt`, new Blob([hoja], { type: 'text/plain;charset=utf-8' }),
-      '⬇ hoja de repaso (.txt)');
-
-    el.reproductor.src = URL.createObjectURL(archivos[0]);
     const minutos = msTotales / 60000;
     el.resumen.textContent =
-      `${pares.length} frases · ${num(minutos)} minutos · `
-      + `${archivos.length} ${archivos.length === 1 ? 'archivo' : 'archivos'} MP3`
+      `${utiles.length} frases · ${num(minutos)} minutos · `
+      + `${archivos.length} ${archivos.length === 1 ? 'bloque' : 'bloques'}`
       + (motorTraduccion ? ` · traducido con ${motorTraduccion}` : '');
     el.resultado.hidden = false;
     progreso(1, 'Listo.');
@@ -2422,12 +5027,10 @@ rellenarIdiomas(el.idiomaApr, 'Inglés');
 rellenarIdiomas(el.idiomaTrad, 'Español');
 rellenarVoces(el.idiomaApr, el.vozApr);
 rellenarVoces(el.idiomaTrad, el.vozTrad);
-const LINEAS_MUESTRA = 14;
-const lineasRecomendadas = FRASES_RECOMENDADAS.split('\n').filter((l) => l.trim());
-el.muestraLista.textContent = lineasRecomendadas.slice(0, LINEAS_MUESTRA).join('\n');
-el.totalLista.textContent = leerFrases(FRASES_RECOMENDADAS).length;
+TODAS = leerFrases(FRASES_RECOMENDADAS);
 
 actualizarEtiquetas();
+pintarBloques();
 mostrarSelectorLista();
 actualizarInterruptorTrad();
 
@@ -2454,6 +5057,32 @@ for (const c of [el.velocidad, el.pausaIdiomas, el.pausaFrases]) {
   c.addEventListener('input', actualizarEtiquetas);
 }
 el.frases.addEventListener('input', actualizarContador);
+el.reproductor.addEventListener('timeupdate', () => { refrescarTiempo(); sincronizarLetras(); });
+el.reproductor.addEventListener('seeked', () => { refrescarTiempo(); sincronizarLetras(); });
+el.reproductor.addEventListener('loadedmetadata', refrescarTiempo);
+el.reproductor.addEventListener('durationchange', refrescarTiempo);
+el.reproductor.addEventListener('play', refrescarMandos);
+el.reproductor.addEventListener('pause', refrescarMandos);
+el.reproductor.addEventListener('ended', refrescarMandos);
+
+el.reproducir.addEventListener('click', () => {
+  if (el.reproductor.paused) el.reproductor.play();
+  else el.reproductor.pause();
+});
+el.atras.addEventListener('click', () => saltar(-5));
+el.adelante.addEventListener('click', () => saltar(5));
+
+el.barraTiempo.addEventListener('pointerdown', () => { el.barraTiempo.dataset.agarrada = '1'; });
+el.barraTiempo.addEventListener('input', () => {
+  const d = el.reproductor.duration;
+  if (isFinite(d) && d > 0) el.reproductor.currentTime = (Number(el.barraTiempo.value) / 1000) * d;
+});
+el.barraTiempo.addEventListener('change', () => { delete el.barraTiempo.dataset.agarrada; });
+
+el.repetir.addEventListener('change', pintarBloques);
+el.incluirTrad.addEventListener('change', pintarBloques);
+el.idiomaApr.addEventListener('change', pintarBloques);
+el.idiomaTrad.addEventListener('change', pintarBloques);
 el.generar.addEventListener('click', generar);
 el.cancelar.addEventListener('click', () => { cancelando = true; });
 </script>
