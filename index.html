@@ -1,0 +1,2461 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Frases a Audio — Memoriza idiomas escuchando</title>
+<meta name="description" content="Convierte una lista de frases en un MP3 bilingüe para memorizar idiomas escuchando. Funciona entero en tu navegador.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
+<style>
+/* ============================================================
+   Frases a Audio
+   Mismo sistema visual y mismo layout que vela-landing-page.
+   ============================================================ */
+
+:root{
+  --bg: #ffffff;
+  --bg-soft: #f7f7f8;
+  --ink: #14161a;
+  --ink-soft: #5b5f68;
+  --line: #e7e7ea;
+  --accent: #3d3aef;
+  --accent-ink: #ffffff;
+  --accent-soft: #eeeeff;
+  --radius: 16px;
+  --maxw: 1120px;
+
+  --warn: #8a4b12;
+  --warn-soft: #fff6ec;
+  --warn-line: #f2ddc8;
+  --sombra: 0 20px 40px -28px rgba(20,22,26,.25);
+  --sombra-alta: 0 30px 60px -30px rgba(20,22,26,.25);
+}
+
+*{ box-sizing: border-box; }
+
+/* Los .btn y .card fijan display, y eso se impone al atributo hidden.
+   Esta regla devuelve a hidden la última palabra. */
+[hidden]{ display: none !important; }
+html{ scroll-behavior: smooth; }
+body{
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter,
+               Roboto, Helvetica, Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+a{ color: inherit; text-decoration: none; }
+img, svg{ display: block; max-width: 100%; }
+
+.wrap{
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+h1, h2, h3{ margin: 0; letter-spacing: -0.02em; }
+p{ margin: 0; }
+
+.eyebrow{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+
+section{ padding: 96px 0; }
+.bg-soft{ background: var(--bg-soft); }
+
+/* ── Cabecera fija ────────────────────────────── */
+.nav{
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner{
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 64px;
+}
+.marca{
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.marca-icono{ font-size: 18px; }
+.nav-links{
+  display: flex;
+  gap: 24px;
+  margin-left: auto;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+.nav-links a:hover{ color: var(--ink); }
+@media (max-width: 46rem){
+  .nav-links{ display: none; }
+  .nav-inner .btn{ margin-left: auto; }
+}
+
+/* ── Botones ──────────────────────────────────── */
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 22px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color .15s ease, border-color .15s ease, transform .05s ease;
+}
+.btn:active:not(:disabled){ transform: translateY(1px); }
+.btn-accent{ background: var(--accent); color: var(--accent-ink); }
+.btn-accent:hover:not(:disabled){ background: #3532d6; }
+.btn-accent:disabled{ opacity: .45; cursor: not-allowed; }
+.btn-primary{ background: var(--ink); color: #fff; }
+.btn-linea{ background: var(--bg); color: var(--ink); border-color: var(--line); }
+.btn-linea:hover{ border-color: #c9c9d0; }
+.btn-grande{ padding: 14px 28px; font-size: 15px; }
+
+/* ── Hero ─────────────────────────────────────── */
+.hero{ padding: 96px 0 72px; text-align: center; }
+.hero h1{
+  margin-top: 20px;
+  font-size: clamp(36px, 5.5vw, 64px);
+  font-weight: 700;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+.hero h1 span{ color: var(--accent); }
+.hero .lede{
+  max-width: 60ch;
+  margin: 20px auto 0;
+  font-size: 18px;
+  color: var(--ink-soft);
+}
+.hero-acciones{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+}
+.hero-nota{
+  margin-top: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  letter-spacing: .02em;
+}
+
+/* ── Tarjetas ─────────────────────────────────── */
+.card{
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--sombra);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+fieldset.card{ margin: 0; }
+
+.grid-3{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+@media (max-width: 62rem){
+  .grid-3{ grid-template-columns: 1fr; }
+}
+.grid-3 .card{ gap: 10px; }
+.grid-3 h3{ font-size: 17px; font-weight: 650; }
+.grid-3 p{ font-size: 15px; color: var(--ink-soft); }
+
+.cabecera-seccion{
+  text-align: center;
+  max-width: 62ch;
+  margin: 0 auto 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.cabecera-seccion h2{ font-size: clamp(26px, 2.6vw, 36px); font-weight: 700; }
+.cabecera-seccion p{ color: var(--ink-soft); font-size: 16px; }
+.cabecera-seccion.izquierda{ text-align: left; align-items: flex-start; margin: 0; }
+
+/* ── Herramienta ──────────────────────────────── */
+.disposicion{
+  display: grid;
+  grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 62rem){
+  .disposicion{ grid-template-columns: 1fr; }
+}
+.panel, .principal{ display: flex; flex-direction: column; gap: 24px; }
+
+legend, .card > h2{
+  font-size: 17px;
+  font-weight: 650;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+}
+.paso{
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  flex: none;
+}
+
+/* ── Campos ───────────────────────────────────── */
+.campo{ display: flex; flex-direction: column; gap: 7px; }
+.campo > span{
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.campo small{ font-size: 13px; color: var(--ink-soft); line-height: 1.45; }
+
+output{
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  flex: none;
+}
+
+select, input[type="number"], textarea{
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  width: 100%;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+select:hover, input[type="number"]:hover, textarea:hover{ border-color: #d5d5da; }
+select:focus, input[type="number"]:focus, textarea:focus{
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+input[type="number"]{ font-variant-numeric: tabular-nums; }
+
+textarea{
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.7;
+  resize: vertical;
+  min-height: 17rem;
+}
+
+input[type="range"]{ width: 100%; accent-color: var(--accent); }
+
+/* Interruptor deslizante */
+.interruptor{
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 15px;
+  cursor: pointer;
+  user-select: none;
+}
+.interruptor input{
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.pista{
+  position: relative;
+  flex: none;
+  width: 44px;
+  height: 26px;
+  margin-top: 1px;
+  background: #d7d7dc;
+  border-radius: 999px;
+  transition: background-color .18s ease;
+}
+.pista::after{
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(20,22,26,.3);
+  transition: transform .18s ease;
+}
+.interruptor:hover .pista{ background: #c9c9d0; }
+.interruptor input:checked + .pista{ background: var(--accent); }
+.interruptor:hover input:checked + .pista{ background: #3532d6; }
+.interruptor input:checked + .pista::after{ transform: translateX(18px); }
+.interruptor input:focus-visible + .pista{
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.interruptor-texto{ display: flex; flex-direction: column; gap: 2px; }
+.interruptor-texto small{ font-size: 13px; font-weight: 600; color: var(--ink-soft); }
+.interruptor input:checked ~ .interruptor-texto small{ color: var(--accent); }
+
+@media (prefers-reduced-motion: reduce){
+  .pista, .pista::after{ transition: none; }
+}
+
+#grupoTrad{ display: flex; flex-direction: column; gap: 20px; }
+#grupoTrad[data-off]{ opacity: .45; pointer-events: none; }
+
+:where(a, button, select, input, textarea):focus-visible{
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.ayuda{ font-size: 14px; color: var(--ink-soft); }
+.ayuda b{ font-weight: 600; color: var(--ink); }
+
+.fila-acciones{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+}
+.contador{
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.acciones{ display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* ── Progreso y resultado ─────────────────────── */
+#progreso{ gap: 10px; }
+.barra{
+  height: 6px;
+  background: var(--bg-soft);
+  border-radius: 999px;
+  overflow: hidden;
+}
+#barraRelleno{
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: width .25s ease;
+}
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior: auto; }
+  #barraRelleno, .btn{ transition: none; }
+}
+.estado{
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+#resultado{ box-shadow: var(--sombra-alta); gap: 16px; }
+#resultado h2{ font-size: 17px; font-weight: 650; }
+.resumen{ font-size: 14px; color: var(--ink-soft); }
+audio{ width: 100%; }
+
+.descargas{ display: flex; flex-wrap: wrap; gap: 10px; }
+.descargas a{
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 10px 18px;
+  transition: border-color .15s ease;
+}
+.descargas a:hover{ border-color: var(--accent); }
+
+.aviso{
+  background: var(--warn-soft);
+  border: 1px solid var(--warn-line);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  font-size: 14px;
+}
+.aviso b{ color: var(--warn); font-weight: 650; }
+
+/* ── Formato ──────────────────────────────────── */
+.dos-columnas{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+@media (max-width: 62rem){
+  .dos-columnas{ grid-template-columns: 1fr; gap: 32px; }
+}
+.ejemplo{
+  margin: 0;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--sombra);
+  padding: 28px;
+  overflow-x: auto;
+}
+.ejemplo code{
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--ink);
+  white-space: pre;
+}
+
+/* ── Pie ──────────────────────────────────────── */
+footer{
+  border-top: 1px solid var(--line);
+  padding: 56px 0 32px;
+}
+.pie-inner{
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.marca-pie{ margin-bottom: 12px; }
+.pie-nota{ font-size: 13px; color: var(--ink-soft); max-width: 60ch; }
+.pie-links{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.pie-links a:hover{ color: var(--ink); }
+
+/* ── Selector de listado (paso 4) ─────────────── */
+.selector-lista{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.selector-texto{ display: flex; flex-direction: column; gap: 4px; min-width: 16rem; flex: 1 1 20rem; }
+.lista-titulo{ font-size: 15px; font-weight: 650; }
+.lista-titulo span{ font-variant-numeric: tabular-nums; }
+.lista-nota{ font-size: 14px; color: var(--ink-soft); }
+
+.vista-lista{
+  position: relative;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  max-height: 17rem;
+  overflow: hidden;
+}
+.vista-lista::after{
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 5.5rem;
+  background: linear-gradient(to bottom, rgba(247,247,248,0), var(--bg-soft));
+  pointer-events: none;
+}
+.vista-lista pre{
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--ink-soft);
+  white-space: pre-wrap;
+}
+
+.nota-idioma{
+  background: var(--warn-soft);
+  border: 1px solid var(--warn-line);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  font-size: 14px;
+}
+.nota-idioma b{ font-weight: 650; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="marca" href="#inicio">
+      <span class="marca-icono">🎧</span> 1K frases
+    </a>
+    <nav class="nav-links">
+      <a href="#herramienta">Generador</a>
+      <a href="#como">Cómo funciona</a>
+      <a href="#formato">Formato</a>
+    </nav>
+    <a class="btn btn-accent" href="#herramienta">Crear mi audio</a>
+  </div>
+</header>
+
+<section class="hero" id="inicio">
+  <div class="wrap">
+    <span class="eyebrow">Cinco idiomas · voces neuronales · gratis</span>
+    <h1>Aprende 1000 frases<br><span>y habla un nuevo idioma</span></h1>
+    <p class="lede">Las mil frases más frecuentes cubren la mayor parte de lo que se dice en un día
+      cualquiera. Este método las convierte en audio para que las escuches en el coche, andando o
+      fregando, hasta que te salgan solas y dejes de traducir mentalmente. Ahí es cuando empiezas
+      a mantener una conversación de verdad.</p>
+    <div class="hero-acciones">
+      <a class="btn btn-accent btn-grande" href="#herramienta">Crear mi audio</a>
+      <a class="btn btn-linea btn-grande" href="#como">Ver cómo funciona</a>
+    </div>
+    <p class="hero-nota">Inglés · Español · Francés · Italiano · Portugués</p>
+  </div>
+</section>
+
+<section class="bg-soft" id="herramienta">
+  <div class="wrap">
+
+    <div class="disposicion">
+
+      <!-- ─────────── Panel de opciones ─────────── -->
+      <div class="panel">
+
+        <fieldset class="card">
+          <legend><span class="paso">1</span> Idioma que quieres aprender</legend>
+          <label class="campo">
+            <span>Idioma</span>
+            <select id="idiomaApr"></select>
+          </label>
+          <label class="campo">
+            <span>Voz y acento</span>
+            <select id="vozApr"></select>
+          </label>
+        </fieldset>
+
+        <fieldset class="card">
+          <legend><span class="paso">2</span> Traducción</legend>
+          <label class="interruptor">
+            <input type="checkbox" id="incluirTrad" checked>
+            <span class="pista"></span>
+            <span class="interruptor-texto">
+              Añadir la traducción después de cada frase
+              <small id="estadoTrad">Activada</small>
+            </span>
+          </label>
+          <div id="grupoTrad">
+            <label class="campo">
+              <span>Traducir a</span>
+              <select id="idiomaTrad"></select>
+            </label>
+            <label class="campo">
+              <span>Voz de la traducción</span>
+              <select id="vozTrad"></select>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="card">
+          <legend><span class="paso">3</span> Ajustes de audio</legend>
+
+          <label class="campo">
+            <span>Velocidad del idioma que aprendes <output id="velocidadVal">−10 %</output></span>
+            <input type="range" id="velocidad" min="-50" max="30" step="5" value="-10">
+            <small>En negativo habla más despacio, para captar bien la pronunciación.</small>
+          </label>
+
+          <label class="campo">
+            <span>Pausa entre idiomas <output id="pausaIdiomasVal">0,7 s</output></span>
+            <input type="range" id="pausaIdiomas" min="0" max="3" step="0.1" value="0.7">
+          </label>
+
+          <label class="campo">
+            <span>Pausa entre frases <output id="pausaFrasesVal">1,5 s</output></span>
+            <input type="range" id="pausaFrases" min="0" max="6" step="0.1" value="1.5">
+            <small>Súbela si quieres repetir en voz alta antes de la siguiente.</small>
+          </label>
+
+          <label class="interruptor">
+            <input type="checkbox" id="repetir">
+            <span class="pista"></span>
+            <span class="interruptor-texto">Repetir dos veces el idioma que aprendes</span>
+          </label>
+
+          <label class="campo">
+            <span>Orden</span>
+            <select id="orden">
+              <option value="apr">Primero el idioma que aprendo</option>
+              <option value="trad">Primero la traducción</option>
+            </select>
+          </label>
+
+          <label class="campo">
+            <span>Frases por archivo</span>
+            <input type="number" id="porArchivo" min="0" step="10" value="0">
+            <small>0 es un solo MP3. Con el listado completo eso son casi dos horas de audio,
+              así que 50 o 100 te deja archivos más manejables para el móvil.</small>
+          </label>
+        </fieldset>
+      </div>
+
+      <!-- ─────────── Frases y resultado ─────────── -->
+      <div class="principal">
+
+        <div class="card">
+          <h2><span class="paso">4</span> Las frases</h2>
+
+          <div class="selector-lista">
+            <div class="selector-texto">
+              <p class="lista-titulo">Listado recomendado · <span id="totalLista">0</span> frases</p>
+              <p class="lista-nota" id="listaNota">Las mil frases más frecuentes del inglés, de lo
+                más básico a estructuras avanzadas. No tienes que escribir nada: pulsa Generar y listo.</p>
+            </div>
+            <button id="alternarLista" class="btn btn-linea" type="button">Incluir mis propias frases</button>
+          </div>
+
+          <div class="vista-lista" id="vistaLista"><pre id="muestraLista"></pre></div>
+
+          <textarea id="frases" rows="14" spellcheck="false"
+                    aria-label="Lista de frases" placeholder="Una frase por línea…" hidden></textarea>
+          <p class="ayuda" id="ayudaFrases" hidden>
+            Una frase por línea, en el idioma que aprendes. La numeración se ignora sola.
+            Si escribes una línea <b>entera entre paréntesis</b>, se usa como traducción de la frase
+            de arriba en vez de traducirla automáticamente.
+          </p>
+
+          <p class="nota-idioma" id="notaIdioma" hidden></p>
+          <div class="fila-acciones">
+            <span class="contador" id="contador">0 frases</span>
+            <div class="acciones">
+              <button id="cancelar" class="btn btn-linea" type="button" hidden>Cancelar</button>
+              <button id="generar" class="btn btn-accent" type="button">Generar audio</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" id="progreso" hidden>
+          <div class="barra"><div id="barraRelleno"></div></div>
+          <p id="estado" class="estado" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="card" id="resultado" hidden>
+          <h2>Tu audio</h2>
+          <p id="resumen" class="resumen"></p>
+          <audio id="reproductor" controls></audio>
+          <div id="descargas" class="descargas"></div>
+        </div>
+
+        <div id="aviso" class="aviso" hidden></div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="como">
+  <div class="wrap">
+    <div class="cabecera-seccion">
+      <span class="eyebrow">Cómo funciona</span>
+      <h2>Tres piezas, ninguna que instalar</h2>
+      <p>El navegador hace casi todo el trabajo. Lo único que sale fuera es el texto de tus frases,
+        para que alguien las lea en voz alta y las traduzca.</p>
+    </div>
+    <div class="grid-3">
+      <article class="card">
+        <h3>Las voces</h3>
+        <p>Son las voces neuronales del servicio de lectura en voz alta de Microsoft Edge, con
+          acento a elegir. Se piden a través de un pequeño puente propio, porque ese servicio no
+          atiende a las páginas web directamente.</p>
+      </article>
+      <article class="card">
+        <h3>La traducción</h3>
+        <p>Automática y gratuita, con dos traductores de reserva por si el primero falla. Junto al
+          MP3 te descargas una hoja de texto para revisarla, y siempre puedes escribir la tuya.</p>
+      </article>
+      <article class="card">
+        <h3>El montaje</h3>
+        <p>Los fragmentos de voz y los silencios se pegan en tu propio navegador para formar el
+          MP3. El audio se construye en tu equipo y no se sube a ninguna parte.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="bg-soft" id="formato">
+  <div class="wrap">
+    <div class="dos-columnas">
+      <div class="cabecera-seccion izquierda">
+        <span class="eyebrow">Cómo se escriben</span>
+        <h2>Una frase por línea, y poco más</h2>
+        <p>La numeración se ignora sola, los puntos suspensivos se normalizan y las aclaraciones
+          tras una raya se recortan. Si prefieres tu propia traducción, escríbela entre paréntesis
+          debajo de la frase y se respetará tal cual.</p>
+      </div>
+      <pre class="ejemplo"><code>Hello, nice to meet you.
+How much does it cost?
+
+50. Today is Monday.
+(Hoy es lunes.)
+
+Good evening — al llegar</code></pre>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap pie-inner">
+    <div>
+      <p class="marca marca-pie"><span class="marca-icono">🎧</span> 1K frases</p>
+      <p class="pie-nota">Todo el proceso ocurre en tu navegador. El texto de tus frases se envía a
+        los servicios de voz y de traducción para poder generarlo; el audio se monta en tu equipo
+        y se queda ahí.</p>
+    </div>
+    <nav class="pie-links">
+      <a href="#herramienta">Generador</a>
+      <a href="#como">Cómo funciona</a>
+      <a href="#formato">Formato</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   Frases a Audio — todo el proceso ocurre en el navegador.
+
+   1. Lee la lista de frases.
+   2. Traduce las que hagan falta con un traductor gratuito.
+   3. Pide cada voz al puente, que a su vez la pide al servicio de Microsoft Edge.
+   4. Pega los fragmentos MP3 y los silencios byte a byte.
+
+   El montaje del audio y tus frases nunca salen de tu equipo salvo el texto que
+   hay que enviar para que lo lean y lo traduzcan. No hay claves de API.
+   ============================================================ */
+
+'use strict';
+
+/* ─────────────── Idiomas y voces ─────────────── */
+
+const IDIOMAS = {
+  'Inglés':     'en',
+  'Español':    'es',
+  'Francés':    'fr',
+  'Italiano':   'it',
+  'Portugués':  'pt',
+};
+
+const VOCES = {
+  en: [
+    ['🇬🇧 Británica · mujer (Sonia)',      'en-GB-SoniaNeural'],
+    ['🇬🇧 Británico · hombre (Ryan)',      'en-GB-RyanNeural'],
+    ['🇬🇧 Británica · voz joven (Libby)',  'en-GB-LibbyNeural'],
+    ['🇺🇸 Americana · mujer (Jenny)',      'en-US-JennyNeural'],
+    ['🇺🇸 Americano · hombre (Guy)',       'en-US-GuyNeural'],
+    ['🇦🇺 Australiana · mujer (Natasha)',  'en-AU-NatashaNeural'],
+  ],
+  es: [
+    ['🇪🇸 España · mujer (Elvira)',        'es-ES-ElviraNeural'],
+    ['🇪🇸 España · hombre (Álvaro)',       'es-ES-AlvaroNeural'],
+    ['🇲🇽 México · mujer (Dalia)',         'es-MX-DaliaNeural'],
+    ['🇲🇽 México · hombre (Jorge)',        'es-MX-JorgeNeural'],
+    ['🇦🇷 Argentina · mujer (Elena)',      'es-AR-ElenaNeural'],
+  ],
+  fr: [
+    ['🇫🇷 Francia · mujer (Denise)',       'fr-FR-DeniseNeural'],
+    ['🇫🇷 Francia · hombre (Henri)',       'fr-FR-HenriNeural'],
+    ['🇫🇷 Francia · mujer (Eloise)',       'fr-FR-EloiseNeural'],
+    ['🇨🇦 Canadá · mujer (Sylvie)',        'fr-CA-SylvieNeural'],
+  ],
+  it: [
+    ['🇮🇹 Italia · mujer (Elsa)',          'it-IT-ElsaNeural'],
+    ['🇮🇹 Italia · hombre (Diego)',        'it-IT-DiegoNeural'],
+    ['🇮🇹 Italia · mujer (Isabella)',      'it-IT-IsabellaNeural'],
+  ],
+  pt: [
+    ['🇵🇹 Portugal · mujer (Raquel)',      'pt-PT-RaquelNeural'],
+    ['🇵🇹 Portugal · hombre (Duarte)',     'pt-PT-DuarteNeural'],
+    ['🇧🇷 Brasil · mujer (Francisca)',     'pt-BR-FranciscaNeural'],
+    ['🇧🇷 Brasil · hombre (Antônio)',      'pt-BR-AntonioNeural'],
+  ],
+};
+
+/* ─────────────── Locución de entrada y cierre ─────────────── */
+
+const LOCUCION_INTRO = 'Creado por: Mil frases para aprender un idioma nuevo.';
+const LOCUCION_CIERRE = 'Gracias por confiar en: Mil frases para aprender un idioma nuevo. '
+                      + 'Te esperamos pronto.';
+const VOZ_LOCUCION = 'es-ES-ElviraNeural';
+const PAUSA_LOCUCION = 800;
+
+/* ─────────────── Listado recomendado ───────────────
+   Frases en inglés con su traducción revisada a mano, entre paréntesis.
+   Para cambiarlo basta con sustituir el contenido de estas comillas. */
+
+const FRASES_RECOMENDADAS = `Hello.
+Good morning.
+Good afternoon.
+Good evening.
+Goodbye.
+See you later.
+How are you?
+I am fine, thank you.
+And you?
+What is your name?
+My name is…
+Nice to meet you.
+Where are you from?
+I am from Spain.
+Where do you live?
+I live in Madrid.
+How old are you?
+I am 30 years old.
+What do you do?
+I work in an office.
+I am a student.
+Do you speak Spanish?
+I speak a little English.
+I don't understand.
+Can you repeat, please?
+How do you say… in English?
+What does this mean?
+Please.
+Thank you very much.
+You're welcome.
+Excuse me.
+I am sorry.
+Yes, please.
+No, thank you.
+Who is this?
+This is my friend.
+This is my family.
+I have a brother.
+I have a sister.
+I am married.
+I am single.
+I have a dog.
+I have a cat.
+My house is big.
+My room is small.
+The door is open.
+The window is closed.
+Turn on the light.
+Turn off the light.
+Today is Monday.
+I wake up early.
+I get up at 7 o'clock.
+I take a shower.
+I brush my teeth.
+I eat breakfast.
+I drink coffee with milk.
+I eat toast.
+I go to work.
+I drive my car.
+I take the metro.
+I start work at 8.
+I check my emails.
+I have a meeting.
+I eat lunch at 2.
+I eat a sandwich.
+I finish work at 5.
+I go back home.
+I cook dinner.
+I watch television.
+I use my phone.
+I read a book.
+I listen to music.
+I go to sleep at 11.
+I like sports.
+I play football.
+I go to the gym.
+I like running.
+I like cooking.
+I like traveling.
+I love movies.
+What is your hobby?
+My hobby is photography.
+I don't like reading.
+I hate getting up early.
+What time is it?
+It is three o'clock.
+It is half past four.
+Today is sunny.
+It is raining.
+It is cold today.
+It is hot.
+I like the summer.
+I prefer the winter.
+What day is today?
+Tomorrow is Tuesday.
+Yesterday was Sunday.
+The weekend is near.
+I rest on Saturday.
+I go out with friends.
+I am happy today.
+I am hungry.
+I am thirsty.
+I want water, please.
+I want a beer.
+Let's go to a restaurant.
+A table for two, please.
+Can I see the menu?
+What do you recommend?
+I want chicken and salad.
+I don't eat meat.
+I am vegetarian.
+This food is delicious.
+The bill, please.
+Can I pay by card?
+Keep the change.
+I need to go shopping.
+I need new clothes.
+Where is the supermarket?
+I need milk, eggs, and bread.
+How much is this?
+This is too expensive.
+Do you have a smaller size?
+Can I try this on?
+Where are the fitting rooms?
+I will take this shirt.
+Where can I pay?
+I need a bag, please.
+Do you accept cash?
+Here is your receipt.
+I want to return this.
+I am looking for a pharmacy.
+I need medicine for a headache.
+My stomach hurts.
+Where is the bathroom?
+It is on the left.
+It is on the right.
+Go straight ahead.
+Stop here, please.
+Turn left at the corner.
+Turn right at the traffic lights.
+Where is the train station?
+What time does the train leave?
+I need a ticket to London.
+Is this seat taken?
+My luggage is heavy.
+Where is my passport?
+I am looking for my hotel.
+I have a reservation.
+What is the Wi-Fi password?
+My room key, please.
+I like this place.
+It is very quiet.
+The city is big and noisy.
+I prefer nature.
+The beach is beautiful.
+The mountains are amazing.
+Let's take a photo.
+Look at that view!
+It is a sunny day for a walk.
+Do you want to go for a coffee?
+Yes, I would love to.
+When are you free?
+I am free on Friday afternoon.
+Let's meet at 5 PM.
+Where should we meet?
+Let's meet at the central square.
+See you there.
+I am sorry, I am late.
+No problem, don't worry.
+Traffic was bad.
+What do you think about this?
+I think it is a good idea.
+I don't agree with you.
+You are right.
+Maybe you are wrong.
+Let me think about it.
+I need your help.
+Can you help me with this?
+Of course, I can help.
+Thank you for your help.
+I am learning English.
+It is a bit difficult.
+But it is fun.
+I practice every day.
+I watch videos in English.
+I write new words in a notebook.
+My pronunciation is improving.
+I want to speak fluently.
+One day I will travel to the USA.
+Or to Australia.
+Do you have pets?
+My dog is very friendly.
+My cat sleeps all day.
+I feed them in the morning.
+We go for a walk in the park.
+The weather is nice today.
+Let's sit on the grass.
+Listen to the birds.
+I feel relaxed here.
+It is time to go back home.
+Tomorrow will be a busy day.
+I have to wake up early again.
+I need a good night's sleep.
+Good night, sleep well.
+Good morning, did you sleep well?
+Yes, I slept like a log.
+No, I am still tired.
+Let's drink a strong coffee.
+The sun is shining brightly.
+What are your plans for the weekend?
+I am going to visit my parents.
+We will eat together on Sunday.
+My mother cooks very well.
+Her paella is famous in the family.
+I will help her in the kitchen.
+In the afternoon, I will relax.
+I will watch a football match on TV.
+Who is playing?
+Real Madrid is playing today.
+I hope they win.
+What about you? What will you do?
+I will stay at home and read.
+I need some rest.
+Sometimes doing nothing is the best plan.
+I completely agree with you.
+Life is too fast sometimes.
+We need to slow down.
+Let's plan a trip for next month.
+Where would you like to go?
+I would like to visit Italy.
+Rome is a wonderful city.
+We can eat authentic pizza and pasta.
+And we can see historical monuments.
+How many days will we stay?
+Four or five days is enough.
+Let's check flights online.
+Flights are cheaper in advance.
+I will book the hotel tonight.
+Perfect, everything is ready.
+I am so excited about this trip.
+Travel makes us happier.
+We create unforgettable memories.
+I will take plenty of pictures.
+And I will practice my English there too.
+People speak English all over the world.
+It is a very useful language.
+I am glad I started learning it.
+Step by step, I am improving.
+This is just the beginning.
+Let's keep going forward!
+I usually start work at eight o'clock in the morning.
+Can we reschedule this meeting for tomorrow afternoon?
+I need to check my emails before I reply to the client.
+Could you help me with this report, please?
+I work remotely on Mondays and Fridays.
+Let's take a fifteen-minute coffee break.
+My office is located in the center of the city.
+What time does our morning briefing start?
+I have to finish this presentation before lunch.
+Could you send me the document by email?
+I am waiting for an important phone call.
+My computer is not working properly today.
+Let's schedule a call for next Tuesday.
+I usually have a quick sandwich at my desk.
+Who is in charge of this new project?
+I need to print these contracts for the meeting.
+Could you transfer this call to marketing, please?
+We achieved our sales goals this month.
+I have a lot of paperwork to do today.
+Let's review the figures before the presentation.
+I need to take a day off next week.
+Can you update the spreadsheet with these numbers?
+My boss is traveling for business this week.
+We use video conferencing for international meetings.
+I am learning how to use new software at work.
+Please let me know when you are available.
+I forgot my password to access the system.
+Our team works well together on big projects.
+I need to write a summary of this meeting.
+Can we postpone this task until tomorrow?
+I have an interview with a new candidate.
+We need to hire more people for this department.
+My commute to work takes about forty minutes.
+I prefer to use public transport to get to the office.
+Can you cover for me while I go to lunch?
+I need to sign these papers before I leave.
+Our company is organizing a team-building event.
+I received positive feedback from my manager.
+Let's discuss this matter in the afternoon.
+I am organizing my files for the audit.
+We would like a table for four people, please.
+Could you bring me the bill, please?
+I am allergic to nuts, does this dish have any?
+What do you recommend for today?
+I would like my meat well done, please.
+Can I pay by card or do you only take cash?
+Could we see the menu and the wine list, please?
+I want to order a glass of white wine and sparkling water.
+Is service included in the final price?
+Excuse me, we are ready to order now.
+Could we have some more bread, please?
+This soup is too salty for my taste.
+I am a vegetarian, do you have plant-based options?
+Can I get this dish without onions?
+The food was delicious, compliments to the chef.
+Do you have a children's menu available?
+We would like to share a dessert.
+Could you pack the leftovers to take away?
+Is there a table available outside on the terrace?
+I would like to book a table for Saturday night.
+What are today's lunch specials?
+Can I have my coffee with oat milk, please?
+This is not what I ordered, I asked for fish.
+Could you change this plate, it is cold?
+Let's split the bill evenly between all of us.
+Do you serve breakfast all day long?
+I prefer tap water instead of bottled water.
+Could I get a small spoon for the dessert?
+How long is the waiting time for a table?
+Can I order a takeaway pizza for pick up?
+The service here is always very friendly and fast.
+Do you have any gluten-free pastries?
+I would like to try the local specialty.
+Can I have a napkin and a clean fork, please?
+This restaurant was recommended by a friend.
+We are celebrating a birthday tonight.
+Could you recommend a good local restaurant?
+I am trying to eat healthier this month.
+Let's grab a quick bite before the cinema.
+Do you accept reservations online?
+I always skip breakfast on busy days.
+My favorite cuisine is Italian food.
+Can you heat this up a little bit more?
+We ordered a large pepperoni pizza to share.
+I prefer my tea with lemon and honey.
+Where can I find the fitting rooms to try this on?
+Do you have this shirt in a larger size?
+How much does this cost? Is it on sale?
+I am just looking around, thank you.
+Can I get a refund if it doesn't fit me?
+Do you accept credit cards or contactless payments?
+Can I have a receipt for this purchase, please?
+This jacket is available in black and navy blue.
+Where is the shoe department located?
+Are these sunglasses on discount?
+I need a pair of comfortable walking shoes.
+Can I exchange this sweater for a medium?
+Do you offer gift wrapping for items?
+The line at the checkout is very long today.
+I am looking for a gift for my sister's birthday.
+Do you have this in stock or is it sold out?
+Can you check if another store has my size?
+These trousers are a bit too tight on the waist.
+I prefer shopping online to avoid the crowds.
+This store has great discounts this weekend.
+I found a great bargain at the market today.
+Can I use this discount coupon on sale items?
+Where can I pay for these items?
+Do you sell batteries for this device?
+I need to buy some groceries for the week.
+Let's go to the shopping mall this afternoon.
+Is there an ATM near the store?
+I forgot my shopping list at home.
+This fabric feels very soft and high quality.
+Can I open this box to check the product?
+Do you deliver heavy furniture to home?
+I am looking for a leather bag for work.
+Can I try on these boots before buying them?
+The winter collection is already in the shop window.
+I always compare prices before I buy electronics.
+Do you have a loyalty card program?
+This coat is waterproof and very warm.
+Can I return this item within thirty days?
+I need some new stationery for my office.
+Where can I find fresh fruit and vegetables?
+The supermarket closes at ten o'clock tonight.
+I prefer buying organic vegetables when possible.
+Can you put this in a plastic bag, please?
+I am saving money to buy a new laptop.
+Shopping for clothes is relaxing for me.
+Excuse me, how do I get to the nearest metro station?
+What time does the train to London depart?
+I would like to book a single room for three nights.
+Is breakfast included in the room price?
+Where is the baggage claim area?
+Can you show me on this city map where we are?
+I need to buy a return ticket to the airport.
+Is this seat taken or can I sit here?
+What gate does flight number BA245 board from?
+My passport expires in six months.
+Could you call a taxi for me, please?
+How much is the bus fare to the city center?
+I lost my suitcase at the airport.
+Do I need to validate my train ticket before boarding?
+Where can I exchange my money for local currency?
+Is there free Wi-Fi connection in the hotel?
+Could you wake me up at seven tomorrow morning?
+I would like a room with a sea view if possible.
+The flight was delayed for two hours.
+We need to check out before twelve noon.
+Can I store my luggage at the hotel reception?
+Where is the nearest tourist information office?
+How long does the ferry ride take?
+I get motion sickness when I travel by boat.
+Do we need to rent a car for our trip?
+Let's book our tickets in advance to save money.
+The hotel is within walking distance of the beach.
+Can you recommend a nice place to visit nearby?
+I always pack too many things in my suitcase.
+My flight connects in Frankfurt before arriving.
+Do I need a visa to travel to this country?
+The customs officer checked my passport carefully.
+We missed our train because of heavy traffic.
+Can you help me put my bag in the overhead bin?
+The air conditioning in the hotel room is broken.
+I prefer an aisle seat on long-haul flights.
+Can I have a blanket and a pillow, please?
+Where do we catch the shuttle bus to the hotel?
+We explored the old town on foot yesterday.
+Taking photographs inside the museum is prohibited.
+I bought some souvenirs for my friends back home.
+The local market was full of colors and smells.
+We watched a stunning sunset over the ocean.
+Traveling opens your mind to different cultures.
+I keep my travel documents in a secure pouch.
+Can you take a photo of us in front of the monument?
+The tour guide explained the history of the castle.
+We walked around the city for hours without a map.
+I prefer traveling light with just a backpack.
+Our vacation in Italy was unforgettable.
+I am planning a road trip along the coast.
+We stayed at a cozy bed and breakfast in the mountains.
+The street musicians were playing wonderful jazz music.
+I forgot to bring my universal power adapter.
+Let's check the weather forecast before going out.
+In my free time, I really enjoy reading historical novels.
+We are planning to go hiking in the mountains this weekend.
+I love listening to podcasts while I do housework.
+Photography has been my favorite hobby for years.
+Do you want to play a tennis match this Saturday?
+I usually go swimming twice a week to stay fit.
+Cooking dinner for my friends is very relaxing for me.
+We went camping by the lake last summer.
+I am learning to play the acoustic guitar.
+My brother spends all his free time playing video games.
+Let's go to the cinema to see the new action movie.
+I prefer watching documentaries rather than soap operas.
+Painting helps me disconnect from a stressful week.
+We love visiting art galleries on Sunday mornings.
+I joined a local book club to meet new people.
+Cycling is a great way to explore the countryside.
+Do you practice any martial arts?
+I enjoy gardening and growing my own vegetables.
+We spent the afternoon playing board games at home.
+I like to keep a daily journal before going to sleep.
+Yoga helps me improve my flexibility and posture.
+Collecting vintage stamps is an interesting hobby.
+I usually spend my weekends visiting family.
+We went bird watching in the natural park.
+Baking homemade bread is my secret talent.
+I love going to live concerts and music festivals.
+Running a marathon requires months of preparation.
+We built a small wooden shelf for the living room.
+I enjoy knitting sweaters during winter evenings.
+Do you follow any sports teams closely?
+I like solving crossword puzzles in the morning paper.
+We went scuba diving in crystal clear water.
+Fishing is a very peaceful and quiet activity.
+I am taking an online course in digital photography.
+We love having barbecues in the backyard with friends.
+I prefer spending my holidays in quiet natural places.
+Sketching urban landscapes is a creative outlet for me.
+We watched a thrilling football match on television.
+I enjoy visiting botanical gardens on sunny days.
+Doing puzzles is a nice way to spend a rainy afternoon.
+I love baking chocolate chip cookies for my kids.
+We went horse riding through the forest trails.
+I am trying to learn pottery classes this season.
+Watching the stars at night is fascinating.
+I always listen to upbeat music while running.
+We organize a board game night every Friday.
+I like visiting antique shops on Saturday afternoons.
+Rollerblading along the river is a lot of fun.
+I practice meditation for ten minutes every day.
+We love trying new recipes from different countries.
+I enjoy writing short stories in my spare time.
+Surfing big waves requires courage and balance.
+We went ice skating during the winter holidays.
+I like repairing old electronic gadgets myself.
+Visiting historical castles is my favorite type of tourism.
+I enjoy taking long walks in the park at sunset.
+We watched a fascinating documentary about space.
+I like doing DIY projects around the house.
+Playing the piano helps me clear my mind.
+We went paddle boarding on a calm morning.
+I love testing new coffee beans from around the world.
+Origami is a relaxing Japanese paper art.
+We joined a local running club to stay motivated.
+I enjoy sewing my own clothes sometimes.
+Spending time with my pets brings me great joy.
+I have been working in this company for over three years.
+Could you tell me what the main responsibilities of this role are?
+I usually prefer to talk things over before making a final decision.
+We need to find a solution to this problem as soon as possible.
+I would like to apply for the position advertised on your website.
+My manager asked me to prepare a detailed report on our sales.
+I think it would be a good idea to invest more time in marketing.
+Although the project was challenging, we managed to finish it on time.
+I am responsible for coordinating meetings with international clients.
+If we don't improve our communication, we might lose important clients.
+I used to work in customer service, but now I work in sales.
+Could you clarify what you mean by that statement?
+I have successfully completed all the tasks assigned to me this week.
+We should consider hiring an external consultant for this issue.
+I am looking forward to hearing from you soon.
+It is important to keep calm when things don't go as planned.
+I have always been interested in learning about new technologies.
+Could you send me the attachment as soon as you have a moment?
+We managed to negotiate a better price with the supplier.
+I tend to focus more on quality rather than speed.
+Unless we change our strategy, we won't reach our annual goals.
+I would appreciate it if you could review this document.
+My colleague is on sick leave, so I am covering his tasks.
+We need to set a realistic budget before starting the renovation.
+I am quite confident that we can close this deal by Friday.
+What stood out the most during the presentation was the market analysis.
+I have been thinking about changing my career path recently.
+Could you please forward this email to the rest of the team?
+I prefer working in a collaborative environment rather than alone.
+We successfully launched the new product line last month.
+I am planning to take a course to improve my negotiation skills.
+If I had more time, I would learn a third language.
+We must ensure that all security protocols are strictly followed.
+I usually rely on my intuition when dealing with difficult situations.
+The company offers great opportunities for professional growth.
+I have mixed feelings about moving to a larger office.
+Could you give me a hand with lifting this heavy box?
+I'm afraid I completely disagree with your point of view.
+We need to take everyone's opinion into account before deciding.
+I managed to resolve the complaint to the customer's satisfaction.
+What are the main benefits of joining this program?
+I am used to working under a lot of pressure.
+We should encourage employees to share their creative ideas.
+I have noticed a significant improvement in our website traffic.
+Could you check if these figures match the previous report?
+I would rather work from home when the weather is bad.
+We are currently evaluating different options for our software upgrade.
+I have always found it easy to adapt to sudden changes.
+Let's keep in touch and discuss this further next week.
+I am proud of what our team has achieved this year.
+I would like to reserve a table for two by the window, please.
+Could you tell me if this dish contains any dairy products?
+I have been craving Italian food all day long.
+We were pleasantly surprised by the quality of the food.
+I usually avoid eating heavy meals late at night.
+Could we have the bill separately, please?
+This restaurant is famous for its homemade desserts.
+I ordered the fish, but they brought me chicken instead.
+Are there any traditional dishes that you would recommend?
+I am trying to cut down on sugar and processed foods.
+Could you ask the chef if they can make this sauce dairy-free?
+We had to wait for almost forty minutes to get a table.
+I am not a big fan of spicy food, to be honest.
+Let's try that new vegetarian bistro downtown.
+The waiter was polite enough to offer us a complimentary drink.
+I prefer restaurants that use locally sourced ingredients.
+We usually celebrate our anniversaries at a fancy restaurant.
+Could you pack the remaining food in a container?
+I have never tasted anything quite like this before.
+Do you happen to know if they serve breakfast until noon?
+The atmosphere in this café is very cozy and relaxing.
+I forgot to mention that I am allergic to shellfish.
+We ended up ordering a variety of tapas to share.
+I wish the portions were a bit bigger for the price.
+Can you recommend a good place to grab a quick lunch?
+I have always wanted to learn how to make fresh pasta.
+We usually order takeaway when we are too tired to cook.
+The wine pairing recommended by the waiter was excellent.
+I am trying out a new diet this month.
+Could you pass the salt and pepper, please?
+We were terribly disappointed with the slow service.
+I prefer drinking herbal tea rather than coffee in the evening.
+Let's look at the dessert menu before we decide.
+I have cut out sugary drinks completely from my diet.
+The chef cooked the steak to perfection.
+We usually prefer sitting outside on warm summer evenings.
+Could you check if they have any tables available on the patio?
+I found the main course a bit too greasy for my liking.
+Let's make a reservation for Friday night in advance.
+I have always enjoyed trying exotic food when traveling.
+I am looking for a gift that is both useful and original.
+Could you tell me where the customer service desk is located?
+I prefer to buy clothes made from sustainable materials.
+They are offering a 50% discount on selected winter items.
+I usually check online reviews before purchasing expensive electronics.
+Can I get a refund if the product is defective?
+I hate standing in long queues at the supermarket checkout.
+Do you happen to have this jacket in a smaller size?
+I prefer shopping in local independent stores rather than big chains.
+The shopping center was so crowded that we left early.
+I need to return these shoes because they hurt my feet.
+Could you wrap this item nicely? It's a birthday present.
+I managed to find a great bargain during the winter sales.
+Is it possible to pay in installments for this television?
+I always compare prices across different websites before buying.
+They ran out of stock of the model I wanted.
+I usually make a shopping list so I don't forget anything.
+Can you check if this shirt is machine washable?
+I am trying to spend less money on unnecessary things.
+The store clerk was very helpful and showed me several options.
+I prefer paying with my smartphone instead of using cash.
+Could you give me a receipt in case I need to exchange it?
+I bought this dress on impulse, and now I regret it.
+Are these organic apples more expensive than the regular ones?
+I need to pick up a few things from the chemist on my way home.
+The market was packed with people buying fresh flowers.
+I prefer buying fresh produce directly from local farmers.
+Could you tell me where the frozen food aisle is?
+I am looking for a sturdy backpack for my weekend getaways.
+They don't accept cash anymore; card payments only.
+I bought these trousers on sale last week.
+Can I get a tax refund on these purchases before leaving the country?
+I usually avoid going to the shopping mall on Saturdays.
+The quality of this fabric is much better than the cheaper version.
+I need to exchange this gift because I already have one.
+If I hadn't seen the discount sign, I wouldn't have gone in.
+I prefer buying second-hand books to save money and help nature.
+Could you check if they offer home delivery for furniture?
+I have been looking for this specific brand for months.
+Shopping online is convenient, but sometimes sizes are misleading.
+We had to rush to the airport because our taxi broke down.
+If we book our flights now, we can get a much better price.
+I have always wanted to visit Japan and experience its culture.
+Could you tell me how long it takes to walk to the museum?
+We got lost in the old town because we didn't have a map.
+I prefer traveling by train because you can enjoy the scenery.
+My flight was cancelled due to bad weather conditions.
+We stayed at a wonderful boutique hotel near the beach.
+Have you ever traveled abroad completely on your own?
+I always make sure my passport is valid before planning a trip.
+We spent hours wandering around the historic streets of Rome.
+Could you recommend some hidden gems to visit in the city?
+I forgot my charger in the hotel room when we checked out.
+We rented a car so we could explore the countryside freely.
+The travel agency helped us organize our itinerary step by step.
+I usually get jet lag when crossing multiple time zones.
+We had to wait two hours at customs because of long queues.
+I prefer an aisle seat so I can stretch my legs on long flights.
+We managed to catch the last bus back to the hotel.
+Traveling teaches you how to be flexible and patient.
+If I visit London again, I will definitely go to the British Museum.
+We missed our connection because the first flight was late.
+I always keep a digital copy of my travel insurance in my phone.
+The local guide showed us places that tourists usually don't see.
+We decided to go on a guided tour to learn more about the ruins.
+I prefer packing light to avoid paying extra baggage fees.
+Our luggage was delayed, so we had to buy some basic clothes.
+Could you tell me where the nearest underground station is?
+We spent the whole afternoon relaxing by the pool.
+I have wonderful memories of our road trip across California.
+If you go to Paris, you shouldn't miss visiting Montmartre.
+We had a minor issue with our reservation, but the staff solved it.
+I prefer to book accommodations with free cancellation options.
+The sunset over the mountains was breathtaking.
+We explored the city by bike, which was a fantastic experience.
+I always buy local postcards to send to my friends.
+We encountered heavy traffic on our way to the airport.
+I am planning to backpack across South America next year.
+The hotel staff were extremely polite and helpful during our stay.
+We had to change our plans because of a sudden storm.
+I prefer staying in a cozy guesthouse rather than a huge resort.
+Could you check if our return flight is on schedule?
+We enjoyed tasting street food at the night market.
+I always bring a phrasebook when traveling to a country with a different language.
+The museum exhibition about ancient Egypt was fascinating.
+We decided to hire a car to explore the remote villages.
+I prefer traveling during the off-season to avoid crowds.
+We had trouble finding the hotel because the address was incorrect.
+I always make copies of my important documents before traveling.
+Traveling alone gave me the chance to meet many interesting people.
+I started taking photography classes to improve my landscape pictures.
+If I have free time this weekend, I will probably go hiking.
+I used to play football every weekend when I was younger.
+We enjoy spending our holidays camping in the woods.
+I find painting very therapeutic after a long week of work.
+Have you ever tried scuba diving in crystal clear water?
+I am trying to learn how to play the piano by myself.
+We usually spend Saturday mornings cycling around the park.
+I love reading science fiction novels in my spare time.
+My friends and I organize a board game night once a month.
+I joined a running club to stay motivated and meet new people.
+Gardening helps me disconnect from everyday stress.
+We went bird watching in the natural reserve last Sunday.
+I prefer watching independent movies rather than Hollywood blockbusters.
+Baking bread has become one of my favorite weekend activities.
+If it rains tomorrow, we will probably visit an art gallery.
+I have always been fascinated by astronomy and space exploration.
+We spent the whole afternoon playing tennis at the local club.
+I enjoy knitting warm scarves during the cold winter months.
+My brother spends hours building scale models of vintage cars.
+I started doing yoga to improve my back pain and flexibility.
+We love having barbecues in the backyard whenever the weather is nice.
+I prefer listening to audiobooks while doing housework.
+Collecting old coins is a hobby I inherited from my grandfather.
+We went kayaking on the lake during our summer holiday.
+I have been practicing meditation for over a year now.
+If I didn't have to work tomorrow, I would go to the concert.
+I enjoy sketching urban scenes when I travel around the city.
+We joined a local theatre group to try something new and creative.
+I like solving complex puzzles to keep my mind active.
+We went horse riding through the forest trails yesterday.
+I prefer spending my weekends in peaceful natural surroundings.
+My sister is very good at sewing her own fashion designs.
+We went ice skating with friends during the Christmas holidays.
+I love trying out new coffee beans from different origins.
+Origami requires a lot of patience and precision.
+We organized a charity football match to help the local shelter.
+I enjoy writing short stories and sharing them with friends.
+Surfing requires both physical strength and great balance.
+We spent the weekend restoring an old wooden piece of furniture.
+I like visiting antique markets on Sunday mornings.
+Rollerblading along the river is one of my favorite workouts.
+We watched an inspiring documentary about ocean conservation.
+I prefer reading historical biographies rather than fiction.
+Playing the acoustic guitar helps me relax after a long day.
+If the weather is good, we will go climbing this Saturday.
+I have always wanted to learn pottery and make my own mugs.
+We went paddle boarding as the sun was rising over the bay.
+I enjoy walking my dog in the park every single evening.
+We spent the evening playing trivia games with our neighbors.
+I started learning a new musical instrument last month.
+We prefer exploring remote nature trails instead of busy tourist routes.
+I love capturing candid moments with my camera.
+If I had more free time, I would take up painting classes.
+We went camping under the stars last August.
+I enjoy participating in local community gardening projects.
+We watched a thrilling basketball match at the local stadium.
+I prefer listening to vinyl records for a better sound experience.
+My friend invited me to join his weekly chess club.
+We spent our afternoon visiting an interactive science museum.
+I like experimenting with traditional recipes to create new flavors.
+We went whale watching during our trip to Norway.
+I enjoy keeping a personal diary of my thoughts and travels.
+If we finish our tasks early, we can go to the cinema tonight.
+I prefer doing DIY repairs around the house instead of calling technicians.
+We spent the weekend participating in an environmental cleanup event.
+I love attending live jazz concerts in small bars.
+My cousin taught me how to knit a warm woolen scarf.
+We went snorkeling in the warm waters of the Caribbean.
+I believe that having a creative hobby is essential for a balanced life.
+I wouldn't have accepted the job offer if the salary hadn't been competitive.
+It is high time we addressed the underlying issues of our marketing strategy.
+Supposing we fail to meet the deadline, what alternative measures can we take?
+Little did she know that her colleagues had organized a surprise farewell party.
+Not only did we finish the project on time, but we also came in under budget.
+I would rather you hadn't mentioned that confidential topic during the meeting.
+Provided that all stakeholders agree, we will proceed with the merger next month.
+Hard as he tried to remain impartial, his personal bias was quite evident.
+Should you require any further assistance, please do not hesitate to contact me.
+It never crossed my mind that the proposal would be rejected outright.
+Had I been aware of the potential risks, I would have acted differently.
+The board of directors is bound to implement sweeping changes by next quarter.
+No sooner had we signed the contract than the market conditions shifted dramatically.
+It is essential that every employee adhere strictly to the corporate compliance code.
+Much to our surprise, the controversial campaign turned out to be a resounding success.
+Only by fostering a collaborative culture can we truly drive long-term innovation.
+I find it hard to comprehend how they managed to overlook such a blatant error.
+Were we to relocate the headquarters, we might risk losing valuable local talent.
+The sheer complexity of the software architecture demands rigorous testing procedures.
+Scarcely had I sat down at my desk when my phone started ringing incessantly.
+It is widely acknowledged that continuous professional development is vital.
+Unless we step up our game, our competitors will undoubtedly outpace us.
+I take exception to the implication that my department is underperforming.
+The CEO stressed the importance of maintaining transparency across all departments.
+Seldom have I witnessed such a remarkable display of strategic foresight.
+We are currently grappling with a severe shortage of skilled labour.
+It goes without saying that punctuality is paramount in this line of work.
+I am inclined to believe that their counteroffer is entirely unfeasible.
+The restructuring plan is expected to streamline operations significantly.
+On no account should confidential data be transmitted via unsecured channels.
+I am thoroughly convinced that this setback is merely a temporary hurdle.
+The onus is on the management team to restore employee morale.
+Had it not been for your invaluable guidance, we wouldn't have clinched the deal.
+We must take into fluctuating exchange rates when drafting the budget.
+Under no circumstances are unauthorized personnel permitted in the server room.
+The initiative was met with widespread skepticism from the trade unions.
+It is high time we leveraged digital tools to optimize our workflow.
+I have every reason to believe that our quarterly targets will be met.
+Not until the audit was completed did the extent of the discrepancies emerge.
+We need to weigh the potential risks against the anticipated financial gains.
+It is imperative that we bridge the gap between theory and practical application.
+So profound was the impact of the keynote speech that it sparked a lively debate.
+I am somewhat skeptical about the feasibility of such an ambitious timeline.
+They are committed to fostering an inclusive and diverse working environment.
+Were it not for the generous sponsorship, the event wouldn't have taken place.
+The firm's primary objective is to penetrate emerging international markets.
+I take full accountability for the oversight in the final draft.
+Such is the magnitude of the challenge that we require a multidisciplinary approach.
+We must ensure that our operations comply with environmental regulations.
+I am quite partial to constructive criticism when striving for excellence.
+The culinary landscape of the city has evolved remarkably over the past decade.
+I have an abiding fondness for authentic regional street food.
+The establishment prides itself on sourcing organic, farm-to-table produce.
+Dining out has become an increasingly sophisticated and immersive experience.
+I am rather averse to overly elaborate dishes that mask the natural flavours.
+The sommelier's profound expertise elevated our dining experience immensely.
+We were thoroughly captivated by the chef's innovative tasting menu.
+It is advisable to secure a reservation well in advance during peak season.
+I am trying to cultivate a more balanced and mindful approach to nutrition.
+The bistro is renowned for its unpretentious yet exceptionally flavorful cuisine.
+Little did we anticipate that the humble eatery would boast such a stellar reputation.
+I have grown weary of dining at generic chain restaurants with predictable menus.
+The venue offers an exquisite fusion of traditional and contemporary gastronomy.
+We opted for the chef's recommended pairing to complement our main course.
+Not only was the presentation breathtaking, but the flavors were also sublime.
+I invariably find myself gravitating towards Italian and Japanese cuisine.
+The restaurant caters meticulously to various dietary restrictions and preferences.
+Should you have any specific food allergies, please inform the waitstaff promptly.
+The ambience of the rooftop terrace provided a truly magical backdrop for dinner.
+I was rather unimpressed by the lackluster service despite the high prices.
+They take immense pride in preserving culinary traditions passed down through generations.
+I am partial to a robust red wine to accompany a well-matured steak.
+The sheer variety of street delicacies available at the night market is staggering.
+We found the portions somewhat meager relative to the exorbitant pricing.
+It is fascinating how different cultures utilize fermentation to preserve food.
+I have developed a discerning palate for specialty coffees over the years.
+The banquet was a lavish affair featuring an array of exotic delicacies.
+We relished every single bite of the decadent chocolate fondant dessert.
+I tend to steer clear of highly processed additives in my daily diet.
+The culinary workshop provided invaluable insights into pastry-making techniques.
+Consumer behavior has shifted dramatically toward ethical and sustainable fashion.
+I am reluctant to splurge on luxury brands when quality is comparable elsewhere.
+The shopping precinct was teeming with bargain hunters during the seasonal sales.
+It is imperative to scrutinize the return policy prior to making a substantial purchase.
+Boutiques offering bespoke tailoring have seen a resurgence in popularity.
+I invariably opt for minimalist aesthetics when investing in timeless wardrobe staples.
+The misleading advertising practices of certain retailers warrant strict regulation.
+I prefer patronizing local artisans rather than supporting mass-market conglomerates.
+The flagship store boasts an immersive shopping experience complete with digital mirrors.
+Had I known about the impending clearance sale, I would have deferred my purchase.
+E-commerce platforms leverage sophisticated algorithms to recommend personalized products.
+I was appalled by the lack of transparency regarding supply chain ethics.
+We must weigh the durability of the item against its upfront cost.
+The high street is undergoing a profound transformation due to digital disruption.
+I am disinclined to purchase fast fashion items that deteriorate after a few washes.
+Only by demanding higher standards can we compel brands to adopt eco-friendly practices.
+The sheer convenience of doorstep delivery has revolutionized modern consumer habits.
+I make it a point to check customer reviews before investing in high-end gadgets.
+The exorbitant price tag does not necessarily guarantee superior craftsmanship.
+We managed to unearth a vintage leather jacket in a quaint thrift store.
+Seamless integration of physical and digital retail channels is now paramount.
+I take issue with the excessive packaging used in online retail deliveries.
+The market is saturated with counterfeit goods masquerading as authentic luxury items.
+Were it not for the consumer protection laws, buyers would be extremely vulnerable.
+I prefer acquiring durable goods designed to withstand the test of time.
+The boutique specializes in ethically sourced gemstones and handcrafted jewelry.
+No sooner had the discount code expired than a new promotion was launched.
+I find impulse buying to be a detrimental habit that strains personal finances.
+The shopping mall implemented state-of-the-art security measures to protect patrons.
+Consumers are increasingly gravitating toward brands that champion social causes.
+Traveling off the beaten track affords a more authentic cultural immersion.
+I have always harbored a deep fascination for ancient architectural landmarks.
+The serendipitous discovery of a hidden cove entirely transformed our coastal itinerary.
+We encountered unprecedented logistical hurdles while navigating the remote mountain passes.
+It is advisable to familiarize oneself with local customs prior to embarking abroad.
+The picturesque village retained its rustic charm despite burgeoning tourist activity.
+I am fundamentally opposed to mass tourism that degrades fragile ecosystems.
+Our journey was regrettably marred by persistent delays and canceled connections.
+We sought refuge from the torrential downpour in a quaint historic chapel.
+Navigating foreign public transport systems requires a certain degree of adaptability.
+The travel advisory warned against venturing into politically volatile regions.
+I cherish the memories forged during our protracted road trip across Scandinavia.
+We meticulously planned every leg of our transcontinental backpacking expedition.
+The airline's egregious mishandling of our luggage soured our initial impression.
+Seldom have I encountered such breathtaking vistas as those atop the peak.
+Eco-tourism initiatives play a pivotal role in preserving endangered habitats.
+We immersed ourselves completely in the vibrant cadence of local street life.
+Had our flight not been delayed, we would have caught the sunset tour.
+The majestic ruins stand as a silent testament to a bygone civilization.
+I prefer lodging in independent guesthouses that reflect the local heritage.
+Wandering through the labyrinthine alleys of the medina was an unforgettable experience.
+We had to contend with sweltering temperatures throughout our desert excursion.
+The travel documentary vividly portrayed the stark realities of nomadic existence.
+Should you embark on a hiking trek, adequate hydration is non-negotiable.
+I find traveling solo to be an empowering journey of self-discovery.
+The concierge orchestrated our itinerary with remarkable precision and flair.
+We were spellbound by the ethereal beauty of the northern lights dancing overhead.
+Overtourism poses a formidable threat to the structural integrity of historical sites.
+I always ensure my immunizations are up to date prior to international travel.
+The rugged coastline offered countless secluded spots for quiet contemplation.
+We negotiated a reasonable tariff with the local boatman for a river cruise.
+The burgeoning ecotourism sector promotes sustainable interaction with wildlife.
+I am partial to destinations rich in both cultural heritage and natural splendor.
+The sudden inclement weather forced us to curtail our alpine expedition.
+We savored the tranquility of the secluded mountain retreat far from urban chaos.
+Travel broadens one's horizons and cultivates profound empathy for diverse cultures.
+The dilapidated condition of the historic bridge warrants urgent restoration.
+We marveled at the architectural ingenuity of the medieval cathedral.
+Not until we reached the summit did we truly appreciate the vast landscape.
+Every journey leaves an indelible mark on one's perspective of the world.
+Engaging in creative pursuits is widely recognized as an effective stress reliever.
+I have recently taken up pottery as a means to foster mindfulness and patience.
+The meticulous nature of oil painting demands immense focus and dedication.
+We organized a community gardening initiative to revitalize the neglected urban park.
+Had I possessed greater manual dexterity, I would have pursued woodworking.
+Extreme sports enthusiasts thrive on the adrenaline rush of defying gravity.
+I find solace in the rhythmic cadence of long-distance endurance running.
+The local amateur theatrical troupe is staging a contemporary adaptation of Shakespeare.
+Bird watching requires immense patience and an acute sense of observation.
+I am keen to master the intricate fingerpicking patterns of classical guitar.
+Calligraphy has evolved into a meditative art form that demands utmost precision.
+We spend our weekends restoring vintage automobiles to their former glory.
+Scuba diving opens up an entirely surreal realm of marine biodiversity.
+I have dedicated countless hours to perfecting my culinary skills through baking.
+Chess is an intellectual pursuit that sharpens strategic thinking and foresight.
+The local astronomy society organizes stargazing nights during meteor showers.
+Engaging in volunteer work for animal rescue shelters is deeply rewarding.
+I prefer endurance cycling over high-impact team sports for physical fitness.
+The intricate art of origami fosters concentration and fine motor skills.
+We frequently host board game evenings to stimulate intellectual engagement with peers.
+Landscape photography allows me to capture fleeting moments of natural beauty.
+Learning a musical instrument in adulthood presents unique cognitive challenges.
+Trail running through rugged terrain tests both physical stamina and mental grit.
+I have always been intrigued by genealogy and tracing my ancestral lineage.
+The community choir provides an inclusive space for vocal expression and camaraderie.
+Mixology has emerged as a sophisticated hobby blending chemistry and culinary art.
+Urban sketching has transformed how I perceive the architectural details around me.
+Rock climbing demands absolute trust in one's equipment and climbing partner.
+I derive immense satisfaction from cultivating rare botanical specimens at home.
+Book clubs offer a stimulating forum for critical analysis and literary debate.
+Kayaking down turbulent white-water rapids requires split-second decision-making.
+Upcycling old furniture into modern decor has become my signature weekend project.
+I find martial arts to be an exceptional discipline for physical and mental equilibrium.
+The intricate stitching of embroidery offers a quiet escape from digital overload.
+Beekeeping has gained popularity as an ecological hobby supporting pollinator populations.
+Windsurfing combines aerodynamic physics with supreme core strength and balance.
+I enjoy composing short narrative fiction based on historical anomalies.
+Geocaching turns outdoor exploration into an interactive modern-day treasure hunt.
+The patience required for fly-fishing mirrors the tranquility of the surrounding landscape.
+Pottery throwing requires mastering the centrifugal force of the spinning wheel.
+I have immersed myself in studying meteorology to better forecast local weather patterns.
+Roller derby is an exhilarating, high-contact sport that fosters fierce team loyalty.
+The meticulous hobby of model building sharpens spatial awareness and patience.
+I appreciate the contemplative nature of visiting historical art galleries solo.
+Permaculture gardening mimics natural ecosystems to yield sustainable organic harvests.
+Competitive debating hones rhetorical skills and critical counter-argumentation.
+I take pride in mastering complex foreign baking techniques from scratch.
+Snowboarding down pristine backcountry slopes provides an unmatched adrenaline rush.
+The study of philosophy offers profound frameworks for navigating ethical dilemmas.
+Pursuing diverse creative hobbies ensures a well-rounded and intellectually stimulated life.
+Had the marketing campaign been executed differently, market penetration would have surged.
+It is crucial that management foster an environment of psychological safety.
+Scarcely had we resolved one logistical crisis when another surfaced unexpectedly.
+We are bound to encounter resistance when implementing radical structural reforms.
+Only by critically evaluating our metrics can we optimize future productivity.
+I take strong exception to the insinuation that my team lacks commitment.
+Were the board to approve the budget, operations would commence immediately.
+The sheer volume of data necessitates advanced analytics tools for interpretation.
+It has long been acknowledged that proactive leadership prevents organizational stagnation.
+No account should be given to unsubstantiated rumors circulating in the office.
+Had I anticipated the economic downturn, I would have diversified our portfolio.
+The onus rests upon department heads to enforce rigorous compliance protocols.
+Little did we know that our proposal would be adopted as the industry standard.
+It is high time we prioritized employee well-being over short-term financial gains.
+Supposing the negotiations collapse, we must have a contingency plan in place.
+I am inclined to think that their strategic vision is fundamentally flawed.
+Not until the comprehensive audit concluded did the financial discrepancies vanish.
+We must factor in potential supply chain disruptions when projecting revenue.
+Provided that we maintain our current momentum, targets will easily be surpassed.
+The company's commitment to sustainability has significantly boosted its brand equity.
+I am thoroughly convinced that this hurdle will ultimately strengthen our resolve.
+Seldom do we witness such exemplary collaboration across disparate departments.
+Under no circumstances should proprietary information leave the secure server.
+We are currently navigating a highly competitive landscape marked by rapid disruption.
+It goes without saying that effective delegation is a hallmark of strong management.
+Had it not been for the strategic partnership, expansion would have been impossible.
+The restructuring initiative aims to eliminate redundancies and optimize efficiency.
+I take full responsibility for the miscommunication during the client briefing.
+Such is the complexity of global markets that agility is an absolute prerequisite.
+We must ensure absolute alignment between corporate goals and operational output.
+It is imperative that we bridge the gap between creative design and technical feasibility.
+No sooner had we addressed one crisis than an unforeseen regulatory hurdle appeared.
+I find it difficult to fathom how such an elementary mistake slipped past quality control.
+Were we to compromise on quality, we would forfeit our hard-earned market share.
+The keynote speaker underscored the critical importance of digital transformation.
+I am somewhat skeptical regarding the projected return on investment timelines.
+Only through rigorous iterative testing can we guarantee software reliability.
+The firm's primary directive is to expand its footprint in developing markets.
+Hard as the transition was, the long-term benefits outweighed the friction.
+We are tasked with synthesizing vast amounts of qualitative consumer feedback.
+It is widely recognized that corporate culture dictates long-term organizational success.
+Should any unforeseen discrepancies arise, report them to compliance immediately.
+I am partial to strategies that prioritize organic growth over aggressive acquisitions.
+The sudden shift in consumer habits necessitated an immediate strategic pivot.
+We spent hours dissecting the financial reports to unearth hidden cost anomalies.
+Excellence is not merely an aspiration, but a continuous operational commitment.
+The collaboration proved mutually beneficial, fostering shared technological advancement.
+Had our risk assessment been more comprehensive, we could have avoided the shortfall.
+We must continually adapt our framework to thrive in an unpredictable economy.
+Mastery of these advanced structures marks a significant milestone in language fluency.`;
+
+/* ─────────────── Silencio en MP3 ───────────────
+   Una trama MPEG-2 Layer III de 24 kHz, 48 kbps, mono: 144 bytes, 24 ms.
+   Es el mismo formato que devuelve el servicio de voz, así que repetirla y
+   pegarla entre los fragmentos produce un MP3 válido sin decodificar nada. */
+
+const TRAMA_B64 = '//NkxHwAAANIAAAAAFVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
+const MS_POR_TRAMA = 24;
+
+function base64ABytes(b64) {
+  const bin = atob(b64);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+
+const TRAMA = base64ABytes(TRAMA_B64);
+
+function silencio(ms) {
+  const n = Math.max(0, Math.round(ms / MS_POR_TRAMA));
+  const out = new Uint8Array(n * TRAMA.length);
+  for (let i = 0; i < n; i++) out.set(TRAMA, i * TRAMA.length);
+  return out;
+}
+
+function unir(trozos) {
+  let total = 0;
+  for (const t of trozos) total += t.length;
+  const out = new Uint8Array(total);
+  let p = 0;
+  for (const t of trozos) { out.set(t, p); p += t.length; }
+  return out;
+}
+
+/* ─────────────── Servicio de voz ───────────────
+   Los navegadores obligan a identificar la página de origen, y el servicio de
+   voz de Microsoft solo acepta el de la extensión de Edge. Por eso las
+   peticiones pasan por un pequeño puente propio, que reenvía cada frase con la
+   identificación correcta y devuelve el MP3. */
+
+const PUENTE_VOCES = 'https://voces.pablobacigalupe.workers.dev';
+
+const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
+
+async function pedirAudio(texto, voz, rate) {
+  const r = await fetch(PUENTE_VOCES, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ texto, voz, rate }),
+  });
+
+  if (!r.ok) {
+    let detalle = `el puente respondió ${r.status}`;
+    try {
+      const j = await r.json();
+      if (j && j.error) detalle = j.error;
+    } catch (_) { /* la respuesta no era JSON */ }
+    throw new Error(detalle);
+  }
+
+  const audio = new Uint8Array(await r.arrayBuffer());
+  if (!audio.length) throw new Error('el puente devolvió un audio vacío');
+  return audio;
+}
+
+const CACHE_VOZ = new Map();
+const PETICIONES_EN_PARALELO = 4;
+
+async function sintetizarLote(trabajos, alAvanzar, cancelado) {
+  const cola = trabajos.map((t, i) => ({ ...t, i }));
+  const audios = new Array(trabajos.length);
+  const fallos = [];
+  let hechos = 0;
+
+  async function trabajador() {
+    while (cola.length && !cancelado()) {
+      const t = cola.shift();
+      const clave = `${t.texto}|${t.voz}|${t.rate}`;
+      if (CACHE_VOZ.has(clave)) {
+        audios[t.i] = CACHE_VOZ.get(clave);
+        alAvanzar(++hechos);
+        continue;
+      }
+      let hecho = false;
+      let ultimo = null;
+      for (let intento = 0; intento < 3 && !hecho && !cancelado(); intento++) {
+        try {
+          const audio = await pedirAudio(t.texto, t.voz, t.rate);
+          CACHE_VOZ.set(clave, audio);
+          audios[t.i] = audio;
+          hecho = true;
+        } catch (e) {
+          ultimo = e;
+          await esperar(700 * (intento + 1));
+        }
+      }
+      if (!hecho) {
+        audios[t.i] = new Uint8Array(0);
+        fallos.push({ texto: t.texto, motivo: ultimo ? ultimo.message : 'desconocido' });
+      }
+      alAvanzar(++hechos);
+    }
+  }
+
+  await Promise.all(
+    Array.from({ length: Math.min(PETICIONES_EN_PARALELO, Math.max(1, cola.length)) }, trabajador),
+  );
+  return { audios, fallos };
+}
+
+/* ─────────────── Traducción ─────────────── */
+
+function bloquesDeTexto(frases, maxCaracteres = 1200, maxLineas = 20) {
+  const bloques = [];
+  let actual = [];
+  let largo = 0;
+  frases.forEach((f, i) => {
+    if (actual.length && (largo + f.texto.length > maxCaracteres || actual.length >= maxLineas)) {
+      bloques.push(actual); actual = []; largo = 0;
+    }
+    actual.push({ ...f, i });
+    largo += f.texto.length + 1;
+  });
+  if (actual.length) bloques.push(actual);
+  return bloques;
+}
+
+async function viaGoogle(bloque, origen, destino) {
+  const texto = bloque.map((b) => b.texto).join('\n');
+  const url = 'https://translate.googleapis.com/translate_a/single'
+            + `?client=gtx&sl=${origen}&tl=${destino}&dt=t&q=${encodeURIComponent(texto)}`;
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`respuesta ${r.status}`);
+  const datos = await r.json();
+  const completo = (datos[0] || []).map((seg) => seg[0]).join('');
+  const lineas = completo.split('\n').map((s) => s.trim());
+  while (lineas.length > bloque.length && lineas[lineas.length - 1] === '') lineas.pop();
+  if (lineas.length !== bloque.length) throw new Error('el traductor devolvió otro número de líneas');
+  return lineas;
+}
+
+async function viaMyMemory(bloque, origen, destino) {
+  const salida = [];
+  for (const b of bloque) {
+    const url = 'https://api.mymemory.translated.net/get'
+              + `?q=${encodeURIComponent(b.texto)}&langpair=${origen}|${destino}`;
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(`respuesta ${r.status}`);
+    const datos = await r.json();
+    const t = datos && datos.responseData && datos.responseData.translatedText;
+    if (!t) throw new Error('sin traducción');
+    salida.push(String(t).trim());
+  }
+  return salida;
+}
+
+let traductorChrome = null;
+
+async function viaChrome(bloque, origen, destino) {
+  if (typeof Translator === 'undefined') throw new Error('no disponible en este navegador');
+  if (typeof Translator.availability === 'function') {
+    const estado = await conTiempo(
+      Translator.availability({ sourceLanguage: origen, targetLanguage: destino }), 5000, 'disponibilidad');
+    if (estado === 'unavailable') throw new Error('el par de idiomas no está disponible');
+  }
+  if (!traductorChrome || traductorChrome.par !== `${origen}|${destino}`) {
+    traductorChrome = {
+      par: `${origen}|${destino}`,
+      motor: await Translator.create({ sourceLanguage: origen, targetLanguage: destino }),
+    };
+  }
+  const salida = [];
+  for (const b of bloque) salida.push((await traductorChrome.motor.translate(b.texto)).trim());
+  return salida;
+}
+
+const MOTORES = [
+  ['Google', viaGoogle],
+  ['el traductor de tu navegador', viaChrome],
+  ['MyMemory', viaMyMemory],
+];
+
+/** Ningún traductor puede dejar la generación colgada esperándole. */
+function conTiempo(promesa, ms, que) {
+  return Promise.race([
+    promesa,
+    new Promise((_, rechazar) =>
+      setTimeout(() => rechazar(new Error(`${que} tardó más de ${ms / 1000} s`)), ms)),
+  ]);
+}
+
+/** Prueba los motores en orden, empezando por el que ya funcionó antes. */
+async function traducirBloque(bloque, origen, destino, preferido) {
+  const orden = preferido
+    ? MOTORES.slice().sort((a, b) => Number(b[0] === preferido) - Number(a[0] === preferido))
+    : MOTORES;
+  let ultimo = null;
+  for (const [nombre, motor] of orden) {
+    try {
+      const lineas = await conTiempo(motor(bloque, origen, destino), 20000, nombre);
+      return { lineas, nombre };
+    } catch (e) {
+      ultimo = e;
+    }
+  }
+  throw ultimo || new Error('ningún traductor respondió');
+}
+
+async function traducir(pendientes, origen, destino, alAvanzar) {
+  const bloques = bloquesDeTexto(pendientes);
+  const resultado = new Map();
+  const problemas = [];
+  let hechas = 0;
+  let motorUsado = null;
+
+  for (const bloque of bloques) {
+    try {
+      const { lineas, nombre } = await traducirBloque(bloque, origen, destino, motorUsado);
+      bloque.forEach((b, k) => resultado.set(b.indice, lineas[k]));
+      motorUsado = nombre;
+    } catch (_) {
+      bloque.forEach((b) => problemas.push(b.texto));   // se dictarán sin traducción
+    }
+    hechas += bloque.length;
+    alAvanzar(hechas);
+  }
+  return { resultado, motorUsado, problemas };
+}
+
+/* ─────────────── Lectura de la lista ─────────────── */
+
+const RE_NUM = /^\s*\d+\s*[.)\-]\s*/;
+
+function limpiar(s) {
+  return s.replace(RE_NUM, '')
+    .replace(/…/g, '...')
+    .split(/\s[—–]\s/)[0]
+    .trim();
+}
+
+function leerFrases(texto) {
+  const pares = [];
+  for (const bruta of texto.split('\n')) {
+    const linea = bruta.trim();
+    if (!linea) continue;
+    if (linea.startsWith('(') && linea.endsWith(')') && pares.length) {
+      const trad = limpiar(linea.slice(1, -1));
+      if (trad) pares[pares.length - 1].traduccion = trad;
+      continue;
+    }
+    const frase = limpiar(linea);
+    if (frase) pares.push({ texto: frase, traduccion: null });
+  }
+  return pares;
+}
+
+/* ─────────────── Interfaz ─────────────── */
+
+const $ = (id) => document.getElementById(id);
+
+let usandoPropias = false;
+const textoActivo = () => (usandoPropias ? el.frases.value : FRASES_RECOMENDADAS);
+
+const el = {
+  idiomaApr: $('idiomaApr'), vozApr: $('vozApr'),
+  incluirTrad: $('incluirTrad'), idiomaTrad: $('idiomaTrad'), vozTrad: $('vozTrad'),
+  grupoTrad: $('grupoTrad'),
+  velocidad: $('velocidad'), velocidadVal: $('velocidadVal'),
+  pausaIdiomas: $('pausaIdiomas'), pausaIdiomasVal: $('pausaIdiomasVal'),
+  pausaFrases: $('pausaFrases'), pausaFrasesVal: $('pausaFrasesVal'),
+  repetir: $('repetir'), orden: $('orden'), porArchivo: $('porArchivo'),
+  estadoTrad: $('estadoTrad'),
+  alternarLista: $('alternarLista'), vistaLista: $('vistaLista'), muestraLista: $('muestraLista'),
+  totalLista: $('totalLista'), ayudaFrases: $('ayudaFrases'), notaIdioma: $('notaIdioma'),
+  frases: $('frases'), contador: $('contador'),
+  generar: $('generar'), cancelar: $('cancelar'),
+  progreso: $('progreso'), barra: $('barraRelleno'), estado: $('estado'),
+  resultado: $('resultado'), resumen: $('resumen'),
+  reproductor: $('reproductor'), descargas: $('descargas'),
+  aviso: $('aviso'),
+};
+
+function rellenarIdiomas(select, valorInicial) {
+  select.innerHTML = '';
+  for (const nombre of Object.keys(IDIOMAS)) {
+    const o = document.createElement('option');
+    o.value = nombre;
+    o.textContent = nombre;
+    select.appendChild(o);
+  }
+  select.value = valorInicial;
+}
+
+function rellenarVoces(selectIdioma, selectVoz) {
+  const lista = VOCES[IDIOMAS[selectIdioma.value]];
+  selectVoz.innerHTML = '';
+  for (const [etiqueta, id] of lista) {
+    const o = document.createElement('option');
+    o.value = id;
+    o.textContent = etiqueta;
+    selectVoz.appendChild(o);
+  }
+}
+
+function num(v, decimales = 1) {
+  return v.toFixed(decimales).replace('.', ',');
+}
+
+function actualizarEtiquetas() {
+  const v = Number(el.velocidad.value);
+  el.velocidadVal.textContent = `${v < 0 ? '−' : '+'}${Math.abs(v)} %`;
+  el.pausaIdiomasVal.textContent = `${num(Number(el.pausaIdiomas.value))} s`;
+  el.pausaFrasesVal.textContent = `${num(Number(el.pausaFrases.value))} s`;
+}
+
+function actualizarContador() {
+  const n = leerFrases(textoActivo()).length;
+  el.contador.textContent = n === 1 ? '1 frase' : `${n} frases`;
+}
+
+function actualizarNotaIdioma() {
+  const desajuste = !usandoPropias && el.idiomaApr.value !== 'Inglés';
+  el.notaIdioma.hidden = !desajuste;
+  if (desajuste) {
+    el.notaIdioma.innerHTML = `El listado recomendado está en <b>inglés</b>, y has elegido aprender
+      <b>${el.idiomaApr.value}</b>. Cambia el idioma a Inglés, o pulsa
+      <b>Incluir mis propias frases</b> y pega las tuyas.`;
+  }
+}
+
+function mostrarSelectorLista() {
+  el.vistaLista.hidden = usandoPropias;
+  el.frases.hidden = !usandoPropias;
+  el.ayudaFrases.hidden = !usandoPropias;
+  el.alternarLista.textContent = usandoPropias
+    ? 'Usar el listado recomendado'
+    : 'Incluir mis propias frases';
+  actualizarContador();
+  actualizarNotaIdioma();
+}
+
+function mostrarAviso(html) {
+  el.aviso.innerHTML = html;
+  el.aviso.hidden = !html;
+}
+
+/* ─────────────── Generación ─────────────── */
+
+let cancelando = false;
+
+function marcaDeTiempo() {
+  const d = new Date();
+  const p = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}`;
+}
+
+function enlaceDescarga(nombre, blob, etiqueta) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = nombre;
+  a.textContent = etiqueta;
+  el.descargas.appendChild(a);
+  return a;
+}
+
+function progreso(fraccion, mensaje) {
+  el.barra.style.width = `${Math.round(fraccion * 100)}%`;
+  el.estado.textContent = mensaje;
+}
+
+async function generar() {
+  const pares = leerFrases(textoActivo());
+  mostrarAviso('');
+
+  if (!pares.length) {
+    mostrarAviso('<b>No hay frases.</b> Escribe o pega tu lista en el cuadro, una frase por línea.');
+    return;
+  }
+  if (pares.length > 1200) {
+    mostrarAviso(`<b>Son ${pares.length} frases.</b> Divídelas en tandas de 1200 o menos: `
+      + 'el navegador no lleva bien tandas mayores.');
+    return;
+  }
+
+  const incluirTrad = el.incluirTrad.checked;
+  const codApr = IDIOMAS[el.idiomaApr.value];
+  const codTrad = IDIOMAS[el.idiomaTrad.value];
+
+  if (incluirTrad && codApr === codTrad) {
+    mostrarAviso('<b>Los dos idiomas son el mismo.</b> Elige un idioma de traducción distinto, o desactiva la traducción.');
+    return;
+  }
+
+  const vozApr = el.vozApr.value;
+  const vozTrad = el.vozTrad.value;
+  const velocidad = Number(el.velocidad.value);
+  const rate = `${velocidad >= 0 ? '+' : ''}${velocidad}%`;
+  const msIdiomas = Math.round(Number(el.pausaIdiomas.value) * 1000);
+  const msFrases = Math.round(Number(el.pausaFrases.value) * 1000);
+  const repetir = el.repetir.checked;
+  const tradPrimero = el.orden.value === 'trad';
+  const porArchivo = Math.max(0, Number(el.porArchivo.value) || 0);
+
+  cancelando = false;
+  el.generar.disabled = true;
+  el.cancelar.hidden = false;
+  el.progreso.hidden = false;
+  el.resultado.hidden = true;
+  el.descargas.innerHTML = '';
+  progreso(0, 'Preparando…');
+
+  const cancelado = () => cancelando;
+  const problemasTraduccion = [];
+  let motorTraduccion = null;
+
+  try {
+    /* 1 · Traducir lo que falte */
+    if (incluirTrad) {
+      const pendientes = pares
+        .map((p, indice) => ({ indice, texto: p.texto, traduccion: p.traduccion }))
+        .filter((p) => !p.traduccion);
+
+      if (pendientes.length) {
+        progreso(0.02, `Traduciendo ${pendientes.length} frases…`);
+        const r = await traducir(pendientes, codApr, codTrad,
+          (n) => progreso(0.02 + 0.08 * (n / pendientes.length), `Traduciendo… ${n}/${pendientes.length}`));
+        motorTraduccion = r.motorUsado;
+        problemasTraduccion.push(...r.problemas);
+        for (const [indice, texto] of r.resultado) pares[indice].traduccion = texto;
+      }
+    }
+    if (cancelado()) throw new Error('cancelado');
+
+    /* 2 · Pedir las voces */
+    // La locución va siempre en español: si la traducción también lo es,
+    // se usa la voz elegida para que suene la misma persona.
+    const vozLocucion = (incluirTrad && codTrad === 'es') ? vozTrad : VOZ_LOCUCION;
+
+    const trabajos = [
+      { texto: LOCUCION_INTRO, voz: vozLocucion, rate: '+0%' },
+      { texto: LOCUCION_CIERRE, voz: vozLocucion, rate: '+0%' },
+    ];
+    const I_INTRO = 0;
+    const I_CIERRE = 1;
+
+    const mapa = [];
+    pares.forEach((p) => {
+      const entrada = { apr: trabajos.length, trad: -1 };
+      trabajos.push({ texto: p.texto, voz: vozApr, rate });
+      if (incluirTrad && p.traduccion) {
+        entrada.trad = trabajos.length;
+        trabajos.push({ texto: p.traduccion, voz: vozTrad, rate: '+0%' });
+      }
+      mapa.push(entrada);
+    });
+
+    progreso(0.1, `Generando ${trabajos.length} audios…`);
+    const { audios, fallos } = await sintetizarLote(
+      trabajos,
+      (n) => {
+        if (n % 5 && n !== trabajos.length) return;
+        progreso(0.1 + 0.85 * (n / trabajos.length), `Generando voces… ${n}/${trabajos.length}`);
+      },
+      cancelado,
+    );
+    if (cancelado()) throw new Error('cancelado');
+
+    if (fallos.length >= trabajos.length - 1) {
+      throw new Error('El puente de voces no respondió a ninguna petición. '
+        + 'Comprueba tu conexión; si el problema sigue, abre la dirección del puente en el '
+        + 'navegador para ver si está en marcha.');
+    }
+
+    /* 3 · Montar los MP3 */
+    progreso(0.97, 'Montando el MP3…');
+    const silIdiomas = silencio(msIdiomas);
+    const silFrases = silencio(msFrases);
+    const silRepe = silencio(400);
+
+    const silLocucion = silencio(PAUSA_LOCUCION);
+    const audioIntro = audios[I_INTRO];
+    const audioCierre = audios[I_CIERRE];
+
+    const archivos = [];
+    let piezas = [];
+    let frasesEnArchivo = 0;
+
+    // Cada MP3 se abre con la locución de entrada y se cierra con la de despedida.
+    const abrirArchivo = () => {
+      piezas = (audioIntro && audioIntro.length) ? [audioIntro, silLocucion] : [];
+      frasesEnArchivo = 0;
+    };
+    const cerrarArchivo = () => {
+      if (!frasesEnArchivo) return;
+      if (audioCierre && audioCierre.length) piezas.push(silLocucion, audioCierre);
+      archivos.push(new Blob(piezas, { type: 'audio/mpeg' }));
+      abrirArchivo();
+    };
+
+    abrirArchivo();
+
+    pares.forEach((p, i) => {
+      const audioApr = audios[mapa[i].apr];
+      const audioTrad = mapa[i].trad >= 0 ? audios[mapa[i].trad] : null;
+      if (!audioApr || !audioApr.length) return;
+
+      let bloque = [audioApr];
+      if (repetir) bloque = bloque.concat([silRepe, audioApr]);
+      if (audioTrad && audioTrad.length) {
+        bloque = tradPrimero
+          ? [audioTrad, silIdiomas].concat(bloque)
+          : bloque.concat([silIdiomas, audioTrad]);
+      }
+      bloque.push(silFrases);
+      piezas = piezas.concat(bloque);
+      frasesEnArchivo += 1;
+
+      if (porArchivo && (i + 1) % porArchivo === 0) cerrarArchivo();
+    });
+    cerrarArchivo();
+
+    if (!archivos.length) throw new Error('No se pudo montar ningún audio.');
+
+    // Todas las piezas son tramas completas de 144 bytes, así que la duración
+    // se deduce del tamaño sin tener que descodificar nada.
+    const msTotales = archivos.reduce((t, b) => t + b.size, 0) / TRAMA.length * MS_POR_TRAMA;
+
+    /* 4 · Hoja de repaso */
+    const hoja = pares.map((p) => (incluirTrad && p.traduccion
+      ? `${p.texto}\n(${p.traduccion})\n`
+      : `${p.texto}\n`)).join('\n');
+
+    /* 5 · Entregar */
+    const sello = marcaDeTiempo();
+    const base = `frases_${codApr}${incluirTrad ? `-${codTrad}` : ''}_${sello}`;
+
+    archivos.forEach((blob, k) => {
+      const nombre = archivos.length > 1
+        ? `${base}_parte${String(k + 1).padStart(2, '0')}.mp3`
+        : `${base}.mp3`;
+      enlaceDescarga(nombre, blob, `⬇ ${nombre}`);
+    });
+    enlaceDescarga(`${base}.txt`, new Blob([hoja], { type: 'text/plain;charset=utf-8' }),
+      '⬇ hoja de repaso (.txt)');
+
+    el.reproductor.src = URL.createObjectURL(archivos[0]);
+    const minutos = msTotales / 60000;
+    el.resumen.textContent =
+      `${pares.length} frases · ${num(minutos)} minutos · `
+      + `${archivos.length} ${archivos.length === 1 ? 'archivo' : 'archivos'} MP3`
+      + (motorTraduccion ? ` · traducido con ${motorTraduccion}` : '');
+    el.resultado.hidden = false;
+    progreso(1, 'Listo.');
+
+    const avisos = [];
+    if (fallos.length) {
+      avisos.push(`<b>${fallos.length} frase(s) se quedaron sin voz</b> y se han omitido del audio. `
+        + 'Vuelve a pulsar Generar: lo ya conseguido está guardado y solo se repetirán las que fallaron.');
+    }
+    if (problemasTraduccion.length) {
+      avisos.push(`<b>${problemasTraduccion.length} frase(s) no se pudieron traducir.</b> `
+        + 'Escribe tú la traducción entre paréntesis en la línea de debajo y vuelve a generar.');
+    }
+    mostrarAviso(avisos.join('<br><br>'));
+
+  } catch (e) {
+    if (cancelado()) {
+      progreso(0, 'Cancelado.');
+    } else {
+      mostrarAviso(`<b>No se pudo generar el audio.</b> ${e.message}`);
+      el.progreso.hidden = true;
+    }
+  } finally {
+    el.generar.disabled = false;
+    el.cancelar.hidden = true;
+    if (!el.resultado.hidden) setTimeout(() => { el.progreso.hidden = true; }, 1500);
+  }
+}
+
+/* ─────────────── Arranque ─────────────── */
+
+rellenarIdiomas(el.idiomaApr, 'Inglés');
+rellenarIdiomas(el.idiomaTrad, 'Español');
+rellenarVoces(el.idiomaApr, el.vozApr);
+rellenarVoces(el.idiomaTrad, el.vozTrad);
+const LINEAS_MUESTRA = 14;
+const lineasRecomendadas = FRASES_RECOMENDADAS.split('\n').filter((l) => l.trim());
+el.muestraLista.textContent = lineasRecomendadas.slice(0, LINEAS_MUESTRA).join('\n');
+el.totalLista.textContent = leerFrases(FRASES_RECOMENDADAS).length;
+
+actualizarEtiquetas();
+mostrarSelectorLista();
+actualizarInterruptorTrad();
+
+el.idiomaApr.addEventListener('change', () => {
+  rellenarVoces(el.idiomaApr, el.vozApr);
+  actualizarNotaIdioma();
+});
+
+el.alternarLista.addEventListener('click', () => {
+  usandoPropias = !usandoPropias;
+  mostrarSelectorLista();
+  if (usandoPropias) el.frases.focus();
+});
+el.idiomaTrad.addEventListener('change', () => rellenarVoces(el.idiomaTrad, el.vozTrad));
+function actualizarInterruptorTrad() {
+  const activa = el.incluirTrad.checked;
+  if (activa) delete el.grupoTrad.dataset.off;
+  else el.grupoTrad.dataset.off = '';
+  if (el.estadoTrad) el.estadoTrad.textContent = activa ? 'Activada' : 'Desactivada';
+}
+
+el.incluirTrad.addEventListener('change', actualizarInterruptorTrad);
+for (const c of [el.velocidad, el.pausaIdiomas, el.pausaFrases]) {
+  c.addEventListener('input', actualizarEtiquetas);
+}
+el.frases.addEventListener('input', actualizarContador);
+el.generar.addEventListener('click', generar);
+el.cancelar.addEventListener('click', () => { cancelando = true; });
+</script>
+</body>
+</html>
