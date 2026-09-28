@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Frases a Audio — Memoriza idiomas escuchando</title>
-<meta name="description" content="Convierte una lista de frases en un MP3 bilingüe para memorizar idiomas escuchando. Funciona entero en tu navegador.">
+<meta name="description" content="Aprende las 1000 frases más frecuentes escuchándolas con voces neuronales y repasándolas con tarjetas, cinco nuevas cada día.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
 <style>
 /* ============================================================
@@ -37,6 +37,7 @@
    Esta regla devuelve a hidden la última palabra. */
 [hidden]{ display: none !important; }
 html{ scroll-behavior: smooth; }
+section, .estudio{ scroll-margin-top: 64px; }
 body{
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter,
@@ -408,19 +409,6 @@ input[type="range"]{ width: 100%; accent-color: var(--accent); }
 .resumen{ font-size: 14px; color: var(--ink-soft); }
 audio{ width: 100%; }
 
-.descargas{ display: flex; flex-wrap: wrap; gap: 10px; }
-.descargas a{
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--accent);
-  background: var(--accent-soft);
-  border: 1px solid transparent;
-  border-radius: 999px;
-  padding: 10px 18px;
-  transition: border-color .15s ease;
-}
-.descargas a:hover{ border-color: var(--accent); }
-
 .aviso{
   background: var(--warn-soft);
   border: 1px solid var(--warn-line);
@@ -602,147 +590,504 @@ footer{
 .linea.activa .apr{ opacity: 1; color: var(--accent); }
 .linea.activa .trad{ opacity: 1; }
 
-/* ── Tarjetas de nivel ────────────────────────── */
-.cabecera-lista{
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-.cabecera-lista .lista-nota{ flex: 1 1 20rem; }
-
+/* ── Niveles (paso 4) ─────────────────────────── */
 .niveles{
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (max-width: 40rem){
+  .niveles{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 .nivel{
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  text-align: left;
-  font: inherit;
-  padding: 16px 16px 14px;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 14px 14px 12px;
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: 14px;
   background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
   cursor: pointer;
   transition: border-color .15s ease, background-color .15s ease, box-shadow .15s ease;
 }
 .nivel:hover{ border-color: #c9c9d0; }
+.nivel-codigo{ font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+.nivel-nombre{ font-size: 13px; font-weight: 600; }
+.nivel-rango{ font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
 .nivel[aria-checked="true"]{
   border-color: var(--accent);
   background: var(--accent-soft);
-  box-shadow: 0 0 0 3px rgba(61,58,239,.12);
-}
-.nivel-codigo{
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--ink);
+  box-shadow: 0 0 0 1px var(--accent) inset;
 }
 .nivel[aria-checked="true"] .nivel-codigo{ color: var(--accent); }
-.nivel-nombre{ font-size: 13px; font-weight: 650; color: var(--ink); }
-.nivel-resumen{ font-size: 12.5px; line-height: 1.4; color: var(--ink-soft); }
-.nivel-cuenta{
-  margin-top: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  font-variant-numeric: tabular-nums;
-}
 
-/* ── Bloques de orden ─────────────────────────── */
+/* ── Bloques de orden (paso 3) ────────────────── */
 .bloques{ display: flex; flex-direction: column; gap: 8px; }
 .bloque{
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 11px 14px;
+  gap: 12px;
+  padding: 10px 14px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 999px;
   background: var(--bg);
+  font-size: 14px;
+  font-weight: 600;
   cursor: grab;
-  touch-action: none;
   user-select: none;
+  touch-action: none;
+  position: relative;
   transition: box-shadow .15s ease, border-color .15s ease;
 }
 .bloque:hover{ border-color: #c9c9d0; }
-.bloque:focus-visible{ outline: 2px solid var(--accent); outline-offset: 2px; }
-.bloque.arrastrando{
-  cursor: grabbing;
-  border-color: var(--accent);
-  box-shadow: 0 12px 24px -12px rgba(20,22,26,.35);
-  position: relative;
-  z-index: 2;
-}
 .bloque-codigo{
-  font-size: 11px;
+  flex: none;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: .04em;
   color: var(--accent);
   background: var(--accent-soft);
   border-radius: 999px;
-  padding: 4px 9px;
-  flex: none;
+  padding: 3px 10px;
   font-variant-numeric: tabular-nums;
 }
-.bloque-texto{ font-size: 14px; font-weight: 600; flex: 1; }
-.bloque-agarre{ color: #c3c3cc; font-size: 13px; letter-spacing: -2px; flex: none; }
+.bloque-nombre{ flex: 1; }
+.bloque-asa{ color: var(--ink-soft); font-size: 16px; line-height: 1; }
+.bloque.arrastrando{
+  cursor: grabbing;
+  z-index: 2;
+  border-color: var(--accent);
+  box-shadow: var(--sombra-alta);
+}
 
-/* ── Reproductor ──────────────────────────────── */
+/* ── Reproductor propio ───────────────────────── */
 .reproductor{
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 6px;
   background: var(--bg-soft);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 18px 20px 20px;
+  padding: 18px 20px 16px;
 }
-.linea-tiempo{ display: flex; flex-direction: column; gap: 4px; }
-#barraTiempo{ width: 100%; accent-color: var(--accent); cursor: pointer; }
+#barraTiempo{
+  --hecho: 0%;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--accent) var(--hecho), var(--line) var(--hecho));
+  cursor: pointer;
+  margin: 8px 0 0;
+}
+#barraTiempo::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid #fff;
+  box-shadow: 0 1px 4px rgba(20,22,26,.3);
+}
+#barraTiempo::-moz-range-thumb{
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid #fff;
+  box-shadow: 0 1px 4px rgba(20,22,26,.3);
+}
 .tiempos{
   display: flex;
   justify-content: space-between;
   font-size: 12px;
+  font-weight: 600;
   color: var(--ink-soft);
   font-variant-numeric: tabular-nums;
 }
-.mandos{ display: flex; align-items: center; justify-content: center; gap: 14px; }
+.mandos{ display: flex; align-items: center; justify-content: center; gap: 18px; }
 .mando{
   display: grid;
   place-items: center;
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
+  width: 48px; height: 48px;
+  border-radius: 999px;
   border: 1px solid var(--line);
   background: var(--bg);
   color: var(--ink);
   font: inherit;
+  font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
-  transition: border-color .15s ease, background-color .15s ease, transform .05s ease;
+  font-variant-numeric: tabular-nums;
+  transition: border-color .15s ease, transform .05s ease;
 }
 .mando:hover{ border-color: #c9c9d0; }
-.mando:active{ transform: scale(.95); }
-.mando .salto{ font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.mando:active{ transform: translateY(1px); }
 .mando.principal{
-  width: 58px;
-  height: 58px;
+  width: 64px; height: 64px;
+  font-size: 20px;
   background: var(--accent);
   border-color: var(--accent);
   color: var(--accent-ink);
 }
-.mando.principal:hover{ background: #3532d6; border-color: #3532d6; }
-.mando.principal .icono{ font-size: 17px; line-height: 1; }
+.mando.principal:hover{ background: #3532d6; }
+.aviso-online{ font-size: 13px; color: var(--ink-soft); text-align: center; }
 
-.aviso-online{
-  font-size: 12.5px;
+/* ── Estudio ──────────────────────────────────── */
+.estudio{ display: flex; flex-direction: column; gap: 24px; }
+.vista{ display: flex; flex-direction: column; gap: 24px; }
+.estudio .card h3{ font-size: 17px; font-weight: 650; letter-spacing: -0.01em; }
+
+.estudio-ajustes{
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px 20px;
+  padding: 20px 24px;
+}
+.estudio-ajustes .campo{ flex: 1 1 12rem; }
+
+.hoy{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 20px 24px;
+  box-shadow: var(--sombra-alta);
+}
+.hoy-texto{ display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.hoy-etiqueta{ font-size: 13px; font-weight: 600; color: var(--accent); }
+.hoy h3{ font-size: clamp(20px, 2.4vw, 26px) !important; font-weight: 700 !important; }
+.hoy-detalle{ font-size: 15px; color: var(--ink-soft); }
+.hoy-cifras{
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+}
+.hoy-cifras dt{ font-size: 12px; font-weight: 600; color: var(--ink-soft); }
+.hoy-cifras dd{ margin: 2px 0 0; font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+@media (max-width: 40rem){
+  .hoy{ grid-template-columns: 1fr; }
+  .hoy-acciones .btn{ width: 100%; }
+  .hoy-cifras{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Mapa del curso */
+.mapa{ gap: 16px; }
+.mapa-cabecera p{ font-size: 14px; color: var(--ink-soft); margin-top: 4px; }
+.mapa-filas{ display: flex; flex-direction: column; gap: 8px; }
+.mapa-fila{
+  display: grid;
+  grid-template-columns: 11rem 1fr 3.5rem;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 8px;
+  border-radius: 12px;
+}
+.mapa-fila.activa{ background: var(--accent-soft); }
+.mapa-nivel{
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+  padding: 4px 6px;
+  border-radius: 8px;
+}
+.mapa-nivel b{ font-size: 15px; }
+.mapa-nivel span{ font-size: 13px; color: var(--ink-soft); }
+.mapa-chips{ display: flex; flex-wrap: wrap; gap: 6px; }
+.mapa-pct{ font-size: 13px; font-weight: 600; color: var(--ink-soft); text-align: right; font-variant-numeric: tabular-nums; }
+.chip-intervalo{
+  width: 34px; height: 34px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg);
   color: var(--ink-soft);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+}
+.chip-intervalo:hover{ border-color: #c9c9d0; }
+.chip-intervalo.curso{ border-color: var(--accent); color: var(--accent); background: var(--bg); box-shadow: 0 0 0 1px var(--accent) inset; }
+.chip-intervalo.hecho{ background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.chip-nivel{ margin-left: 6px; }
+@media (max-width: 40rem){
+  .mapa-fila{ grid-template-columns: 1fr auto; }
+  .mapa-chips{ grid-column: 1 / -1; grid-row: 2; }
+  .chip-intervalo{ width: 32px; height: 32px; }
+}
+.leyenda{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+.leyenda li{ display: inline-flex; align-items: center; gap: 6px; }
+.punto{ width: 12px; height: 12px; border-radius: 50%; border: 1px solid var(--line); background: var(--bg); display: inline-block; }
+.punto.curso{ border: 2px solid var(--accent); }
+.punto.hecho{ background: var(--accent); border-color: var(--accent); }
+
+/* Pestañas de nivel */
+.nivel-detalle{ display: flex; flex-direction: column; gap: 20px; scroll-margin-top: 80px; }
+.pestanas{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  scroll-margin-top: 80px;
+}
+.pestana{
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.pestana span{ font-size: 13px; color: var(--ink-soft); }
+.pestana:hover{ border-color: #c9c9d0; }
+.pestana[aria-selected="true"]{ background: var(--ink); border-color: var(--ink); color: #fff; }
+.pestana[aria-selected="true"] span{ color: rgba(255,255,255,.7); }
+@media (max-width: 40rem){
+  .pestanas{ flex-wrap: nowrap; }
+  .pestana{ flex: 1; justify-content: center; padding: 10px 0; }
+  .pestana span{ display: none; }
+}
+
+/* Tarjetas de intervalo */
+.intervalos{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+@media (max-width: 62rem){ .intervalos{ grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 40rem){ .intervalos{ grid-template-columns: 1fr; } }
+.intervalo{ gap: 14px; padding: 22px; transition: box-shadow .3s ease, border-color .3s ease; }
+.intervalo.curso{ border-color: var(--accent); }
+.intervalo.pendiente{ background: var(--bg); }
+.intervalo.pendiente h3, .intervalo.pendiente .intervalo-rango{ opacity: .6; }
+.intervalo.destacado{ animation: destacar 1.4s ease; }
+@keyframes destacar{
+  0%, 60%{ box-shadow: 0 0 0 4px var(--accent-soft), var(--sombra-alta); border-color: var(--accent); }
+  100%{ box-shadow: var(--sombra); }
+}
+.intervalo-cabecera{ display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.estado-chip{
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--bg-soft);
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.estado-chip.curso{ background: var(--accent-soft); color: var(--accent); }
+.estado-chip.hecho{ background: var(--accent); color: var(--accent-ink); }
+.intervalo-rango{ font-size: 13px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.sesiones{ display: flex; flex-wrap: wrap; gap: 5px; }
+.sesion-punto{
+  width: 30px; height: 30px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+}
+.sesion-punto:hover:not(:disabled){ border-color: var(--accent); color: var(--accent); }
+.sesion-punto:disabled{ cursor: not-allowed; opacity: .45; }
+.sesion-punto.hecho{ background: var(--accent-soft); border-color: transparent; color: var(--accent); }
+.sesion-punto.siguiente{ background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.sesion-punto.repaso{ margin-left: 4px; }
+.sesion-punto.repaso.hecho{ background: var(--accent); color: var(--accent-ink); }
+.intervalo-acciones{ display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; }
+.intervalo-acciones .btn{ padding: 9px 16px; font-size: 13px; }
+.btn:disabled{ opacity: .4; cursor: not-allowed; }
+
+.repaso-nivel{
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+}
+.repaso-nivel p{ font-size: 14px; color: var(--ink-soft); margin-top: 4px; }
+.repaso-nivel.curso{ border-color: var(--accent); box-shadow: var(--sombra-alta); }
+.repaso-nivel.pendiente{ box-shadow: none; background: transparent; border-style: dashed; }
+
+/* ── Sesión ── */
+.sesion-cabecera{ display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.sesion-titulo{ flex: 1; min-width: 12rem; }
+.migas{ font-size: 15px; font-weight: 650; }
+.sesion-cuenta{ font-size: 13px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.relleno{ height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width .3s ease; }
+
+.escena{ perspective: 1600px; }
+.tarjeta{
+  display: grid;
+  max-width: 40rem;
+  margin: 0 auto;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform .55s cubic-bezier(.2,.7,.2,1);
+}
+.tarjeta.volteada{ transform: rotateY(180deg); }
+.tarjeta.entra{ animation: entrar .35s ease; }
+@keyframes entrar{ from{ opacity: 0; translate: 0 10px; } to{ opacity: 1; translate: 0 0; } }
+.cara{
+  grid-area: 1 / 1;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: var(--sombra-alta);
+  min-height: 22rem;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
   text-align: center;
+  position: relative;
+}
+.dorso{ transform: rotateY(180deg); background: var(--accent-soft); border-color: #dcdcfb; }
+.chip{
+  position: absolute;
+  top: 18px; left: 18px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.chip[data-tipo="repaso"]{ background: var(--bg-soft); color: var(--ink-soft); }
+.chip[data-tipo="repetida"]{ background: var(--warn-soft); color: var(--warn); }
+.chip-trad{ background: var(--bg); }
+.escuchar{
+  display: grid;
+  place-items: center;
+  width: 96px; height: 96px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 32px;
+  cursor: pointer;
+  box-shadow: 0 16px 30px -14px rgba(61,58,239,.6);
+  transition: transform .1s ease, background-color .15s ease;
+}
+.escuchar span{ translate: 3px 0; }
+.escuchar:hover{ background: #3532d6; }
+.escuchar:active{ transform: scale(.97); }
+.escuchar.sonando{ animation: latido 1.1s ease-in-out infinite; }
+.escuchar.cargando{ opacity: .6; cursor: progress; }
+@keyframes latido{
+  0%, 100%{ box-shadow: 0 0 0 0 rgba(61,58,239,.35), 0 16px 30px -14px rgba(61,58,239,.6); }
+  50%{ box-shadow: 0 0 0 14px rgba(61,58,239,0), 0 16px 30px -14px rgba(61,58,239,.6); }
+}
+.tarjeta.cargando .escuchar{ opacity: .4; pointer-events: none; }
+.tarjeta-pista{ font-size: 14px; color: var(--ink-soft); min-height: 1.5em; }
+.tarjeta-texto{ font-size: clamp(20px, 2.6vw, 26px); font-weight: 650; letter-spacing: -0.01em; text-wrap: balance; }
+.tarjeta-texto.grande{ font-size: clamp(22px, 3vw, 30px); color: var(--ink); }
+.tarjeta-original{ font-size: 15px; color: var(--ink-soft); }
+.tarjeta-acciones{ display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.calificar{ display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.calificar .btn{ min-width: 10rem; gap: 10px; }
+kbd{
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 6px;
+  border: 1px solid currentColor;
+  opacity: .6;
+}
+.atajos{ font-size: 12px; color: var(--ink-soft); text-align: center; }
+@media (hover: none){ .atajos, .calificar kbd{ display: none; } }
+
+/* ── Fin de sesión ── */
+.fin{ align-items: center; text-align: center; padding: 48px 28px; max-width: 40rem; margin: 0 auto; width: 100%; }
+.fin-icono{
+  display: grid;
+  place-items: center;
+  width: 64px; height: 64px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 28px;
+  font-weight: 700;
+}
+.fin h3{ font-size: 24px !important; font-weight: 700 !important; }
+.fin p{ color: var(--ink-soft); font-size: 15px; }
+.fin-acciones{ display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.fin-nota{ font-size: 14px !important; }
+
+/* ── Lista de frases de un intervalo ── */
+.lista-frases{
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--sombra);
+}
+.lista-frases li{
+  display: grid;
+  grid-template-columns: 2.5rem auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 12px;
+  border-radius: 12px;
+}
+.lista-frases li + li{ border-top: 1px solid var(--line); border-radius: 0; }
+.lista-num{ font-size: 12px; font-weight: 600; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+.mini-play{
+  width: 36px; height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--accent);
+  font-size: 12px;
+  cursor: pointer;
+}
+.mini-play:hover{ border-color: var(--accent); }
+.mini-play.cargando{ opacity: .5; }
+.mini-play.error{ color: var(--warn); }
+.lista-textos{ display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.lista-textos .apr{ font-weight: 600; }
+.lista-textos .trad{ font-size: 14px; color: var(--ink-soft); }
+.lista-fallos{ font-size: 12px; font-weight: 600; color: var(--warn); background: var(--warn-soft); padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+.cargando-lista{ display: block !important; color: var(--ink-soft); text-align: center; }
+
+@media (prefers-reduced-motion: reduce){
+  .tarjeta, .relleno{ transition: none; }
+  .tarjeta.entra, .escuchar.sonando, .intervalo.destacado{ animation: none; }
 }
 </style>
 </head>
@@ -755,6 +1100,7 @@ footer{
     </a>
     <nav class="nav-links">
       <a href="#herramienta">Generador</a>
+      <a href="#estudiar">Estudiar</a>
       <a href="#como">Cómo funciona</a>
       <a href="#formato">Formato</a>
     </nav>
@@ -848,15 +1194,15 @@ footer{
 
           <div class="campo">
             <span>Orden</span>
-            <div class="bloques" id="bloques"></div>
+            <div class="bloques" id="bloques" role="list" aria-label="Orden de los bloques de cada frase"></div>
             <small>Pincha y arrastra los bloques para configurar el orden.</small>
           </div>
 
           <label class="campo">
             <span>Frases por archivo</span>
             <input type="number" id="porArchivo" min="0" step="10" value="0">
-            <small>0 es un solo MP3. Con el listado completo eso son casi dos horas de audio,
-              así que 50 o 100 te deja archivos más manejables para el móvil.</small>
+            <small>0 es un solo bloque de audio. Con 50 o 100 te quedan partes más cortas
+              y fáciles de retomar.</small>
           </label>
         </fieldset>
       </div>
@@ -867,9 +1213,12 @@ footer{
         <div class="card">
           <h2><span class="paso">4</span> Las frases</h2>
 
-          <div class="cabecera-lista">
-            <p class="lista-nota" id="listaNota">Elige tu nivel. Las frases van de lo más básico a
-              las estructuras más avanzadas, y cada nivel se apoya en el anterior.</p>
+          <div class="selector-lista">
+            <div class="selector-texto">
+              <p class="lista-titulo" id="listaTitulo">Listado recomendado · 1000 frases en 5 niveles</p>
+              <p class="lista-nota" id="listaNota">Las mil frases más frecuentes, de lo más básico a
+                estructuras avanzadas, en bloques de 200. Elige tu nivel y pulsa Generar.</p>
+            </div>
             <button id="alternarLista" class="btn btn-linea" type="button">Incluir mis propias frases</button>
           </div>
 
@@ -904,30 +1253,22 @@ footer{
           <h2>Tu audio</h2>
           <p id="resumen" class="resumen"></p>
           <div class="partes" id="partes" hidden></div>
-
           <div class="reproductor">
-            <audio id="reproductor" preload="metadata"></audio>
-            <div class="linea-tiempo">
-              <input type="range" id="barraTiempo" min="0" max="1000" value="0" step="1"
-                     aria-label="Posición del audio">
-              <div class="tiempos">
-                <span id="tiempoActual">0:00</span>
-                <span id="tiempoTotal">0:00</span>
-              </div>
+            <audio id="reproductor" preload="metadata" hidden></audio>
+            <input type="range" id="barraTiempo" min="0" max="1000" step="1" value="0"
+                   aria-label="Posición del audio">
+            <div class="tiempos">
+              <span id="tiempoActual">0:00</span>
+              <span id="tiempoTotal">0:00</span>
             </div>
             <div class="mandos">
-              <button id="atras" class="mando" type="button" aria-label="Atrás 5 segundos">
-                <span class="salto">−5s</span>
+              <button class="mando" id="atras" type="button" aria-label="Retroceder 5 segundos">−5s</button>
+              <button class="mando principal" id="reproducir" type="button" aria-label="Reproducir">
+                <span id="iconoPlay" aria-hidden="true">▶</span>
               </button>
-              <button id="reproducir" class="mando principal" type="button" aria-label="Reproducir">
-                <span class="icono" id="iconoPlay">▶</span>
-              </button>
-              <button id="adelante" class="mando" type="button" aria-label="Adelante 5 segundos">
-                <span class="salto">+5s</span>
-              </button>
+              <button class="mando" id="adelante" type="button" aria-label="Avanzar 5 segundos">+5s</button>
             </div>
           </div>
-
           <div class="letras" id="letras" hidden></div>
           <p class="aviso-online">Este audio se escucha aquí. No se descarga.</p>
         </div>
@@ -939,7 +1280,146 @@ footer{
   </div>
 </section>
 
-<section id="como">
+<section id="estudiar">
+  <div class="wrap">
+    <div class="cabecera-seccion">
+      <span class="eyebrow">Estudiar</span>
+      <h2>Cinco frases nuevas cada día</h2>
+      <p>Escucha la frase, mírala escrita si lo necesitas y dale la vuelta para ver la traducción.
+        Cada sesión suma cinco nuevas y repasa las anteriores del intervalo. Cada siete sesiones,
+        un repaso completo, y al cerrar cada nivel, el repaso del nivel entero.</p>
+    </div>
+
+    <div class="estudio" id="estudio">
+
+      <div class="card estudio-ajustes">
+        <label class="campo">
+          <span>Aprendo</span>
+          <select id="estIdioma"></select>
+        </label>
+        <label class="campo">
+          <span>Voz y acento</span>
+          <select id="estVoz"></select>
+        </label>
+        <label class="campo">
+          <span>Traducción en el reverso</span>
+          <select id="estTrad"></select>
+        </label>
+      </div>
+
+      <!-- ─────────── Panel general ─────────── -->
+      <div class="vista" id="vistaPanel">
+
+        <div class="card hoy" id="hoy">
+          <div class="hoy-texto">
+            <p class="hoy-etiqueta" id="hoyEtiqueta">Tu próxima sesión</p>
+            <h3 id="hoyTitulo">A1 · Intervalo 1 · Sesión 1 de 7</h3>
+            <p class="hoy-detalle" id="hoyDetalle">5 frases nuevas</p>
+          </div>
+          <div class="hoy-acciones">
+            <button class="btn btn-accent btn-grande" id="hoyEmpezar" type="button">Empezar sesión</button>
+          </div>
+          <dl class="hoy-cifras" id="hoyCifras"></dl>
+        </div>
+
+        <div class="card mapa">
+          <div class="mapa-cabecera">
+            <h3>Mapa del curso</h3>
+            <p>Cada nivel son 200 frases en 6 intervalos. Puedes empezar por el que quieras.</p>
+          </div>
+          <div class="mapa-filas" id="mapa"></div>
+          <ul class="leyenda" aria-hidden="true">
+            <li><i class="punto hecho"></i> Completado</li>
+            <li><i class="punto curso"></i> En curso</li>
+            <li><i class="punto"></i> Pendiente</li>
+          </ul>
+        </div>
+
+        <div class="nivel-detalle">
+          <div class="pestanas" id="pestanas" role="tablist" aria-label="Niveles"></div>
+          <div class="intervalos" id="intervalos"></div>
+          <div class="card repaso-nivel" id="repasoNivel"></div>
+        </div>
+      </div>
+
+      <!-- ─────────── Sesión con tarjetas ─────────── -->
+      <div class="vista" id="vistaSesion" hidden>
+        <div class="sesion-cabecera">
+          <button class="btn btn-linea" id="salirSesion" type="button">← Panel</button>
+          <div class="sesion-titulo">
+            <p class="migas" id="sesionMigas"></p>
+            <p class="sesion-cuenta" id="sesionCuenta"></p>
+          </div>
+        </div>
+        <div class="barra"><div class="relleno" id="sesionBarra"></div></div>
+
+        <div class="escena">
+          <div class="tarjeta" id="tarjeta">
+            <div class="cara frente">
+              <span class="chip" id="tarjetaTipo">Nueva</span>
+              <button class="escuchar" id="escuchar" type="button" aria-label="Escuchar la frase">
+                <span aria-hidden="true">▶</span>
+              </button>
+              <p class="tarjeta-pista" id="tarjetaPista">Escucha la frase</p>
+              <p class="tarjeta-texto" id="tarjetaTexto" hidden></p>
+              <div class="tarjeta-acciones" id="accionesFrente" hidden>
+                <button class="btn btn-linea" id="otraVezAudio" type="button">Escuchar otra vez</button>
+                <button class="btn btn-linea" id="verFrase" type="button">Ver frase</button>
+                <button class="btn btn-accent" id="voltear" type="button">Voltear</button>
+              </div>
+            </div>
+            <div class="cara dorso">
+              <span class="chip chip-trad" id="dorsoIdioma">Español</span>
+              <p class="tarjeta-texto grande" id="dorsoTexto"></p>
+              <p class="tarjeta-original" id="dorsoOriginal"></p>
+              <div class="tarjeta-acciones">
+                <button class="btn btn-linea" id="voltearAtras" type="button">Voltear</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calificar" id="calificar" hidden>
+          <button class="btn btn-linea btn-grande" id="repetirTarjeta" type="button">Otra vez <kbd>1</kbd></button>
+          <button class="btn btn-accent btn-grande" id="bienTarjeta" type="button">Bien <kbd>2</kbd></button>
+        </div>
+        <p class="atajos">Teclado: <kbd>Espacio</kbd> escuchar · <kbd>V</kbd> ver frase · <kbd>F</kbd> voltear</p>
+        <p class="aviso" id="avisoSesion" hidden></p>
+      </div>
+
+      <!-- ─────────── Fin de sesión ─────────── -->
+      <div class="vista" id="vistaFin" hidden>
+        <div class="card fin">
+          <span class="fin-icono" aria-hidden="true">✓</span>
+          <h3 id="finTitulo">Sesión completada</h3>
+          <p id="finDetalle"></p>
+          <div class="fin-acciones">
+            <button class="btn btn-linea btn-grande" id="finPanel" type="button">Volver al panel</button>
+            <button class="btn btn-accent btn-grande" id="finSiguiente" type="button">Siguiente sesión</button>
+          </div>
+          <p class="fin-nota" id="finNota"></p>
+        </div>
+      </div>
+
+      <!-- ─────────── Frases de un intervalo ─────────── -->
+      <div class="vista" id="vistaFrases" hidden>
+        <div class="sesion-cabecera">
+          <button class="btn btn-linea" id="salirFrases" type="button">← Panel</button>
+          <div class="sesion-titulo">
+            <p class="migas" id="frasesMigas"></p>
+            <p class="sesion-cuenta" id="frasesCuenta"></p>
+          </div>
+          <button class="btn btn-accent" id="frasesRepasar" type="button">Repasar</button>
+        </div>
+        <ol class="lista-frases" id="listaFrases"></ol>
+      </div>
+
+      <audio id="audioTarjeta" preload="auto" hidden></audio>
+    </div>
+  </div>
+</section>
+
+<section class="bg-soft" id="como">
   <div class="wrap">
     <div class="cabecera-seccion">
       <span class="eyebrow">Cómo funciona</span>
@@ -956,19 +1436,19 @@ footer{
       </article>
       <article class="card">
         <h3>La traducción</h3>
-        <p>Automática y gratuita, con dos traductores de reserva por si el primero falla. Junto al
-          MP3 te descargas una hoja de texto para revisarla, y siempre puedes escribir la tuya.</p>
+        <p>Automática y gratuita, con dos traductores de reserva por si el primero falla. La ves
+          debajo de cada frase mientras escuchas, y siempre puedes escribir la tuya.</p>
       </article>
       <article class="card">
         <h3>El montaje</h3>
         <p>Los fragmentos de voz y los silencios se pegan en tu propio navegador para formar el
-          MP3. El audio se construye en tu equipo y no se sube a ninguna parte.</p>
+          audio, que escuchas aquí mismo con la letra sincronizada.</p>
       </article>
     </div>
   </div>
 </section>
 
-<section class="bg-soft" id="formato">
+<section id="formato">
   <div class="wrap">
     <div class="dos-columnas">
       <div class="cabecera-seccion izquierda">
@@ -999,6 +1479,7 @@ Good evening — al llegar</code></pre>
     </div>
     <nav class="pie-links">
       <a href="#herramienta">Generador</a>
+      <a href="#estudiar">Estudiar</a>
       <a href="#como">Cómo funciona</a>
       <a href="#formato">Formato</a>
     </nav>
@@ -1067,21 +1548,23 @@ const VOCES = {
 
 /* ─────────────── Locución de entrada y cierre ─────────────── */
 
-const NIVELES = [
-  { codigo: 'A1', nombre: 'Principiante',      desde: 0,   hasta: 200,
-    resumen: 'Saludos, presentarse, la casa, la rutina diaria y los gustos.' },
-  { codigo: 'A2', nombre: 'Elemental',         desde: 200, hasta: 400,
-    resumen: 'Restaurante, compras, direcciones, viajes y trabajo del día a día.' },
-  { codigo: 'B1', nombre: 'Intermedio',        desde: 400, hasta: 600,
-    resumen: 'Oficina, reuniones, reservas y frases más largas con matices.' },
-  { codigo: 'B2', nombre: 'Intermedio alto',   desde: 600, hasta: 800,
-    resumen: 'Opiniones, condicionales, aficiones y conversación seguida.' },
-  { codigo: 'C1', nombre: 'Avanzado',          desde: 800, hasta: 1000,
-    resumen: 'Inversiones, registro formal y estructuras de nivel nativo.' },
-];
-
 const IDIOMA_LISTADO = 'en';       // idioma de las frases del listado recomendado
 const IDIOMA_PARENTESIS = 'es';    // idioma de sus traducciones entre paréntesis
+
+/* El listado va de lo más básico a lo más avanzado, así que se reparte en
+   cinco niveles de 200 frases, con los nombres del marco europeo. */
+const NIVELES = [
+  { codigo: 'A1', nombre: 'Principiante', desde: 0, hasta: 200,
+    resumen: 'Saludos, presentarte y lo básico del día a día.' },
+  { codigo: 'A2', nombre: 'Elemental', desde: 200, hasta: 400,
+    resumen: 'Rutinas, planes, compras y restaurantes.' },
+  { codigo: 'B1', nombre: 'Intermedio', desde: 400, hasta: 600,
+    resumen: 'Viajes, trabajo y contar experiencias.' },
+  { codigo: 'B2', nombre: 'Intermedio alto', desde: 600, hasta: 800,
+    resumen: 'Gestiones, salud, opiniones y matices.' },
+  { codigo: 'C1', nombre: 'Avanzado', desde: 800, hasta: 1000,
+    resumen: 'Registro culto y estructuras complejas.' },
+];
 
 const LOCUCION_INTRO = 'Creado por: Mil frases para aprender un idioma nuevo.';
 const LOCUCION_CIERRE = 'Gracias por confiar en: Mil frases para aprender un idioma nuevo. '
@@ -4410,15 +4893,13 @@ const $ = (id) => document.getElementById(id);
 
 let usandoPropias = false;
 let nivelActivo = 0;
+let TODAS = [];   // el listado recomendado ya leído, en el mismo orden
 
-// El listado se analiza una sola vez al arrancar; cada nivel es un tramo de él.
-let TODAS = [];
-
+/** Copias frescas de las frases que se van a usar: el nivel elegido o las propias. */
 function paresActivos() {
-  const base = usandoPropias
-    ? leerFrases(el.frases.value)
-    : TODAS.slice(NIVELES[nivelActivo].desde, NIVELES[nivelActivo].hasta);
-  return base.map((p) => ({ texto: p.texto, traduccion: p.traduccion }));
+  if (usandoPropias) return leerFrases(el.frases.value);
+  const n = NIVELES[nivelActivo];
+  return TODAS.slice(n.desde, n.hasta).map((p) => ({ texto: p.texto, traduccion: p.traduccion }));
 }
 
 const el = {
@@ -4428,18 +4909,18 @@ const el = {
   velocidad: $('velocidad'), velocidadVal: $('velocidadVal'),
   pausaIdiomas: $('pausaIdiomas'), pausaIdiomasVal: $('pausaIdiomasVal'),
   pausaFrases: $('pausaFrases'), pausaFrasesVal: $('pausaFrasesVal'),
-  repetir: $('repetir'), porArchivo: $('porArchivo'),
+  repetir: $('repetir'), bloques: $('bloques'), porArchivo: $('porArchivo'),
   estadoTrad: $('estadoTrad'), partes: $('partes'), letras: $('letras'),
-  niveles: $('niveles'), bloques: $('bloques'),
-  barraTiempo: $('barraTiempo'), tiempoActual: $('tiempoActual'), tiempoTotal: $('tiempoTotal'),
-  reproducir: $('reproducir'), iconoPlay: $('iconoPlay'), atras: $('atras'), adelante: $('adelante'),
   alternarLista: $('alternarLista'), vistaLista: $('vistaLista'), muestraLista: $('muestraLista'),
-  listaNota: $('listaNota'), ayudaFrases: $('ayudaFrases'), notaIdioma: $('notaIdioma'),
+  listaTitulo: $('listaTitulo'), listaNota: $('listaNota'), niveles: $('niveles'),
+  ayudaFrases: $('ayudaFrases'), notaIdioma: $('notaIdioma'),
   frases: $('frases'), contador: $('contador'),
   generar: $('generar'), cancelar: $('cancelar'),
   progreso: $('progreso'), barra: $('barraRelleno'), estado: $('estado'),
   resultado: $('resultado'), resumen: $('resumen'),
-  reproductor: $('reproductor'),
+  reproductor: $('reproductor'), barraTiempo: $('barraTiempo'),
+  tiempoActual: $('tiempoActual'), tiempoTotal: $('tiempoTotal'),
+  reproducir: $('reproducir'), iconoPlay: $('iconoPlay'), atras: $('atras'), adelante: $('adelante'),
   aviso: $('aviso'),
 };
 
@@ -4493,148 +4974,68 @@ function actualizarNotaIdioma() {
   }
   el.notaIdioma.hidden = false;
   el.notaIdioma.innerHTML = `El listado está en <b>${nombreListado}</b> y quieres aprender `
-    + `<b>${el.idiomaApr.value}</b>: las mil frases se traducirán automáticamente antes de `
-    + 'generar el audio, así que la primera vez tardará algo más.';
+    + `<b>${el.idiomaApr.value}</b>: las frases del nivel se traducirán automáticamente antes de `
+    + 'generar el audio, así que tardará algo más.';
 }
 
-/* ─────────────── Orden de los bloques ───────────────
-   B1 es la frase en el idioma que se aprende, B2 su repetición y B3 la
-   traducción. El usuario los coloca en el orden que quiera arrastrándolos. */
-
-const CODIGO = { B1: 'B1', B2: 'B2', B3: 'B3 (t)' };
-let ORDEN = ['B1', 'B2', 'B3'];
-
-const bloqueVisible = (id) => {
-  if (id === 'B2') return el.repetir.checked;
-  if (id === 'B3') return el.incluirTrad.checked;
-  return true;
-};
-
-const ordenEfectivo = () => ORDEN.filter(bloqueVisible);
-
-function textoBloque(id) {
-  if (id === 'B3') return `Traducción · ${el.idiomaTrad.value}`;
-  if (id === 'B2') return `${el.idiomaApr.value} ×2`;
-  return el.idiomaApr.value;
-}
-
-function pintarBloques() {
-  el.bloques.innerHTML = '';
-  ordenEfectivo().forEach((id) => {
-    const b = document.createElement('div');
-    b.className = 'bloque';
-    b.dataset.id = id;
-    b.tabIndex = 0;
-    b.setAttribute('role', 'listitem');
-    b.innerHTML = `<span class="bloque-codigo">${CODIGO[id]}</span>`
-      + `<span class="bloque-texto">${textoBloque(id)}</span>`
-      + '<span class="bloque-agarre" aria-hidden="true">⣿</span>';
-    b.addEventListener('pointerdown', arrastrar);
-    b.addEventListener('keydown', (ev) => {
-      const paso = ev.key === 'ArrowUp' ? -1 : ev.key === 'ArrowDown' ? 1 : 0;
-      if (!paso) return;
-      ev.preventDefault();
-      const visibles = ordenEfectivo();
-      const i = visibles.indexOf(id);
-      const j = i + paso;
-      if (j < 0 || j >= visibles.length) return;
-      [visibles[i], visibles[j]] = [visibles[j], visibles[i]];
-      fijarOrden(visibles);
-      pintarBloques();
-      el.bloques.children[j].focus();
-    });
-    el.bloques.appendChild(b);
-  });
-}
-
-/** Guarda el orden visible respetando la posición de los bloques ocultos. */
-function fijarOrden(visibles) {
-  const ocultos = ORDEN.filter((id) => !bloqueVisible(id));
-  ORDEN = [...visibles, ...ocultos];
-}
-
-function arrastrar(ev) {
-  if (ev.button !== undefined && ev.button !== 0) return;
-  const nodo = ev.currentTarget;
-  nodo.setPointerCapture(ev.pointerId);
-  nodo.classList.add('arrastrando');
-  let inicio = ev.clientY;
-
-  const mover = (e) => {
-    nodo.style.transform = `translateY(${e.clientY - inicio}px)`;
-    for (const h of [...el.bloques.children]) {
-      if (h === nodo) continue;
-      const r = h.getBoundingClientRect();
-      const medio = r.top + r.height / 2;
-      const nodoVaAntes = !!(nodo.compareDocumentPosition(h) & Node.DOCUMENT_POSITION_FOLLOWING);
-      let ref = null;
-      if (e.clientY > medio && nodoVaAntes) ref = h.nextSibling;
-      else if (e.clientY < medio && !nodoVaAntes) ref = h;
-      if (!ref || ref === nodo) continue;
-
-      const antes = nodo.getBoundingClientRect().top;
-      el.bloques.insertBefore(nodo, ref);
-      inicio += nodo.getBoundingClientRect().top - antes;
-      nodo.style.transform = `translateY(${e.clientY - inicio}px)`;
-      break;
-    }
-  };
-
-  const soltar = () => {
-    nodo.removeEventListener('pointermove', mover);
-    nodo.removeEventListener('pointerup', soltar);
-    nodo.removeEventListener('pointercancel', soltar);
-    nodo.classList.remove('arrastrando');
-    nodo.style.transform = '';
-    fijarOrden([...el.bloques.children].map((n) => n.dataset.id));
-  };
-
-  nodo.addEventListener('pointermove', mover);
-  nodo.addEventListener('pointerup', soltar);
-  nodo.addEventListener('pointercancel', soltar);
-}
+const LINEAS_MUESTRA = 7;
 
 function pintarNiveles() {
   el.niveles.innerHTML = '';
   NIVELES.forEach((n, i) => {
-    const t = document.createElement('button');
-    t.type = 'button';
-    t.className = 'nivel';
-    t.setAttribute('role', 'radio');
-    t.setAttribute('aria-checked', String(i === nivelActivo));
-    t.innerHTML = `<span class="nivel-codigo">${n.codigo}</span>`
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'nivel';
+    b.setAttribute('role', 'radio');
+    b.setAttribute('aria-checked', String(i === nivelActivo));
+    b.tabIndex = i === nivelActivo ? 0 : -1;
+    b.innerHTML = `<span class="nivel-codigo">${n.codigo}</span>`
       + `<span class="nivel-nombre">${n.nombre}</span>`
-      + `<span class="nivel-resumen">${n.resumen}</span>`
-      + `<span class="nivel-cuenta">${n.hasta - n.desde} frases</span>`;
-    t.addEventListener('click', () => {
-      nivelActivo = i;
-      if (usandoPropias) usandoPropias = false;
-      mostrarSelectorLista();
+      + `<span class="nivel-rango">${n.desde + 1}–${n.hasta}</span>`;
+    b.title = n.resumen;
+    b.addEventListener('click', () => elegirNivel(i));
+    b.addEventListener('keydown', (ev) => {
+      const paso = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[ev.key];
+      if (!paso) return;
+      ev.preventDefault();
+      elegirNivel((i + paso + NIVELES.length) % NIVELES.length);
+      el.niveles.children[nivelActivo].focus();
     });
-    el.niveles.appendChild(t);
+    el.niveles.appendChild(b);
   });
+}
+
+function elegirNivel(i) {
+  nivelActivo = i;
+  pintarNiveles();
+  mostrarSelectorLista();
+}
+
+function pintarMuestra() {
+  const n = NIVELES[nivelActivo];
+  const lineas = [];
+  for (const p of TODAS.slice(n.desde, n.desde + LINEAS_MUESTRA)) {
+    lineas.push(p.texto);
+    if (p.traduccion) lineas.push(`(${p.traduccion})`);
+  }
+  el.muestraLista.textContent = lineas.join('\n');
 }
 
 function mostrarSelectorLista() {
   el.niveles.hidden = usandoPropias;
+  el.listaTitulo.textContent = usandoPropias
+    ? 'Tus propias frases'
+    : `Listado recomendado · Nivel ${NIVELES[nivelActivo].codigo}, ${NIVELES[nivelActivo].nombre.toLowerCase()}`;
+  el.listaNota.textContent = usandoPropias
+    ? 'Escríbelas en el idioma que quieras: se detecta solo.'
+    : NIVELES[nivelActivo].resumen + ' Elige tu nivel y pulsa Generar.';
+  if (!usandoPropias) pintarMuestra();
   el.vistaLista.hidden = usandoPropias;
   el.frases.hidden = !usandoPropias;
   el.ayudaFrases.hidden = !usandoPropias;
-  el.listaNota.textContent = usandoPropias
-    ? 'Escribe o pega tus frases. Se detecta solo en qué idioma están.'
-    : 'Elige tu nivel. Las frases van de lo más básico a las estructuras más avanzadas, '
-      + 'y cada nivel se apoya en el anterior.';
   el.alternarLista.textContent = usandoPropias
-    ? 'Usar el listado por niveles'
+    ? 'Usar el listado recomendado'
     : 'Incluir mis propias frases';
-
-  if (!usandoPropias) {
-    pintarNiveles();
-    const tramo = TODAS.slice(NIVELES[nivelActivo].desde, NIVELES[nivelActivo].hasta);
-    el.muestraLista.textContent = tramo.slice(0, 7)
-      .map((p) => (p.traduccion ? `${p.texto}\n(${p.traduccion})` : p.texto)).join('\n');
-  }
-
   actualizarContador();
   actualizarNotaIdioma();
 }
@@ -4648,40 +5049,11 @@ function mostrarAviso(html) {
 
 let cancelando = false;
 
-
 /* ─────────────── Panel de letras ───────────────
    Como sabemos el milisegundo exacto en que empieza cada frase, basta con
    mirar el punto de reproducción para saber cuál suena. */
 
 const REPRODUCCION = { archivos: [], guiones: [], activo: 0, urls: [] };
-
-const tiempoTexto = (seg) => {
-  if (!isFinite(seg) || seg < 0) return '0:00';
-  const m = Math.floor(seg / 60);
-  return `${m}:${String(Math.floor(seg % 60)).padStart(2, '0')}`;
-};
-
-function refrescarMandos() {
-  const sonando = !el.reproductor.paused && !el.reproductor.ended;
-  el.iconoPlay.textContent = sonando ? '❚❚' : '▶';
-  el.reproducir.setAttribute('aria-label', sonando ? 'Pausar' : 'Reproducir');
-}
-
-function refrescarTiempo() {
-  const d = el.reproductor.duration;
-  const t = el.reproductor.currentTime;
-  el.tiempoActual.textContent = tiempoTexto(t);
-  el.tiempoTotal.textContent = tiempoTexto(d);
-  if (isFinite(d) && d > 0 && !el.barraTiempo.dataset.agarrada) {
-    el.barraTiempo.value = String(Math.round((t / d) * 1000));
-  }
-}
-
-function saltar(seg) {
-  const d = el.reproductor.duration;
-  const destino = el.reproductor.currentTime + seg;
-  el.reproductor.currentTime = Math.max(0, isFinite(d) ? Math.min(destino, d - 0.05) : destino);
-}
 
 function pintarLetras() {
   const lineas = REPRODUCCION.guiones[REPRODUCCION.activo] || [];
@@ -4746,6 +5118,54 @@ function cargarParte(k) {
   pintarLetras();
   [...el.partes.children].forEach((b, i) =>
     b.setAttribute('aria-pressed', String(i === k)));
+  refrescarMandos();
+  refrescarTiempo();
+}
+
+/* ─────────────── Reproductor propio ───────────────
+   El elemento <audio> va oculto: sin controles nativos no hay menú de
+   descarga, y los mandos son los mismos en todos los navegadores. */
+
+function tiempoTexto(seg) {
+  if (!Number.isFinite(seg) || seg < 0) seg = 0;
+  const m = Math.floor(seg / 60);
+  const s = Math.floor(seg % 60);
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+/** Duración conocida de la parte activa: la del archivo o, si aún no la hay, la calculada. */
+function duracionActiva() {
+  const d = el.reproductor.duration;
+  if (Number.isFinite(d) && d > 0) return d;
+  const blob = REPRODUCCION.archivos[REPRODUCCION.activo];
+  return blob ? blob.size / TRAMA.length * MS_POR_TRAMA / 1000 : 0;
+}
+
+let arrastrandoBarra = false;
+
+function refrescarTiempo() {
+  const total = duracionActiva();
+  const actual = el.reproductor.currentTime || 0;
+  el.tiempoActual.textContent = tiempoTexto(actual);
+  el.tiempoTotal.textContent = tiempoTexto(total);
+  if (!arrastrandoBarra) {
+    el.barraTiempo.value = total ? Math.round((actual / total) * 1000) : 0;
+  }
+  el.barraTiempo.style.setProperty('--hecho', `${(Number(el.barraTiempo.value) / 10).toFixed(1)}%`);
+}
+
+function refrescarMandos() {
+  const sonando = !el.reproductor.paused && !el.reproductor.ended;
+  el.iconoPlay.textContent = sonando ? '❚❚' : '▶';
+  el.reproducir.setAttribute('aria-label', sonando ? 'Pausar' : 'Reproducir');
+  el.reproducir.classList.toggle('sonando', sonando);
+}
+
+function saltar(seg) {
+  const total = duracionActiva();
+  el.reproductor.currentTime = Math.min(Math.max(0, (el.reproductor.currentTime || 0) + seg), total || 0);
+  refrescarTiempo();
+  sincronizarLetras();
 }
 
 function prepararReproduccion(archivos, guiones) {
@@ -4779,7 +5199,8 @@ async function generar() {
   mostrarAviso('');
 
   if (!pares.length) {
-    mostrarAviso('<b>No hay frases.</b> Escribe o pega tu lista en el cuadro, una frase por línea.');
+    mostrarAviso('<b>No hay frases.</b> Escribe o pega tu lista en el cuadro, una frase por línea, '
+      + 'o vuelve al listado recomendado.');
     return;
   }
   if (pares.length > 1200) {
@@ -4811,6 +5232,7 @@ async function generar() {
   el.cancelar.hidden = false;
   el.progreso.hidden = false;
   el.resultado.hidden = true;
+  el.reproductor.pause();
   progreso(0, 'Preparando…');
 
   const cancelado = () => cancelando;
@@ -4956,18 +5378,19 @@ async function generar() {
       const audioTrad = mapa[i].trad >= 0 ? audios[mapa[i].trad] : null;
       if (!audioApr || !audioApr.length) return;
 
+      // Cada frase suena en el orden de los bloques: B1 y B2 son el idioma que
+      // se aprende, B3 la traducción. Entre dos del mismo idioma va una pausa
+      // corta; al cambiar de idioma, la pausa entre idiomas.
       const bloque = [];
       let anteriorEraTrad = null;
       for (const id of secuencia) {
         const esTrad = id === 'B3';
         const audio = esTrad ? audioTrad : audioApr;
         if (!audio || !audio.length) continue;
-        // entre dos trozos del mismo idioma basta una pausa corta
         if (bloque.length) bloque.push(anteriorEraTrad === esTrad ? silRepe : silIdiomas);
         bloque.push(audio);
         anteriorEraTrad = esTrad;
       }
-      if (!bloque.length) return;
       bloque.push(silFrases);
       const inicio = msArchivo;
       piezas = piezas.concat(bloque);
@@ -4987,18 +5410,17 @@ async function generar() {
 
     /* 4 · Entregar: se escucha aquí, no se descarga */
     prepararReproduccion(archivos, guiones);
-
     const minutos = msTotales / 60000;
     el.resumen.textContent =
       `${utiles.length} frases · ${num(minutos)} minutos · `
-      + `${archivos.length} ${archivos.length === 1 ? 'bloque' : 'bloques'}`
+      + `${archivos.length} ${archivos.length === 1 ? 'parte' : 'partes'}`
       + (motorTraduccion ? ` · traducido con ${motorTraduccion}` : '');
     el.resultado.hidden = false;
     progreso(1, 'Listo.');
 
     const avisos = [];
     if (fallos.length) {
-      avisos.push(`<b>${fallos.length} frase(s) se quedaron sin voz</b> y se han omitido del audio. `
+      avisos.push(`<b>${fallos.length} audio(s) no llegaron</b> y se han omitido. `
         + 'Vuelve a pulsar Generar: lo ya conseguido está guardado y solo se repetirán las que fallaron.');
     }
     if (problemasTraduccion.length) {
@@ -5021,18 +5443,1035 @@ async function generar() {
   }
 }
 
+/* ─────────────── Estudio con tarjetas ───────────────
+   Cada nivel (200 frases) se reparte en intervalos de 7 sesiones de 5 frases
+   nuevas: 35 frases por intervalo. Como 200 = 5 × 35 + 25, el sexto
+   intervalo de cada nivel tiene 5 sesiones.
+   · Sesión: primero sus 5 nuevas y después todas las de las sesiones
+     anteriores del mismo intervalo.
+   · Repaso del intervalo: al terminar su última sesión, todas sus frases.
+   · Repaso del nivel: al cerrar el último intervalo, las 200.
+   El progreso se guarda en este navegador, por separado para cada idioma. */
+
+const POR_SESION = 5;
+const SESIONES_POR_INTERVALO = 7;
+const RATE_ESTUDIO = '-10%';
+const CLAVE_ESTUDIO = '1kfrases.estudio.v1';
+const CLAVE_TEXTOS = '1kfrases.textos.v1';
+
+const est = {
+  seccion: $('estudio'), ajustes: document.querySelector('.estudio-ajustes'),
+  idioma: $('estIdioma'), voz: $('estVoz'), trad: $('estTrad'),
+  vistas: { panel: $('vistaPanel'), sesion: $('vistaSesion'), fin: $('vistaFin'), frases: $('vistaFrases') },
+  hoyEtiqueta: $('hoyEtiqueta'), hoyTitulo: $('hoyTitulo'), hoyDetalle: $('hoyDetalle'),
+  hoyEmpezar: $('hoyEmpezar'), hoyCifras: $('hoyCifras'),
+  mapa: $('mapa'), pestanas: $('pestanas'), intervalos: $('intervalos'), repasoNivel: $('repasoNivel'),
+  salirSesion: $('salirSesion'), sesionMigas: $('sesionMigas'), sesionCuenta: $('sesionCuenta'),
+  sesionBarra: $('sesionBarra'), tarjeta: $('tarjeta'), tarjetaTipo: $('tarjetaTipo'),
+  escuchar: $('escuchar'), tarjetaPista: $('tarjetaPista'), tarjetaTexto: $('tarjetaTexto'),
+  accionesFrente: $('accionesFrente'), otraVezAudio: $('otraVezAudio'), verFrase: $('verFrase'),
+  voltear: $('voltear'), voltearAtras: $('voltearAtras'),
+  dorsoIdioma: $('dorsoIdioma'), dorsoTexto: $('dorsoTexto'), dorsoOriginal: $('dorsoOriginal'),
+  calificar: $('calificar'), repetirTarjeta: $('repetirTarjeta'), bienTarjeta: $('bienTarjeta'),
+  avisoSesion: $('avisoSesion'),
+  finTitulo: $('finTitulo'), finDetalle: $('finDetalle'), finPanel: $('finPanel'),
+  finSiguiente: $('finSiguiente'), finNota: $('finNota'),
+  salirFrases: $('salirFrases'), frasesMigas: $('frasesMigas'), frasesCuenta: $('frasesCuenta'),
+  frasesRepasar: $('frasesRepasar'), listaFrases: $('listaFrases'),
+  audio: $('audioTarjeta'),
+};
+
+/* ── Estructura del curso ── */
+
+const rango = (a, b) => Array.from({ length: Math.max(0, b - a) }, (_, k) => a + k);
+
+function estructuraNivel(iNivel) {
+  const n = NIVELES[iNivel];
+  const intervalos = [];
+  let desde = n.desde;
+  let dia = 0;
+  while (desde < n.hasta) {
+    const numero = intervalos.length + 1;
+    const sesiones = [];
+    while (sesiones.length < SESIONES_POR_INTERVALO && desde < n.hasta) {
+      const hasta = Math.min(desde + POR_SESION, n.hasta);
+      dia += 1;
+      sesiones.push({ tipo: 'sesion', id: `i${numero}s${sesiones.length + 1}`,
+        numero: sesiones.length + 1, dia, desde, hasta, intervalo: numero });
+      desde = hasta;
+    }
+    intervalos.push({
+      numero, sesiones,
+      desde: sesiones[0].desde, hasta: sesiones[sesiones.length - 1].hasta,
+      repaso: { tipo: 'intervalo', id: `i${numero}r`, intervalo: numero },
+    });
+  }
+  const pasos = [];
+  for (const it of intervalos) pasos.push(...it.sesiones, it.repaso);
+  const repaso = { tipo: 'nivel', id: 'nivel' };
+  pasos.push(repaso);
+  return { nivel: n, iNivel, intervalos, repaso, pasos };
+}
+
+const ESTRUCTURA = NIVELES.map((_, i) => estructuraNivel(i));
+
+function pasoPorId(iNivel, id) {
+  const E = ESTRUCTURA[iNivel];
+  return E ? (E.pasos.find((p) => p.id === id) || null) : null;
+}
+
+function barajar(lista) {
+  const a = lista.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/** Las tarjetas de un paso, en el orden en que se estudian. */
+function tarjetasDe(iNivel, paso) {
+  const E = ESTRUCTURA[iNivel];
+  if (paso.tipo === 'sesion') {
+    const it = E.intervalos[paso.intervalo - 1];
+    const nuevas = rango(paso.desde, paso.hasta).map((i) => ({ i, nueva: true }));
+    const previas = it.sesiones
+      .filter((s) => s.numero < paso.numero)
+      .flatMap((s) => rango(s.desde, s.hasta));
+    return nuevas.concat(barajar(previas).map((i) => ({ i, nueva: false })));
+  }
+  if (paso.tipo === 'intervalo') {
+    const it = E.intervalos[paso.intervalo - 1];
+    return rango(it.desde, it.hasta).map((i) => ({ i, nueva: false }));
+  }
+  return rango(E.nivel.desde, E.nivel.hasta).map((i) => ({ i, nueva: false }));
+}
+
+function nombrePaso(iNivel, paso, corto = false) {
+  const n = NIVELES[iNivel].codigo;
+  const E = ESTRUCTURA[iNivel];
+  if (paso.tipo === 'sesion') {
+    const total = E.intervalos[paso.intervalo - 1].sesiones.length;
+    return corto
+      ? `Sesión ${paso.numero} de ${total}`
+      : `${n} · Intervalo ${paso.intervalo} · Sesión ${paso.numero} de ${total}`;
+  }
+  if (paso.tipo === 'intervalo') {
+    return corto ? `Repaso del intervalo ${paso.intervalo}` : `${n} · Repaso del intervalo ${paso.intervalo}`;
+  }
+  return `Repaso del nivel ${n}`;
+}
+
+/* ── Guardado ── */
+
+function leerJSON(clave) {
+  try { return JSON.parse(localStorage.getItem(clave)); } catch (_) { return null; }
+}
+function escribirJSON(clave, valor) {
+  try { localStorage.setItem(clave, JSON.stringify(valor)); } catch (_) { /* sin almacenamiento */ }
+}
+
+const ESTADO = (() => {
+  const j = leerJSON(CLAVE_ESTUDIO);
+  if (j && j.v === 1 && j.ajustes && j.cursos) return j;
+  return { v: 1, ajustes: { apr: 'en', voz: '', trad: 'es', nivel: 0 }, cursos: {} };
+})();
+const TEXTOS = leerJSON(CLAVE_TEXTOS) || {};
+
+const guardarEstado = () => escribirJSON(CLAVE_ESTUDIO, ESTADO);
+
+/** El progreso de cada idioma que se aprende va por separado. */
+function curso() {
+  const cod = ESTADO.ajustes.apr;
+  if (!ESTADO.cursos[cod]) ESTADO.cursos[cod] = { hechos: {}, fallos: {}, abierta: null };
+  return ESTADO.cursos[cod];
+}
+
+const claveHecho = (iNivel, id) => `${NIVELES[iNivel].codigo}:${id}`;
+const hecho = (iNivel, id) => Boolean(curso().hechos[claveHecho(iNivel, id)]);
+
+function siguientePaso(iNivel) {
+  return ESTRUCTURA[iNivel].pasos.find((p) => !hecho(iNivel, p.id)) || null;
+}
+
+function disponible(iNivel, paso) {
+  if (hecho(iNivel, paso.id)) return true;
+  const sig = siguientePaso(iNivel);
+  return Boolean(sig && sig.id === paso.id);
+}
+
+function cifrasNivel(iNivel) {
+  const E = ESTRUCTURA[iNivel];
+  let frases = 0; let sesiones = 0; let totalSesiones = 0; let repasos = 0;
+  for (const it of E.intervalos) {
+    for (const s of it.sesiones) {
+      totalSesiones += 1;
+      if (hecho(iNivel, s.id)) { sesiones += 1; frases += s.hasta - s.desde; }
+    }
+    if (hecho(iNivel, it.repaso.id)) repasos += 1;
+  }
+  if (hecho(iNivel, 'nivel')) repasos += 1;
+  const pasos = E.pasos.filter((p) => hecho(iNivel, p.id)).length;
+  return {
+    frases, totalFrases: E.nivel.hasta - E.nivel.desde,
+    sesiones, totalSesiones,
+    repasos, totalRepasos: E.intervalos.length + 1,
+    porcentaje: Math.round((pasos / E.pasos.length) * 100),
+  };
+}
+
+function estadoIntervalo(iNivel, it) {
+  if (hecho(iNivel, it.repaso.id)) return 'hecho';
+  if (it.sesiones.some((s) => hecho(iNivel, s.id))) return 'curso';
+  // el primer intervalo de un nivel sin empezar solo cuenta como «en curso» si es el elegido
+  const sig = siguientePaso(iNivel);
+  const empezado = ESTRUCTURA[iNivel].pasos.some((p) => hecho(iNivel, p.id));
+  if (sig && sig.intervalo === it.numero && (empezado || iNivel === ESTADO.ajustes.nivel)) return 'curso';
+  return 'pendiente';
+}
+
+/* ── Textos y voces ── */
+
+const codApr = () => ESTADO.ajustes.apr;
+const codTradEst = () => ESTADO.ajustes.trad;
+
+function textoEn(cod, i) {
+  const p = TODAS[i];
+  if (!p) return null;
+  if (cod === IDIOMA_LISTADO) return p.texto;
+  if (cod === IDIOMA_PARENTESIS && p.traduccion) return p.traduccion;
+  return (TEXTOS[cod] && TEXTOS[cod][i]) || null;
+}
+
+/** Traduce (una sola vez, y se recuerda) lo que falte de esas frases en esos idiomas. */
+async function asegurarTextos(indices, cods) {
+  for (const cod of new Set(cods)) {
+    const faltan = indices.filter((i) => !textoEn(cod, i));
+    if (!faltan.length) continue;
+    const r = await traducir(faltan.map((i) => ({ indice: i, texto: TODAS[i].texto })),
+      IDIOMA_LISTADO, cod, () => {});
+    TEXTOS[cod] = TEXTOS[cod] || {};
+    for (const [i, t] of r.resultado) if (t) TEXTOS[cod][i] = t;
+    escribirJSON(CLAVE_TEXTOS, TEXTOS);
+  }
+}
+
+function vozEstudio() {
+  const lista = VOCES[codApr()];
+  const guardada = ESTADO.ajustes.voz;
+  return lista.some(([, id]) => id === guardada) ? guardada : lista[0][1];
+}
+
+const URLS_TARJETA = new Map();
+
+/** URL del audio de una frase (se pide una sola vez y se reutiliza). */
+function audioDe(i) {
+  const texto = textoEn(codApr(), i);
+  if (!texto) return Promise.reject(new Error('sin texto'));
+  const voz = vozEstudio();
+  const clave = `${texto}|${voz}|${RATE_ESTUDIO}`;
+  if (URLS_TARJETA.has(clave)) return URLS_TARJETA.get(clave);
+  const promesa = (async () => {
+    let bytes = CACHE_VOZ.get(clave);
+    let ultimo = null;
+    for (let intento = 0; !bytes && intento < 3; intento++) {
+      try {
+        bytes = await pedirAudio(texto, voz, RATE_ESTUDIO);
+        CACHE_VOZ.set(clave, bytes);
+      } catch (e) {
+        ultimo = e;
+        await esperar(600 * (intento + 1));
+      }
+    }
+    if (!bytes) throw ultimo || new Error('sin audio');
+    return URL.createObjectURL(new Blob([bytes], { type: 'audio/mpeg' }));
+  })();
+  URLS_TARJETA.set(clave, promesa);
+  promesa.catch(() => URLS_TARJETA.delete(clave));
+  return promesa;
+}
+
+/* ── Vistas ── */
+
+let vistaActual = 'panel';
+
+function mostrarVista(nombre, desplazar = true) {
+  vistaActual = nombre;
+  for (const [k, v] of Object.entries(est.vistas)) v.hidden = k !== nombre;
+  est.ajustes.hidden = nombre !== 'panel';
+  if (nombre !== 'sesion') detenerTarjeta();
+  if (desplazar) est.seccion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function detenerTarjeta() {
+  if (est.audio && !est.audio.paused) est.audio.pause();
+  est.escuchar.classList.remove('sonando');
+}
+
+/* ── Panel general ── */
+
+function pintarPanel() {
+  const iN = ESTADO.ajustes.nivel;
+  const E = ESTRUCTURA[iN];
+  const c = cifrasNivel(iN);
+  const abierta = curso().abierta;
+
+  est.hoyEmpezar.onclick = null;
+  if (abierta) {
+    const paso = pasoPorId(abierta.iNivel, abierta.pasoId);
+    est.hoyEtiqueta.textContent = 'Tienes una sesión a medias';
+    est.hoyTitulo.textContent = nombrePaso(abierta.iNivel, paso);
+    est.hoyDetalle.textContent = `Tarjeta ${Math.min(abierta.hechas + 1, abierta.total)} de ${abierta.total}`;
+    est.hoyEmpezar.textContent = 'Continuar';
+    est.hoyEmpezar.onclick = () => { desbloquearAudio(); retomarSesion(); };
+  } else {
+    const sig = siguientePaso(iN);
+    if (sig) {
+      const tarjetas = tarjetasDe(iN, sig);
+      const nuevas = tarjetas.filter((t) => t.nueva).length;
+      const repaso = tarjetas.length - nuevas;
+      est.hoyEtiqueta.textContent = sig.tipo === 'sesion' ? 'Tu próxima sesión' : 'Toca repasar';
+      est.hoyTitulo.textContent = nombrePaso(iN, sig);
+      est.hoyDetalle.textContent = sig.tipo === 'sesion'
+        ? `${nuevas} frases nuevas${repaso ? ` + ${repaso} de repaso` : ''}`
+        : `${tarjetas.length} frases, una detrás de otra`;
+      if (sig.tipo === 'sesion' && sesionNuevaHoy()) {
+        est.hoyDetalle.textContent += ' · hoy ya hiciste una: lo ideal es seguir mañana';
+      }
+      est.hoyEmpezar.textContent = sig.tipo === 'sesion' ? 'Empezar sesión' : 'Empezar repaso';
+      est.hoyEmpezar.onclick = () => { desbloquearAudio(); empezarPaso(iN, sig.id); };
+    } else {
+      const otro = NIVELES.findIndex((_, k) => k !== iN && siguientePaso(k));
+      est.hoyEtiqueta.textContent = '¡Nivel completado!';
+      est.hoyTitulo.textContent = `Has terminado el nivel ${E.nivel.codigo}`;
+      est.hoyDetalle.textContent = otro >= 0
+        ? `Puedes repasar cualquier intervalo o seguir con el nivel ${NIVELES[otro].codigo}.`
+        : 'Has completado las 1000 frases. Repasa lo que quieras cuando quieras.';
+      est.hoyEmpezar.textContent = otro >= 0 ? `Ir al nivel ${NIVELES[otro].codigo}` : 'Repasar el nivel';
+      est.hoyEmpezar.onclick = otro >= 0
+        ? () => elegirNivelEstudio(otro)
+        : () => { desbloquearAudio(); empezarPaso(iN, 'nivel'); };
+    }
+  }
+  est.hoyCifras.innerHTML = [
+    ['Frases vistas', `${c.frases}/${c.totalFrases}`],
+    ['Sesiones', `${c.sesiones}/${c.totalSesiones}`],
+    ['Repasos', `${c.repasos}/${c.totalRepasos}`],
+    [`Nivel ${E.nivel.codigo}`, `${c.porcentaje} %`],
+  ].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+
+  pintarMapa();
+  pintarPestanas();
+  pintarIntervalos();
+  pintarRepasoNivel();
+}
+
+/** ¿Se ha estrenado hoy alguna sesión (no una repetición)? */
+function sesionNuevaHoy() {
+  const hoy = new Date().toDateString();
+  return Object.entries(curso().hechos).some(([k, v]) =>
+    /:i\d+s\d+$/.test(k) && v && new Date(v.primera).toDateString() === hoy);
+}
+
+function pintarMapa() {
+  est.mapa.innerHTML = '';
+  NIVELES.forEach((n, iN) => {
+    const fila = document.createElement('div');
+    fila.className = 'mapa-fila' + (iN === ESTADO.ajustes.nivel ? ' activa' : '');
+
+    const etiqueta = document.createElement('button');
+    etiqueta.type = 'button';
+    etiqueta.className = 'mapa-nivel';
+    etiqueta.innerHTML = `<b>${n.codigo}</b><span>${n.nombre}</span>`;
+    etiqueta.addEventListener('click', () => elegirNivelEstudio(iN));
+    fila.appendChild(etiqueta);
+
+    const chips = document.createElement('div');
+    chips.className = 'mapa-chips';
+    for (const it of ESTRUCTURA[iN].intervalos) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      const estado = estadoIntervalo(iN, it);
+      b.className = `chip-intervalo ${estado}`;
+      b.textContent = it.numero;
+      b.title = `${n.codigo} · Intervalo ${it.numero} · frases ${it.desde + 1}–${it.hasta}`;
+      b.setAttribute('aria-label',
+        `${b.title}: ${{ hecho: 'completado', curso: 'en curso', pendiente: 'pendiente' }[estado]}`);
+      b.addEventListener('click', () => irAIntervalo(iN, it.numero));
+      chips.appendChild(b);
+    }
+    const r = document.createElement('button');
+    r.type = 'button';
+    const hechoNivel = hecho(iN, 'nivel');
+    const listo = disponible(iN, ESTRUCTURA[iN].repaso);
+    r.className = `chip-intervalo chip-nivel ${hechoNivel ? 'hecho' : listo ? 'curso' : 'pendiente'}`;
+    r.textContent = 'R';
+    r.title = `Repaso del nivel ${n.codigo}`;
+    r.setAttribute('aria-label', r.title);
+    r.addEventListener('click', () => {
+      elegirNivelEstudio(iN, false);
+      est.repasoNivel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    chips.appendChild(r);
+    fila.appendChild(chips);
+
+    const pct = document.createElement('span');
+    pct.className = 'mapa-pct';
+    pct.textContent = `${cifrasNivel(iN).porcentaje} %`;
+    fila.appendChild(pct);
+    est.mapa.appendChild(fila);
+  });
+}
+
+function pintarPestanas() {
+  est.pestanas.innerHTML = '';
+  NIVELES.forEach((n, iN) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'pestana';
+    b.setAttribute('role', 'tab');
+    const activa = iN === ESTADO.ajustes.nivel;
+    b.setAttribute('aria-selected', String(activa));
+    b.tabIndex = activa ? 0 : -1;
+    b.innerHTML = `<b>${n.codigo}</b><span>${n.nombre}</span>`;
+    b.addEventListener('click', () => elegirNivelEstudio(iN, false));
+    b.addEventListener('keydown', (ev) => {
+      const paso = { ArrowRight: 1, ArrowLeft: -1 }[ev.key];
+      if (!paso) return;
+      ev.preventDefault();
+      elegirNivelEstudio((iN + paso + NIVELES.length) % NIVELES.length, false);
+      est.pestanas.children[ESTADO.ajustes.nivel].focus();
+    });
+    est.pestanas.appendChild(b);
+  });
+}
+
+function pintarIntervalos() {
+  const iN = ESTADO.ajustes.nivel;
+  const E = ESTRUCTURA[iN];
+  const sig = siguientePaso(iN);
+  est.intervalos.innerHTML = '';
+
+  for (const it of E.intervalos) {
+    const estado = estadoIntervalo(iN, it);
+    const art = document.createElement('article');
+    art.className = `card intervalo ${estado}`;
+    art.id = `intervalo-${E.nivel.codigo}-${it.numero}`;
+
+    const hechas = it.sesiones.filter((s) => hecho(iN, s.id)).length;
+    const etiquetaEstado = { hecho: 'Completado', curso: 'En curso', pendiente: 'Pendiente' }[estado];
+    art.innerHTML = `
+      <header class="intervalo-cabecera">
+        <h3>Intervalo ${it.numero}</h3>
+        <span class="estado-chip ${estado}">${etiquetaEstado}</span>
+      </header>
+      <p class="intervalo-rango">Frases ${it.desde + 1}–${it.hasta} · ${hechas}/${it.sesiones.length} sesiones</p>`;
+
+    const puntos = document.createElement('div');
+    puntos.className = 'sesiones';
+    for (const paso of [...it.sesiones, it.repaso]) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      const esRepaso = paso.tipo === 'intervalo';
+      const h = hecho(iN, paso.id);
+      const esSiguiente = Boolean(sig && sig.id === paso.id);
+      b.className = 'sesion-punto' + (h ? ' hecho' : '') + (esSiguiente ? ' siguiente' : '')
+        + (esRepaso ? ' repaso' : '');
+      b.textContent = esRepaso ? 'R' : paso.numero;
+      b.disabled = !disponible(iN, paso);
+      const nombre = esRepaso ? `Repaso del intervalo ${it.numero}` : `Sesión ${paso.numero}`;
+      b.title = h ? `${nombre}: hecha. Pulsa para repetirla.`
+        : esSiguiente ? `${nombre}: la siguiente.` : `${nombre}: aún no disponible.`;
+      b.setAttribute('aria-label', b.title);
+      b.addEventListener('click', () => { desbloquearAudio(); empezarPaso(iN, paso.id); });
+      puntos.appendChild(b);
+    }
+    art.appendChild(puntos);
+
+    const acciones = document.createElement('div');
+    acciones.className = 'intervalo-acciones';
+    const ver = document.createElement('button');
+    ver.type = 'button';
+    ver.className = 'btn btn-linea';
+    ver.textContent = 'Ver frases';
+    ver.disabled = hechas === 0;
+    ver.addEventListener('click', () => verFrasesIntervalo(iN, it.numero));
+    const repasar = document.createElement('button');
+    repasar.type = 'button';
+    repasar.className = 'btn btn-accent';
+    repasar.textContent = 'Repasar';
+    repasar.disabled = !disponible(iN, it.repaso);
+    repasar.addEventListener('click', () => { desbloquearAudio(); empezarPaso(iN, it.repaso.id); });
+    acciones.append(ver, repasar);
+    art.appendChild(acciones);
+
+    est.intervalos.appendChild(art);
+  }
+}
+
+function pintarRepasoNivel() {
+  const iN = ESTADO.ajustes.nivel;
+  const E = ESTRUCTURA[iN];
+  const h = hecho(iN, 'nivel');
+  const listo = disponible(iN, E.repaso);
+  const faltan = E.intervalos.filter((it) => !hecho(iN, it.repaso.id)).length;
+  est.repasoNivel.className = `card repaso-nivel ${h ? 'hecho' : listo ? 'curso' : 'pendiente'}`;
+  const texto = h ? 'Completado. Puedes repetirlo cuando quieras.'
+    : listo ? `Las ${E.nivel.hasta - E.nivel.desde} frases del nivel, una detrás de otra.`
+      : `Se abre al completar los ${E.intervalos.length} intervalos `
+        + `(${faltan === 1 ? 'falta 1' : `faltan ${faltan}`}).`;
+  est.repasoNivel.innerHTML = `<div><h3>Repaso del nivel ${E.nivel.codigo}</h3><p>${texto}</p></div>`;
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'btn btn-accent';
+  b.textContent = h ? 'Repasar otra vez' : 'Empezar repaso';
+  b.disabled = !listo;
+  b.addEventListener('click', () => { desbloquearAudio(); empezarPaso(iN, 'nivel'); });
+  est.repasoNivel.appendChild(b);
+}
+
+function elegirNivelEstudio(iN, desplazar = true) {
+  ESTADO.ajustes.nivel = iN;
+  guardarEstado();
+  pintarPanel();
+  if (desplazar) est.pestanas.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function irAIntervalo(iN, numero) {
+  ESTADO.ajustes.nivel = iN;
+  guardarEstado();
+  pintarPanel();
+  const art = document.getElementById(`intervalo-${NIVELES[iN].codigo}-${numero}`);
+  if (art) {
+    art.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    art.classList.remove('destacado');
+    void art.offsetWidth;
+    art.classList.add('destacado');
+  }
+}
+
+/* ── Sesión ── */
+
+let SESION = null;
+let TARJETA = { oida: false, vista: false, volteada: false, turno: 0 };
+
+/** En iPhone el primer play() tiene que ocurrir dentro del propio clic. */
+let urlSilencio = null;
+function desbloquearAudio() {
+  try {
+    if (!urlSilencio) urlSilencio = URL.createObjectURL(new Blob([silencio(96)], { type: 'audio/mpeg' }));
+    if (!el.reproductor.paused) el.reproductor.pause();
+    est.audio.src = urlSilencio;
+    const p = est.audio.play();
+    if (p && p.catch) p.catch(() => {});
+  } catch (_) { /* no pasa nada */ }
+}
+
+async function empezarPaso(iNivel, pasoId) {
+  const paso = pasoPorId(iNivel, pasoId);
+  if (!paso || !disponible(iNivel, paso)) return;
+  const cola = tarjetasDe(iNivel, paso);
+  SESION = { iNivel, pasoId, cola, pos: 0, total: cola.length, hechas: 0, repetidas: 0 };
+  await abrirSesion();
+}
+
+async function retomarSesion() {
+  const a = curso().abierta;
+  if (!a) return;
+  SESION = { ...a, cola: a.cola.slice() };
+  await abrirSesion();
+}
+
+async function abrirSesion() {
+  const paso = pasoPorId(SESION.iNivel, SESION.pasoId);
+  est.sesionMigas.textContent = nombrePaso(SESION.iNivel, paso);
+  est.sesionCuenta.textContent = '';
+  mostrarVista('sesion');
+  est.avisoSesion.hidden = true;
+  est.tarjeta.classList.remove('volteada');
+  est.tarjeta.classList.add('cargando');
+  est.tarjetaPista.hidden = false;
+  est.tarjetaPista.textContent = 'Preparando la sesión…';
+  est.accionesFrente.hidden = true;
+  est.tarjetaTexto.hidden = true;
+  est.calificar.hidden = true;
+  TARJETA.turno += 1;
+  const turno = TARJETA.turno;
+  try {
+    await asegurarTextos([...new Set(SESION.cola.map((t) => t.i))], [codApr(), codTradEst()]);
+  } catch (_) { /* se muestran las que haya */ }
+  if (turno !== TARJETA.turno || !SESION) return;
+  est.tarjeta.classList.remove('cargando');
+  guardarAbierta();
+  mostrarTarjeta();
+}
+
+function guardarAbierta() {
+  curso().abierta = SESION ? { ...SESION, cola: SESION.cola.slice() } : null;
+  guardarEstado();
+}
+
+function tarjetaActual() {
+  return SESION ? SESION.cola[SESION.pos] : null;
+}
+
+function caraVisible(dorso) {
+  const frente = est.tarjeta.querySelector('.frente');
+  const trasera = est.tarjeta.querySelector('.dorso');
+  frente.inert = dorso;
+  trasera.inert = !dorso;
+  frente.setAttribute('aria-hidden', String(dorso));
+  trasera.setAttribute('aria-hidden', String(!dorso));
+}
+
+function mostrarTarjeta() {
+  const t = tarjetaActual();
+  if (!t) { terminarSesion(); return; }
+  TARJETA = { oida: false, vista: false, volteada: false, turno: TARJETA.turno + 1 };
+
+  est.tarjeta.classList.remove('volteada', 'entra');
+  void est.tarjeta.offsetWidth;
+  est.tarjeta.classList.add('entra');
+  caraVisible(false);
+
+  est.tarjetaTipo.textContent = t.repetida ? 'Otra vez' : t.nueva ? 'Nueva' : 'Repaso';
+  est.tarjetaTipo.dataset.tipo = t.repetida ? 'repetida' : t.nueva ? 'nueva' : 'repaso';
+
+  const apr = textoEn(codApr(), t.i);
+  const trad = textoEn(codTradEst(), t.i);
+  est.tarjetaTexto.textContent = apr || TODAS[t.i].texto;
+  est.tarjetaTexto.hidden = true;
+  est.tarjetaPista.hidden = false;
+  est.tarjetaPista.textContent = 'Escucha la frase';
+  est.accionesFrente.hidden = true;
+  est.verFrase.hidden = false;
+  est.dorsoIdioma.textContent = NOMBRE_IDIOMA[codTradEst()] || '';
+  est.dorsoTexto.textContent = trad || 'No se pudo traducir esta frase.';
+  est.dorsoOriginal.textContent = apr || '';
+  est.calificar.hidden = true;
+  est.avisoSesion.hidden = true;
+
+  est.sesionCuenta.textContent = `Tarjeta ${Math.min(SESION.hechas + 1, SESION.total)} de ${SESION.total}`
+    + (SESION.repetidas ? ` · ${SESION.repetidas} para repetir` : '');
+  est.sesionBarra.style.width = `${(SESION.hechas / SESION.total) * 100}%`;
+
+  reproducirTarjeta();
+  // adelanta las siguientes para que no haya esperas
+  for (const sig of SESION.cola.slice(SESION.pos + 1, SESION.pos + 4)) audioDe(sig.i).catch(() => {});
+}
+
+async function reproducirTarjeta() {
+  const t = tarjetaActual();
+  if (!t || vistaActual !== 'sesion') return;
+  const turno = TARJETA.turno;
+  if (!el.reproductor.paused) el.reproductor.pause();
+  est.escuchar.classList.add('cargando');
+  try {
+    const url = await audioDe(t.i);
+    if (turno !== TARJETA.turno) return;
+    if (est.audio.src !== url) est.audio.src = url;
+    est.audio.currentTime = 0;
+    await est.audio.play();
+    if (turno !== TARJETA.turno) return;
+    est.escuchar.classList.add('sonando');
+    if (!TARJETA.oida) est.tarjetaPista.textContent = 'Escuchando…';
+  } catch (e) {
+    if (turno !== TARJETA.turno) return;
+    if (e && e.name === 'NotAllowedError') {
+      est.tarjetaPista.textContent = 'Pulsa ▶ para escuchar';
+    } else if (!(e && e.name === 'AbortError')) {
+      est.avisoSesion.innerHTML = '<b>No se pudo cargar el audio de esta tarjeta.</b> '
+        + 'Puedes ver la frase escrita y seguir.';
+      est.avisoSesion.hidden = false;
+      marcarOida();
+    }
+  } finally {
+    if (turno === TARJETA.turno) est.escuchar.classList.remove('cargando');
+  }
+}
+
+function marcarOida() {
+  est.escuchar.classList.remove('sonando');
+  if (TARJETA.oida) return;
+  TARJETA.oida = true;
+  est.accionesFrente.hidden = false;
+  est.tarjetaPista.textContent = '¿La has entendido?';
+  est.tarjetaPista.hidden = TARJETA.vista;
+}
+
+function verFrase() {
+  if (!TARJETA.oida || TARJETA.volteada) return;
+  TARJETA.vista = true;
+  est.tarjetaTexto.hidden = false;
+  est.tarjetaPista.hidden = true;
+  est.verFrase.hidden = true;
+}
+
+function voltear() {
+  if (!TARJETA.oida) return;
+  TARJETA.volteada = !TARJETA.volteada;
+  est.tarjeta.classList.toggle('volteada', TARJETA.volteada);
+  caraVisible(TARJETA.volteada);
+  if (TARJETA.volteada) {
+    detenerTarjeta();
+    est.calificar.hidden = false;
+    est.voltearAtras.focus({ preventScroll: true });
+  } else {
+    est.voltear.focus({ preventScroll: true });
+  }
+}
+
+function calificar(bien) {
+  const t = tarjetaActual();
+  if (!t || est.calificar.hidden) return;
+  detenerTarjeta();
+  if (bien) {
+    SESION.hechas += 1;
+  } else {
+    SESION.repetidas += 1;
+    SESION.cola.push({ i: t.i, nueva: t.nueva, repetida: true });
+    const f = curso().fallos;
+    f[t.i] = (f[t.i] || 0) + 1;
+  }
+  SESION.pos += 1;
+  guardarAbierta();
+  mostrarTarjeta();
+}
+
+function terminarSesion() {
+  const { iNivel, pasoId, total, repetidas } = SESION;
+  const paso = pasoPorId(iNivel, pasoId);
+  const clave = claveHecho(iNivel, pasoId);
+  const ahora = new Date().toISOString();
+  const previo = curso().hechos[clave];
+  curso().hechos[clave] = previo
+    ? { ...previo, ultima: ahora, veces: (previo.veces || 1) + 1 }
+    : { primera: ahora, ultima: ahora, veces: 1 };
+  SESION = null;
+  curso().abierta = null;
+  guardarEstado();
+
+  est.sesionBarra.style.width = '100%';
+  est.finTitulo.textContent = paso.tipo === 'sesion'
+    ? `Sesión ${paso.numero} completada`
+    : paso.tipo === 'intervalo'
+      ? `Repaso del intervalo ${paso.intervalo} completado`
+      : `Repaso del nivel ${NIVELES[iNivel].codigo} completado`;
+  est.finDetalle.textContent = `${nombrePaso(iNivel, paso)} · ${total} tarjetas`
+    + (repetidas ? ` · ${repetidas} ${repetidas === 1 ? 'repetida' : 'repetidas'}` : ' · ninguna repetida');
+
+  const sig = siguientePaso(iNivel);
+  est.finSiguiente.hidden = !sig;
+  est.finSiguiente.onclick = null;
+  if (sig) {
+    est.finSiguiente.textContent = sig.tipo === 'sesion'
+      ? `Seguir con la sesión ${sig.numero}`
+      : sig.tipo === 'intervalo' ? 'Repasar el intervalo' : 'Repasar el nivel';
+    est.finSiguiente.onclick = () => { desbloquearAudio(); empezarPaso(iNivel, sig.id); };
+  }
+  est.finNota.textContent = !sig
+    ? `Has terminado el nivel ${NIVELES[iNivel].codigo}. Tus intervalos siguen en el panel para repasarlos cuando quieras.`
+    : sig.tipo === 'intervalo'
+      ? 'Has cerrado las sesiones del intervalo: ahora toca repasarlo entero.'
+      : sig.tipo === 'nivel'
+        ? 'Has cerrado todos los intervalos: solo queda el repaso del nivel.'
+        : paso.tipo === 'sesion'
+          ? 'Cada sesión es un día: lo ideal es hacer la siguiente mañana.'
+          : '';
+  est.finNota.hidden = !est.finNota.textContent;
+  pintarPanel();
+  mostrarVista('fin');
+}
+
+function salirAlPanel() {
+  detenerTarjeta();
+  TARJETA.turno += 1;
+  pintarPanel();
+  mostrarVista('panel');
+}
+
+/* ── Frases de un intervalo ── */
+
+let listaActual = null;
+
+async function verFrasesIntervalo(iN, numero) {
+  const it = ESTRUCTURA[iN].intervalos[numero - 1];
+  const completo = hecho(iN, it.repaso.id);
+  const indices = it.sesiones
+    .filter((s) => completo || hecho(iN, s.id))
+    .flatMap((s) => rango(s.desde, s.hasta));
+  listaActual = { iN, numero };
+  est.frasesMigas.textContent = `${NIVELES[iN].codigo} · Intervalo ${numero}`;
+  est.frasesCuenta.textContent = `${indices.length} ${indices.length === 1 ? 'frase' : 'frases'}`
+    + (completo ? ' · completado' : ' · las de las sesiones hechas');
+  est.frasesRepasar.hidden = !disponible(iN, it.repaso);
+  est.frasesRepasar.onclick = () => { desbloquearAudio(); empezarPaso(iN, it.repaso.id); };
+  est.listaFrases.innerHTML = '<li class="cargando-lista">Cargando…</li>';
+  mostrarVista('frases');
+  try { await asegurarTextos(indices, [codApr(), codTradEst()]); } catch (_) { /* lo que haya */ }
+  if (!listaActual || listaActual.numero !== numero || listaActual.iN !== iN
+      || vistaActual !== 'frases') return;
+
+  const fallos = curso().fallos;
+  est.listaFrases.innerHTML = '';
+  for (const i of indices) {
+    const li = document.createElement('li');
+    const numEl = document.createElement('span');
+    numEl.className = 'lista-num';
+    numEl.textContent = i + 1;
+
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'mini-play';
+    b.setAttribute('aria-label', `Escuchar la frase ${i + 1}`);
+    b.textContent = '▶';
+    b.addEventListener('click', async () => {
+      desbloquearAudio();
+      b.classList.add('cargando');
+      try {
+        const url = await audioDe(i);
+        est.audio.src = url;
+        await est.audio.play();
+      } catch (_) { b.classList.add('error'); }
+      b.classList.remove('cargando');
+    });
+
+    const textos = document.createElement('div');
+    textos.className = 'lista-textos';
+    const a = document.createElement('span');
+    a.className = 'apr';
+    a.textContent = textoEn(codApr(), i) || TODAS[i].texto;
+    const t = document.createElement('span');
+    t.className = 'trad';
+    t.textContent = textoEn(codTradEst(), i) || '';
+    textos.append(a, t);
+
+    li.append(numEl, b, textos);
+    if (fallos[i]) {
+      const f = document.createElement('span');
+      f.className = 'lista-fallos';
+      f.textContent = `${fallos[i]} ${fallos[i] === 1 ? 'fallo' : 'fallos'}`;
+      li.appendChild(f);
+    }
+    est.listaFrases.appendChild(li);
+  }
+}
+
+/* ── Ajustes del estudio ── */
+
+function pintarAjustesEstudio() {
+  const opciones = (select, valor, excluir) => {
+    select.innerHTML = '';
+    for (const [nombre, cod] of Object.entries(IDIOMAS)) {
+      if (cod === excluir) continue;
+      const o = document.createElement('option');
+      o.value = cod;
+      o.textContent = nombre;
+      select.appendChild(o);
+    }
+    select.value = valor;
+  };
+  if (codTradEst() === codApr() || !Object.values(IDIOMAS).includes(codTradEst())) {
+    ESTADO.ajustes.trad = codApr() === 'es' ? 'en' : 'es';
+  }
+  opciones(est.idioma, codApr());
+  opciones(est.trad, codTradEst(), codApr());
+  est.voz.innerHTML = '';
+  for (const [etiqueta, id] of VOCES[codApr()]) {
+    const o = document.createElement('option');
+    o.value = id;
+    o.textContent = etiqueta;
+    est.voz.appendChild(o);
+  }
+  est.voz.value = vozEstudio();
+}
+
+function iniciarEstudio() {
+  if (!Object.values(IDIOMAS).includes(ESTADO.ajustes.apr)) ESTADO.ajustes.apr = 'en';
+  if (!(ESTADO.ajustes.nivel >= 0 && ESTADO.ajustes.nivel < NIVELES.length)) ESTADO.ajustes.nivel = 0;
+  const a = curso().abierta;
+  if (a && !(Array.isArray(a.cola) && a.cola.length && pasoPorId(a.iNivel, a.pasoId))) {
+    curso().abierta = null;
+  }
+
+  pintarAjustesEstudio();
+  pintarPanel();
+
+  est.idioma.addEventListener('change', () => {
+    ESTADO.ajustes.apr = est.idioma.value;
+    ESTADO.ajustes.voz = '';
+    pintarAjustesEstudio();
+    guardarEstado();
+    pintarPanel();
+  });
+  est.voz.addEventListener('change', () => { ESTADO.ajustes.voz = est.voz.value; guardarEstado(); });
+  est.trad.addEventListener('change', () => { ESTADO.ajustes.trad = est.trad.value; guardarEstado(); });
+
+  est.escuchar.addEventListener('click', reproducirTarjeta);
+  est.otraVezAudio.addEventListener('click', reproducirTarjeta);
+  est.verFrase.addEventListener('click', verFrase);
+  est.voltear.addEventListener('click', voltear);
+  est.voltearAtras.addEventListener('click', voltear);
+  est.repetirTarjeta.addEventListener('click', () => calificar(false));
+  est.bienTarjeta.addEventListener('click', () => calificar(true));
+  est.audio.addEventListener('ended', () => {
+    if (vistaActual === 'sesion' && est.audio.src !== urlSilencio) marcarOida();
+  });
+  est.audio.addEventListener('pause', () => est.escuchar.classList.remove('sonando'));
+  est.salirSesion.addEventListener('click', salirAlPanel);
+  est.salirFrases.addEventListener('click', salirAlPanel);
+  est.finPanel.addEventListener('click', salirAlPanel);
+
+  document.addEventListener('keydown', (ev) => {
+    if (vistaActual !== 'sesion' || est.vistas.sesion.hidden) return;
+    if (ev.metaKey || ev.ctrlKey || ev.altKey) return;
+    const objetivo = ev.target;
+    if (objetivo && /^(INPUT|SELECT|TEXTAREA)$/.test(objetivo.tagName)) return;
+    const k = ev.key.toLowerCase();
+    if (k === ' ') {
+      if (objetivo && objetivo.tagName === 'BUTTON') return;   // el botón ya hace lo suyo
+      ev.preventDefault();
+      if (!TARJETA.volteada) reproducirTarjeta();
+    } else if (k === 'v') verFrase();
+    else if (k === 'f') voltear();
+    else if (k === '1') calificar(false);
+    else if (k === '2') calificar(true);
+  });
+}
+
+/* ─────────────── Orden de los bloques ───────────────
+   Cada frase se compone de hasta tres bloques: B1 (el idioma que aprendes),
+   B2 (su repetición, si está activada) y B3 (la traducción). Se ordenan
+   arrastrándolos, o con las flechas del teclado. */
+
+const NOMBRE_BLOQUE = {
+  B1: 'Idioma por aprender',
+  B2: 'Idioma por aprender ×2',
+  B3: 'Traducción',
+};
+const CODIGO_BLOQUE = { B1: 'B1', B2: 'B2', B3: 'B3 (t)' };
+let ORDEN = ['B1', 'B2', 'B3'];
+
+function bloqueVisible(id) {
+  if (id === 'B2') return el.repetir.checked;
+  if (id === 'B3') return el.incluirTrad.checked;
+  return true;
+}
+
+function ordenEfectivo() {
+  return ORDEN.filter(bloqueVisible);
+}
+
+function pintarBloques() {
+  el.bloques.innerHTML = '';
+  const visibles = ordenEfectivo();
+  visibles.forEach((id, k) => {
+    const b = document.createElement('div');
+    b.className = 'bloque';
+    b.dataset.id = id;
+    b.tabIndex = 0;
+    b.setAttribute('role', 'listitem');
+    b.setAttribute('aria-label',
+      `${CODIGO_BLOQUE[id]}, ${NOMBRE_BLOQUE[id]}. Posición ${k + 1} de ${visibles.length}. `
+      + 'Usa las flechas arriba y abajo para moverlo.');
+    b.innerHTML = `<span class="bloque-codigo">${CODIGO_BLOQUE[id]}</span>`
+      + `<span class="bloque-nombre">${NOMBRE_BLOQUE[id]}</span>`
+      + '<span class="bloque-asa" aria-hidden="true">⠿</span>';
+    b.addEventListener('pointerdown', arrastrar);
+    b.addEventListener('keydown', (ev) => {
+      const paso = { ArrowUp: -1, ArrowDown: 1 }[ev.key];
+      if (!paso) return;
+      ev.preventDefault();
+      const lista = ordenEfectivo();
+      const j = lista.indexOf(id);
+      const k2 = j + paso;
+      if (k2 < 0 || k2 >= lista.length) return;
+      [lista[j], lista[k2]] = [lista[k2], lista[j]];
+      fijarOrden(lista);
+      pintarBloques();
+      el.bloques.querySelector(`[data-id="${id}"]`).focus();
+    });
+    el.bloques.appendChild(b);
+  });
+}
+
+/** Coloca los visibles en el orden dado; los ocultos conservan su hueco. */
+function fijarOrden(visibles) {
+  const cola = visibles.slice();
+  ORDEN = ORDEN.map((id) => (bloqueVisible(id) ? cola.shift() : id));
+}
+
+function arrastrar(ev) {
+  if (ev.button !== undefined && ev.button !== 0) return;
+  const bloque = ev.currentTarget;
+  const lista = el.bloques;
+  const inicioY = ev.clientY;
+  let movido = false;
+  let desplazamiento = 0;   // lo que ya ha saltado el bloque al reordenarse
+
+  const hueco = () => parseFloat(getComputedStyle(lista).rowGap) || 0;
+  bloque.setPointerCapture(ev.pointerId);
+
+  const mover = (e) => {
+    const dy = e.clientY - inicioY;
+    if (!movido && Math.abs(dy) < 4) return;
+    if (!movido) { movido = true; bloque.classList.add('arrastrando'); }
+    bloque.style.transform = `translateY(${dy - desplazamiento}px)`;
+
+    const centro = bloque.getBoundingClientRect();
+    const medio = centro.top + centro.height / 2;
+    const anterior = bloque.previousElementSibling;
+    const siguiente = bloque.nextElementSibling;
+    if (anterior) {
+      const r = anterior.getBoundingClientRect();
+      if (medio < r.top + r.height / 2) {
+        lista.insertBefore(bloque, anterior);
+        desplazamiento -= r.height + hueco();
+        bloque.style.transform = `translateY(${dy - desplazamiento}px)`;
+        return;
+      }
+    }
+    if (siguiente) {
+      const r = siguiente.getBoundingClientRect();
+      if (medio > r.top + r.height / 2) {
+        lista.insertBefore(siguiente, bloque);
+        desplazamiento += r.height + hueco();
+        bloque.style.transform = `translateY(${dy - desplazamiento}px)`;
+      }
+    }
+  };
+
+  const soltar = () => {
+    bloque.removeEventListener('pointermove', mover);
+    bloque.removeEventListener('pointerup', soltar);
+    bloque.removeEventListener('pointercancel', soltar);
+    bloque.classList.remove('arrastrando');
+    bloque.style.transform = '';
+    if (movido) {
+      fijarOrden([...lista.children].map((b) => b.dataset.id));
+      pintarBloques();
+    }
+  };
+
+  bloque.addEventListener('pointermove', mover);
+  bloque.addEventListener('pointerup', soltar);
+  bloque.addEventListener('pointercancel', soltar);
+}
+
 /* ─────────────── Arranque ─────────────── */
+
+TODAS = leerFrases(FRASES_RECOMENDADAS);
 
 rellenarIdiomas(el.idiomaApr, 'Inglés');
 rellenarIdiomas(el.idiomaTrad, 'Español');
 rellenarVoces(el.idiomaApr, el.vozApr);
 rellenarVoces(el.idiomaTrad, el.vozTrad);
-TODAS = leerFrases(FRASES_RECOMENDADAS);
 
 actualizarEtiquetas();
-pintarBloques();
+pintarNiveles();
 mostrarSelectorLista();
 actualizarInterruptorTrad();
+pintarBloques();
 
 el.idiomaApr.addEventListener('change', () => {
   rellenarVoces(el.idiomaApr, el.vozApr);
@@ -5052,39 +6491,57 @@ function actualizarInterruptorTrad() {
   if (el.estadoTrad) el.estadoTrad.textContent = activa ? 'Activada' : 'Desactivada';
 }
 
-el.incluirTrad.addEventListener('change', actualizarInterruptorTrad);
+el.incluirTrad.addEventListener('change', () => { actualizarInterruptorTrad(); pintarBloques(); });
+el.repetir.addEventListener('change', pintarBloques);
 for (const c of [el.velocidad, el.pausaIdiomas, el.pausaFrases]) {
   c.addEventListener('input', actualizarEtiquetas);
 }
 el.frases.addEventListener('input', actualizarContador);
+
+// Reproductor
 el.reproductor.addEventListener('timeupdate', () => { refrescarTiempo(); sincronizarLetras(); });
 el.reproductor.addEventListener('seeked', () => { refrescarTiempo(); sincronizarLetras(); });
 el.reproductor.addEventListener('loadedmetadata', refrescarTiempo);
 el.reproductor.addEventListener('durationchange', refrescarTiempo);
 el.reproductor.addEventListener('play', refrescarMandos);
 el.reproductor.addEventListener('pause', refrescarMandos);
-el.reproductor.addEventListener('ended', refrescarMandos);
-
+el.reproductor.addEventListener('ended', () => {
+  refrescarMandos();
+  // al acabar una parte, sigue con la siguiente
+  if (REPRODUCCION.activo < REPRODUCCION.archivos.length - 1) {
+    cargarParte(REPRODUCCION.activo + 1);
+    el.reproductor.play().catch(() => {});
+  }
+});
 el.reproducir.addEventListener('click', () => {
-  if (el.reproductor.paused) el.reproductor.play();
-  else el.reproductor.pause();
+  if (el.reproductor.paused || el.reproductor.ended) {
+    detenerTarjeta();
+    el.reproductor.play().catch(() => {});
+  } else {
+    el.reproductor.pause();
+  }
 });
 el.atras.addEventListener('click', () => saltar(-5));
 el.adelante.addEventListener('click', () => saltar(5));
-
-el.barraTiempo.addEventListener('pointerdown', () => { el.barraTiempo.dataset.agarrada = '1'; });
 el.barraTiempo.addEventListener('input', () => {
-  const d = el.reproductor.duration;
-  if (isFinite(d) && d > 0) el.reproductor.currentTime = (Number(el.barraTiempo.value) / 1000) * d;
+  arrastrandoBarra = true;
+  const total = duracionActiva();
+  el.tiempoActual.textContent = tiempoTexto((Number(el.barraTiempo.value) / 1000) * total);
+  el.barraTiempo.style.setProperty('--hecho', `${(Number(el.barraTiempo.value) / 10).toFixed(1)}%`);
 });
-el.barraTiempo.addEventListener('change', () => { delete el.barraTiempo.dataset.agarrada; });
+el.barraTiempo.addEventListener('change', () => {
+  const total = duracionActiva();
+  el.reproductor.currentTime = (Number(el.barraTiempo.value) / 1000) * total;
+  arrastrandoBarra = false;
+  refrescarTiempo();
+  sincronizarLetras();
+});
+el.reproductor.addEventListener('contextmenu', (e) => e.preventDefault());
 
-el.repetir.addEventListener('change', pintarBloques);
-el.incluirTrad.addEventListener('change', pintarBloques);
-el.idiomaApr.addEventListener('change', pintarBloques);
-el.idiomaTrad.addEventListener('change', pintarBloques);
 el.generar.addEventListener('click', generar);
 el.cancelar.addEventListener('click', () => { cancelando = true; });
+
+iniciarEstudio();
 </script>
 </body>
 </html>
